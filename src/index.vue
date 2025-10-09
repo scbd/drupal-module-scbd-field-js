@@ -1,5 +1,5 @@
 <template>
-  <ChmComponent :name="name" :description="description"/>
+  <ChmComponent :isAdditionalField="isAdditionalField" :name="name" :description="description" :locale="locale" :locales="locales" :countries="countries" :domains="domains"/>
 </template>
 
 <script>
@@ -12,10 +12,18 @@ export default {
   props     : {
     name: { type: String, required: true },
     description          : { type: String, required: false },
+    countries: { type: Array, required: false, default: () => ['lk'] },
+    locale: { type: String, required: false, default: 'en' },
+    locales: { type: Array, required: false, default: () => ['en'] },
+    domains: { type: Array, required: false, default: () =>  ['gbfTargets', 'nationalTargets7', 'countries', 'subjects','sdgs'] },
+    isAdditionalField: { type: Boolean, required: false, default: false },
+    //['gbfTargets', 'nationalTargets7', 'countries', 'subjects','sdgs', 'jurisdictions', 'orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'ecosystemTypes','documentTypes']
     options   : { type: Object }
   },
   components: { ChmComponent }
 };
+
+
 </script>
 
 
