@@ -9,7 +9,7 @@
       <div v-if="optionsList[domain]?.length" class="multi-field-child">
         <label   :for="`${name}-${domain}`" class="control-label" :class="{'fw-bold':isAdditionalField}">{{ t(domain) }}</label>
 
-        <multiselect v-if="optionsList[domain]?.length"
+        <multiselect v-if="optionsList[domain]?.length && !isGroupedDomain(domain)"
           :id="`${name}-${domain}`"
           v-model="inputValue[domain]"
           track-by="identifier"
@@ -18,6 +18,25 @@
           :multiple="isMultiple(domain)"
           :taggable="true"
           :group-select="false"
+          @select="handleGbf"
+          @close="handleChange"
+          @remove="handleChange"
+          :searchable="true"
+          :hide-selected="isMultiple(domain)"
+          :ref="`multiSelect-${domain}`"
+          :placeholder="''"
+        />
+        <multiselect v-if="optionsList[domain]?.length && isGroupedDomain(domain)"
+          :id="`${name}-${domain}`"
+          v-model="inputValue[domain]"
+          track-by="identifier"
+          label="name"
+          :options="optionsList[domain]"
+          :multiple="isMultiple(domain)"
+          :taggable="true"
+          :group-select="true"
+          group-values="children"
+          group-label="name"
           @select="handleGbf"
           @close="handleChange"
           @remove="handleChange"
@@ -55,9 +74,9 @@
 <script>
 import { toRef, ref, unref, computed } from 'vue'
 import { initializeApiStore, getData, lookUp } from '@scbd/cached-apis'
-import Multiselect   from 'vue-multiselect'
+import   Multiselect        from 'vue-multiselect'
 import { ofetch as $fetch } from "ofetch";
-import domainNamesMap  from '../i18n'
+import   domainNamesMap     from '../i18n'
 
 export default {
   name       : 'ChmSelectInputControl',
@@ -65,16 +84,20 @@ export default {
   props      : {
                   name          : { type: String, required: true },
                   description   : { type: String, required: false, default: ' ' },
-                  countries     : { type: Array,  required: false, default: () => ['lk'] },
+                  countries     : { type: Array,  required: false, default: () => ['be'] },
                   locale        : { type: String, required: false, default: 'en' },
                   locales       : { type: Array,  required: false, default: () => ['en'] },
-                  domains       : { type: Array,  required: false, default: () => [ 'nationalTargets7', 'gbfTargets','countries', 'subjects', 'sdgs' ] },
+                  domains       : { type: Array,  required: false, default: () => [ 'nationalTargets7', 'gbfTargets','countries', 'subjects', 'sdgs', 'bchSubjects' ] }, //
                   singleValueDomains : { type: Array,  required: false, default: () => [ 'orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes','jurisdictions','eventStatuses'] },
                   singleField   : { type: Boolean, required: false, default: false },
                   isAdditionalField: { type: Boolean, required: false, default: false }
                 },
-  methods    : { handleGbf,loadInitialValues, handleChange, t, getAllKeys, isMultiple, getInputElement },
+  methods    : { handleGbf,loadInitialValues, handleChange, t, getAllKeys, isMultiple, isGroupedDomain, getInputElement },
   setup,  mounted
+}
+
+function isGroupedDomain(domain){
+  return domain.toLowerCase().includes('group');
 }
 
 function isMultiple(domain){
@@ -89,8 +112,8 @@ function setup(props) {
     const countries           = toRef(props, 'countries');
     const locale              = toRef(props, 'locale');
     const locales             = toRef(props, 'locales');
-    const optionsList         = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': [], 'govTypes': [], 'projectStatuses': [], 'geoScopes': [], 'documentTypes': [],'jurisdictions': [] , eventStatuses: [] });
-    const inputValue          = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': null, 'govTypes': null, 'projectStatuses': null, 'geoScopes': null, 'documentTypes': null,'jurisdictions': null , eventStatuses: null});
+    const optionsList         = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': [], 'govTypes': [], 'projectStatuses': [], 'geoScopes': [], 'documentTypes': [],'jurisdictions': [] , eventStatuses: [], bchSubjects: []});
+    const inputValue          = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': null, 'govTypes': null, 'projectStatuses': null, 'geoScopes': null, 'documentTypes': null,'jurisdictions': null , eventStatuses: null, bchSubjects: []});
 
     const windowWidth = computed(() => window?.innerWidth);
 
@@ -114,7 +137,7 @@ async function getOptionList(domains, optionsList, countries, locale, locales){
       promisesForData.push(getData(domain).then((data) => optionsList.value? optionsList.value[domain] = data: optionsList[domain] = data))
 
   await Promise.all(promisesForData)
-
+console.log(optionsList)
   return optionsList
 }
 
@@ -125,6 +148,7 @@ async function getOptionListSingle(optionsList){
   const data            = await Promise.all(promisesForData)
 
   optionsList.value = [ 
+    { domain: 'Thematic Areas (Biosafety)',      terms: data[5] },
     { domain: 'GBF Targets',    terms: data[3] }, 
     { domain: 'SDGs',           terms: data[4] },
     { domain: 'Countries',      terms: data[1] }, 

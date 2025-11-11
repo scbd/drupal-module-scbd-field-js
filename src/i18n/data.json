@@ -13,7 +13,9 @@
     "projectStatuses": "حالات المشروع",
     "geoScopes": "النطاقات الجغرافية",
     "documentTypes": "أنواع المستندات",
-    "ecosystemTypes": "أنواع النظام البيئي"
+    "ecosystemTypes": "أنواع النظام البيئي",
+    "bchSubjects": "المجالات المواضيعية (السلامة البيولوجية)",
+    "bchSubjectGroups": "المجالات المواضيعية (السلامة البيولوجية)"
   },
   "bn": {
     "gbfTargets": "জিবিএফ টার্গেট",
@@ -29,7 +31,9 @@
     "projectStatuses": "প্রকল্পের স্থিতি",
     "geoScopes": "ভৌগলিক স্কোপ",
     "documentTypes": "নথির ধরন",
-    "ecosystemTypes": "ইকোসিস্টেম প্রকার"
+    "ecosystemTypes": "ইকোসিস্টেম প্রকার",
+    "bchSubjects": "থিম্যাটিক এলাকা (বায়োসেফটি)",
+    "bchSubjectGroups": "থিম্যাটিক এলাকা (বায়োসেফটি)"
   },
   "bg": {
     "gbfTargets": "GBF цели",
@@ -45,7 +49,9 @@
     "projectStatuses": "Статуси на проекта",
     "geoScopes": "Географски обхват",
     "documentTypes": "Видове документи",
-    "ecosystemTypes": "Типове екосистеми"
+    "ecosystemTypes": "Типове екосистеми",
+    "bchSubjects": "Тематични области (Биобезопасност)",
+    "bchSubjectGroups": "Тематични области (Биобезопасност)"
   },
   "am": {
     "gbfTargets": "የጂቢኤፍ ኢላማዎች",
@@ -61,7 +67,9 @@
     "projectStatuses": "የፕሮጀክት ሁኔታዎች",
     "geoScopes": "ጂኦግራፊያዊ መስኮች",
     "documentTypes": "የሰነድ ዓይነቶች",
-    "ecosystemTypes": "የአካባቢ ስርዓ"
+    "ecosystemTypes": "የአካባቢ ስርዓ",
+    "bchSubjects": "የ <BISSASSTURE>",
+    "bchSubjectGroups": "የ <BISSASSTURE>"
   },
   "az": {
     "gbfTargets": "GBF Hədəfləri",
@@ -77,7 +85,9 @@
     "projectStatuses": "Layihə statusları",
     "geoScopes": "Coğrafi sahələr",
     "documentTypes": "Sənəd növləri",
-    "ecosystemTypes": "Ekosistem növləri"
+    "ecosystemTypes": "Ekosistem növləri",
+    "bchSubjects": "Tematik sahələr (biozafety)",
+    "bchSubjectGroups": "Tematik sahələr (biozafety)"
   },
   "af": {
     "gbfTargets": "GBF-teikens",
@@ -93,7 +103,9 @@
     "projectStatuses": "Projekstatusse",
     "geoScopes": "Geografiese omvang",
     "documentTypes": "Dokumenttipes",
-    "ecosystemTypes": "Ekosisteem tipes"
+    "ecosystemTypes": "Ekosisteem tipes",
+    "bchSubjects": "Tematiese gebiede (Bioveiligheid)",
+    "bchSubjectGroups": "Tematiese gebiede (Bioveiligheid)"
   },
   "bs": {
     "gbfTargets": "GBF ciljevi",
@@ -109,7 +121,9 @@
     "projectStatuses": "Statusi projekta",
     "geoScopes": "Geografski opsezi",
     "documentTypes": "Vrste dokumenata",
-    "ecosystemTypes": "Vrste ekosistema"
+    "ecosystemTypes": "Vrste ekosistema",
+    "bchSubjects": "Tematske oblasti (biološka sigurnost)",
+    "bchSubjectGroups": "Tematske oblasti (biološka sigurnost)"
   },
   "da": {
     "gbfTargets": "GBF-mål",
@@ -125,7 +139,9 @@
     "projectStatuses": "Projektstatus",
     "geoScopes": "Geografiske anvendelsesområder",
     "documentTypes": "Dokumenttyper",
-    "ecosystemTypes": "Økosystemtyper"
+    "ecosystemTypes": "Økosystemtyper",
+    "bchSubjects": "Tematiske områder (biosikkerhed)",
+    "bchSubjectGroups": "Tematiske områder (biosikkerhed)"
   },
   "cs": {
     "gbfTargets": "Cíle GBF",
@@ -141,7 +157,9 @@
     "projectStatuses": "Stavy projektu",
     "geoScopes": "Geografické rozsahy",
     "documentTypes": "Typy dokumentů",
-    "ecosystemTypes": "Typy ekosystémů"
+    "ecosystemTypes": "Typy ekosystémů",
+    "bchSubjects": "Tematické oblasti (biologická bezpečnost)",
+    "bchSubjectGroups": "Tematické oblasti (biologická bezpečnost)"
   },
   "ca": {
     "gbfTargets": "Objectius GBF",
@@ -157,7 +175,9 @@
     "projectStatuses": "Estatus del projecte",
     "geoScopes": "Àmbits geogràfics",
     "documentTypes": "Tipus de documents",
-    "ecosystemTypes": "Tipus d'ecosistemes"
+    "ecosystemTypes": "Tipus d'ecosistemes",
+    "bchSubjects": "Àrees temàtiques (Bioseguretat)",
+    "bchSubjectGroups": "Àrees temàtiques (Bioseguretat)"
   },
   "cy": {
     "gbfTargets": "Targedau GBF",
@@ -173,7 +193,9 @@
     "projectStatuses": "Statws prosiect",
     "geoScopes": "Cwmpasau daearyddol",
     "documentTypes": "Mathau o ddogfennau",
-    "ecosystemTypes": "Mathau o ecosystem"
+    "ecosystemTypes": "Mathau o ecosystem",
+    "bchSubjects": "Meysydd Thematig (Bioddiogelwch)",
+    "bchSubjectGroups": "Meysydd Thematig (Bioddiogelwch)"
   },
   "de": {
     "gbfTargets": "GBF-Ziele",
@@ -189,7 +211,9 @@
     "projectStatuses": "Status des Projekts",
     "geoScopes": "Geografischer Geltungsbereich",
     "documentTypes": "Typen von Dokumenten",
-    "ecosystemTypes": "Arten von Ökosystemen"
+    "ecosystemTypes": "Arten von Ökosystemen",
+    "bchSubjects": "Themenbereiche (Biosicherheit)",
+    "bchSubjectGroups": "Themenbereiche (Biosicherheit)"
   },
   "en": {
     "gbfTargets": "GBF Targets",
@@ -206,7 +230,9 @@
     "geoScopes": "Geographic scopes",
     "documentTypes": "Document types",
     "ecosystemTypes": "Ecosystem types",
-    "eventStatuses": "Event statuses"
+    "eventStatuses": "Event statuses",
+    "bchSubjects": "Thematic Areas (Biosafety)",
+    "bchSubjectGroups": "Thematic Areas (Biosafety)"
   },
   "el": {
     "gbfTargets": "Στόχοι GBF",
@@ -222,7 +248,9 @@
     "projectStatuses": "Κατάσταση έργου",
     "geoScopes": "Γεωγραφικά πεδία",
     "documentTypes": "Τύποι εγγράφων",
-    "ecosystemTypes": "Τύποι οικοσυστημάτων"
+    "ecosystemTypes": "Τύποι οικοσυστημάτων",
+    "bchSubjects": "Θεματικοί Τομείς (Βιοασφάλεια)",
+    "bchSubjectGroups": "Θεματικοί Τομείς (Βιοασφάλεια)"
   },
   "es": {
     "gbfTargets": "Objetivos de GBF",
@@ -238,7 +266,9 @@
     "projectStatuses": "Estados del proyecto",
     "geoScopes": "Ámbitos geográficos",
     "documentTypes": "Tipos de documentos",
-    "ecosystemTypes": "Tipos de ecosistemas"
+    "ecosystemTypes": "Tipos de ecosistemas",
+    "bchSubjects": "Áreas Temáticas (Bioseguridad)",
+    "bchSubjectGroups": "Áreas Temáticas (Bioseguridad)"
   },
   "fa": {
     "gbfTargets": "اهداف GBF",
@@ -254,7 +284,9 @@
     "projectStatuses": "وضعیت پروژه",
     "geoScopes": "محدوده جغرافیایی",
     "documentTypes": "انواع سند",
-    "ecosystemTypes": "انواع اکوسیستم"
+    "ecosystemTypes": "انواع اکوسیستم",
+    "bchSubjects": "حوزه های موضوعی (ایمنی زیستی)",
+    "bchSubjectGroups": "حوزه های موضوعی (ایمنی زیستی)"
   },
   "et": {
     "gbfTargets": "GBF-i eesmärgid",
@@ -270,7 +302,9 @@
     "projectStatuses": "Projekti staatused",
     "geoScopes": "Geograafilised ulatused",
     "documentTypes": "Dokumentide tüübid",
-    "ecosystemTypes": "Ökosüsteemi tüübid"
+    "ecosystemTypes": "Ökosüsteemi tüübid",
+    "bchSubjects": "Temaatilised valdkonnad (bioohutus)",
+    "bchSubjectGroups": "Temaatilised valdkonnad (bioohutus)"
   },
   "es-MX": {
     "gbfTargets": "Objetivos de GBF",
@@ -286,7 +320,9 @@
     "projectStatuses": "Estado del proyecto",
     "geoScopes": "Alcances geográficos",
     "documentTypes": "Tipos de documentos",
-    "ecosystemTypes": "Tipos de ecosistemas"
+    "ecosystemTypes": "Tipos de ecosistemas",
+    "bchSubjects": "Áreas Temáticas (Bioseguridad)",
+    "bchSubjectGroups": "Áreas Temáticas (Bioseguridad)"
   },
   "fa-AF": {
     "gbfTargets": "اهداف GBF",
@@ -302,7 +338,9 @@
     "projectStatuses": "وضعیت پروژه",
     "geoScopes": "دامنه های جغرافیایی",
     "documentTypes": "انواع اسناد",
-    "ecosystemTypes": "انواع اکوسیستم"
+    "ecosystemTypes": "انواع اکوسیستم",
+    "bchSubjects": "حوزه های موضوعی (ایمنی زیستی)",
+    "bchSubjectGroups": "حوزه های موضوعی (ایمنی زیستی)"
   },
   "fi": {
     "gbfTargets": "GBF-tavoitteet",
@@ -318,7 +356,9 @@
     "projectStatuses": "Projektin tilat",
     "geoScopes": "Maantieteelliset laajuudet",
     "documentTypes": "Asiakirjatyypit",
-    "ecosystemTypes": "Ekosysteemityypit"
+    "ecosystemTypes": "Ekosysteemityypit",
+    "bchSubjects": "Temaattiset alueet (bioturvallisuus)",
+    "bchSubjectGroups": "Temaattiset alueet (bioturvallisuus)"
   },
   "fr-CA": {
     "gbfTargets": "Objectifs du GBF",
@@ -334,7 +374,9 @@
     "projectStatuses": "Statuts du projet",
     "geoScopes": "Portée géographique",
     "documentTypes": "Types de documents",
-    "ecosystemTypes": "Types d'écosystèmes"
+    "ecosystemTypes": "Types d'écosystèmes",
+    "bchSubjects": "Domaines thématiques (biosécurité)",
+    "bchSubjectGroups": "Domaines thématiques (biosécurité)"
   },
   "ga": {
     "gbfTargets": "Spriocanna GBF",
@@ -350,7 +392,9 @@
     "projectStatuses": "Stádas tionscadail",
     "geoScopes": "Scéimeanna geografacha",
     "documentTypes": "cineálacha doiciméad",
-    "ecosystemTypes": "Cineálacha éiceach"
+    "ecosystemTypes": "Cineálacha éiceach",
+    "bchSubjects": "Réimsí Téamacha (Bithshábháilteacht)",
+    "bchSubjectGroups": "Réimsí Téamacha (Bithshábháilteacht)"
   },
   "gu": {
     "gbfTargets": "જીબીએફ લક્ષ્યો",
@@ -366,7 +410,9 @@
     "projectStatuses": "પ્રોજેક્ટ સ્થિતિઓ",
     "geoScopes": "ભૌગોલિક અવકાશ",
     "documentTypes": "દસ્તાવેજ પ્રકારો",
-    "ecosystemTypes": "ઇકોસિસ્ટમ પ્રકારો"
+    "ecosystemTypes": "ઇકોસિસ્ટમ પ્રકારો",
+    "bchSubjects": "વિષયોનું ક્ષેત્ર (જૈવ સુરક્ષા)",
+    "bchSubjectGroups": "વિષયોનું ક્ષેત્ર (જૈવ સુરક્ષા)"
   },
   "fr": {
     "gbfTargets": "Objectifs du GBF",
@@ -382,7 +428,9 @@
     "projectStatuses": "Statuts des projets",
     "geoScopes": "Périmètres géographiques",
     "documentTypes": "Types de documents",
-    "ecosystemTypes": "Types d'écosystèmes"
+    "ecosystemTypes": "Types d'écosystèmes",
+    "bchSubjects": "Domaines thématiques (biosécurité)",
+    "bchSubjectGroups": "Domaines thématiques (biosécurité)"
   },
   "ha": {
     "gbfTargets": "Makasudin GBF",
@@ -398,7 +446,9 @@
     "projectStatuses": "Matsayi na aikin",
     "geoScopes": "Ƙididdigar yanayi",
     "documentTypes": "Nau'ikan takardu",
-    "ecosystemTypes": "Nau'ikan yanayin halitta"
+    "ecosystemTypes": "Nau'ikan yanayin halitta",
+    "bchSubjects": "Yankuna na gida (baniopaitet)",
+    "bchSubjectGroups": "Yankuna na gida (baniopaitet)"
   },
   "he": {
     "gbfTargets": "יעדי GBF",
@@ -414,7 +464,9 @@
     "projectStatuses": "סטטוסים של הפרויקט",
     "geoScopes": "היקפים גיאוגרפיים",
     "documentTypes": "סוגי מסמכים",
-    "ecosystemTypes": "סוגי מערכות אקולוגיות"
+    "ecosystemTypes": "סוגי מערכות אקולוגיות",
+    "bchSubjects": "אזורים נושאיים (ביובטיחות)",
+    "bchSubjectGroups": "אזורים נושאיים (ביובטיחות)"
   },
   "hr": {
     "gbfTargets": "GBF ciljevi",
@@ -430,7 +482,9 @@
     "projectStatuses": "Statusi projekta",
     "geoScopes": "Geografski opsezi",
     "documentTypes": "Vrste dokumenata",
-    "ecosystemTypes": "Vrste ekosustava"
+    "ecosystemTypes": "Vrste ekosustava",
+    "bchSubjects": "Tematska područja (biološka sigurnost)",
+    "bchSubjectGroups": "Tematska područja (biološka sigurnost)"
   },
   "hi": {
     "gbfTargets": "GBF लक्ष्य",
@@ -446,7 +500,9 @@
     "projectStatuses": "प्रोजेक्ट की स्थितियाँ",
     "geoScopes": "भौगोलिक क्षेत्र",
     "documentTypes": "दस्तावेज़ के प्रकार",
-    "ecosystemTypes": "इकोसिस्टम के प्रकार"
+    "ecosystemTypes": "इकोसिस्टम के प्रकार",
+    "bchSubjects": "विषयगत क्षेत्र (जैव सुरक्षा)",
+    "bchSubjectGroups": "विषयगत क्षेत्र (जैव सुरक्षा)"
   },
   "ht": {
     "gbfTargets": "Objektif GBF",
@@ -462,7 +518,9 @@
     "projectStatuses": "Estati pwojè",
     "geoScopes": "Skopè jeyografik",
     "documentTypes": "Kalite dokiman",
-    "ecosystemTypes": "Kalite ekosistèm"
+    "ecosystemTypes": "Kalite ekosistèm",
+    "bchSubjects": "Zòn Tematik (Biosekite)",
+    "bchSubjectGroups": "Zòn Tematik (Biosekite)"
   },
   "hu": {
     "gbfTargets": "GBF célok",
@@ -478,7 +536,9 @@
     "projectStatuses": "Projektállapotok",
     "geoScopes": "Földrajzi hatókörök",
     "documentTypes": "Dokumentumtípusok",
-    "ecosystemTypes": "Ökoszisztéma típusok"
+    "ecosystemTypes": "Ökoszisztéma típusok",
+    "bchSubjects": "Tematikus területek (biológiai biztonság)",
+    "bchSubjectGroups": "Tematikus területek (biológiai biztonság)"
   },
   "hy": {
     "gbfTargets": "GBF թիրախները",
@@ -494,7 +554,9 @@
     "projectStatuses": "Ծրագրի կարգավիճակները",
     "geoScopes": "Աշխարհագրական ոլորտներ",
     "documentTypes": "Փաստաթղթերի տեսակները",
-    "ecosystemTypes": "Էկոհամակարգի տեսակները"
+    "ecosystemTypes": "Էկոհամակարգի տեսակները",
+    "bchSubjects": "Թեմատիկ ոլորտներ (կենսաանվտանգություն)",
+    "bchSubjectGroups": "Թեմատիկ ոլորտներ (կենսաանվտանգություն)"
   },
   "id": {
     "gbfTargets": "Target GBF",
@@ -510,7 +572,9 @@
     "projectStatuses": "Status proyek",
     "geoScopes": "Lingkup geografis",
     "documentTypes": "Jenis dokumen",
-    "ecosystemTypes": "Jenis ekosistem"
+    "ecosystemTypes": "Jenis ekosistem",
+    "bchSubjects": "Area Tematik (Keamanan Hayati)",
+    "bchSubjectGroups": "Area Tematik (Keamanan Hayati)"
   },
   "it": {
     "gbfTargets": "Obiettivi GBF",
@@ -526,7 +590,9 @@
     "projectStatuses": "Stati del progetto",
     "geoScopes": "Ambiti geografici",
     "documentTypes": "Tipi di documenti",
-    "ecosystemTypes": "Tipi di ecosistemi"
+    "ecosystemTypes": "Tipi di ecosistemi",
+    "bchSubjects": "Aree tematiche (Biosicurezza)",
+    "bchSubjectGroups": "Aree tematiche (Biosicurezza)"
   },
   "is": {
     "gbfTargets": "GBF markmið",
@@ -542,7 +608,9 @@
     "projectStatuses": "Staða verkefnisins",
     "geoScopes": "Landfræðileg svið",
     "documentTypes": "Skjalagerðir",
-    "ecosystemTypes": "Tegundir vistkerfa"
+    "ecosystemTypes": "Tegundir vistkerfa",
+    "bchSubjects": "Þemasvæði (líföryggi)",
+    "bchSubjectGroups": "Þemasvæði (líföryggi)"
   },
   "ka": {
     "gbfTargets": "GBF მიზნები",
@@ -558,7 +626,9 @@
     "projectStatuses": "პროექტის სტატუსები",
     "geoScopes": "გეოგრაფიული სფერო",
     "documentTypes": "დოკუმენტის სახეები",
-    "ecosystemTypes": "ეკოსისტემის სახეები"
+    "ecosystemTypes": "ეკოსისტემის სახეები",
+    "bchSubjects": "თემატური სფეროები (ბიოუსაფრთხოება)",
+    "bchSubjectGroups": "თემატური სფეროები (ბიოუსაფრთხოება)"
   },
   "ja": {
     "gbfTargets": "GBF ターゲット",
@@ -574,7 +644,9 @@
     "projectStatuses": "プロジェクトステータス",
     "geoScopes": "地理的範囲",
     "documentTypes": "文書タイプ",
-    "ecosystemTypes": "エコシステムの種類"
+    "ecosystemTypes": "エコシステムの種類",
+    "bchSubjects": "テーマ分野（バイオセーフティ）",
+    "bchSubjectGroups": "テーマ分野（バイオセーフティ）"
   },
   "kk": {
     "gbfTargets": "GBF мақсаттары",
@@ -590,7 +662,9 @@
     "projectStatuses": "Жобаның мәртебелері",
     "geoScopes": "Географиялық ауқымдар",
     "documentTypes": "Құжат түрлері",
-    "ecosystemTypes": "Экожүйе түрлері"
+    "ecosystemTypes": "Экожүйе түрлері",
+    "bchSubjects": "Тақырыптық аймақтар (биологиялық қауіпсіздік)",
+    "bchSubjectGroups": "Тақырыптық аймақтар (биологиялық қауіпсіздік)"
   },
   "kn": {
     "gbfTargets": "ಜಿಬಿಎಫ್ ಗುರಿಗಳು",
@@ -606,7 +680,9 @@
     "projectStatuses": "ಪ್ರಾಜೆಕ್ಟ್ ಸ್ಥಿತಿಗಳು",
     "geoScopes": "ಭೌಗೋಳಿಕ ವ್ಯಾಪ್ತಿಗಳು",
     "documentTypes": "ಡಾಕ್ಯುಮೆಂಟ್ ಪ್ರಕಾರಗಳು",
-    "ecosystemTypes": "ಪರಿಸರ ವ್ಯವಸ್ಥೆಯ ಪ್ರಕಾರಗಳು"
+    "ecosystemTypes": "ಪರಿಸರ ವ್ಯವಸ್ಥೆಯ ಪ್ರಕಾರಗಳು",
+    "bchSubjects": "ವಿಷಯಾಧಾರಿತ ಪ್ರದೇಶಗಳು (ಜೈವಿಕ ಸುರಕ್ಷತೆ)",
+    "bchSubjectGroups": "ವಿಷಯಾಧಾರಿತ ಪ್ರದೇಶಗಳು (ಜೈವಿಕ ಸುರಕ್ಷತೆ)"
   },
   "ko": {
     "gbfTargets": "GBF 타겟",
@@ -622,7 +698,9 @@
     "projectStatuses": "프로젝트 상태",
     "geoScopes": "지리적 범위",
     "documentTypes": "문서 유형",
-    "ecosystemTypes": "생태계 유형"
+    "ecosystemTypes": "생태계 유형",
+    "bchSubjects": "주제별 분야(생물안전성)",
+    "bchSubjectGroups": "주제별 분야(생물안전성)"
   },
   "lt": {
     "gbfTargets": "GBF tikslai",
@@ -638,7 +716,9 @@
     "projectStatuses": "Projekto būsenos",
     "geoScopes": "Geografinės sritys",
     "documentTypes": "Dokumentų tipai",
-    "ecosystemTypes": "Ekosistemų tipai"
+    "ecosystemTypes": "Ekosistemų tipai",
+    "bchSubjects": "Teminės sritys (biologinė sauga)",
+    "bchSubjectGroups": "Teminės sritys (biologinė sauga)"
   },
   "lv": {
     "gbfTargets": "GBF mērķi",
@@ -654,7 +734,9 @@
     "projectStatuses": "Projekta statusi",
     "geoScopes": "Ģeogrāfiskās darbības jomas",
     "documentTypes": "Dokumentu veidi",
-    "ecosystemTypes": "Ekosistēmu veidi"
+    "ecosystemTypes": "Ekosistēmu veidi",
+    "bchSubjects": "Tematiskās jomas (bioloģiskā drošība)",
+    "bchSubjectGroups": "Tematiskās jomas (bioloģiskā drošība)"
   },
   "mk": {
     "gbfTargets": "Цели на GBF",
@@ -670,7 +752,9 @@
     "projectStatuses": "Статуси на проектот",
     "geoScopes": "Географски опсези",
     "documentTypes": "Видови документи",
-    "ecosystemTypes": "Типови на екосистеми"
+    "ecosystemTypes": "Типови на екосистеми",
+    "bchSubjects": "Тематски области (биосигурност)",
+    "bchSubjectGroups": "Тематски области (биосигурност)"
   },
   "mn": {
     "gbfTargets": "GBF-ийн зорилтууд",
@@ -686,7 +770,9 @@
     "projectStatuses": "Төслийн төлөв байдал",
     "geoScopes": "Газарзүйн цар хүрээ",
     "documentTypes": "Баримт бичгийн төрлүүд",
-    "ecosystemTypes": "Экосистемийн төрлүүд"
+    "ecosystemTypes": "Экосистемийн төрлүүд",
+    "bchSubjects": "Сэдэвчилсэн газар (биоафатет)",
+    "bchSubjectGroups": "Сэдэвчилсэн газар (биоафатет)"
   },
   "ml": {
     "gbfTargets": "ജിബിഎഫ് ടാർഗെറ്റുകൾ",
@@ -702,7 +788,9 @@
     "projectStatuses": "പ്രോജക്റ്റ് സ്റ്റാറ്റസുകൾ",
     "geoScopes": "ഭൂമിശാസ്ത്രപരമായ സ്കോപ്പുകൾ",
     "documentTypes": "പ്രമാണ തരങ്ങൾ",
-    "ecosystemTypes": "ഇക്കോസിസ്റ്റം തരങ്ങൾ"
+    "ecosystemTypes": "ഇക്കോസിസ്റ്റം തരങ്ങൾ",
+    "bchSubjects": "തീമാറ്റിക് ഏരിയകൾ (ജൈവ സുരക്ഷ)",
+    "bchSubjectGroups": "തീമാറ്റിക് ഏരിയകൾ (ജൈവ സുരക്ഷ)"
   },
   "mr": {
     "gbfTargets": "जीबीएफ लक्ष्ये",
@@ -718,7 +806,9 @@
     "projectStatuses": "प्रकल्प स्थिती",
     "geoScopes": "भौगोलिक व्याप्",
     "documentTypes": "दस्तऐवजाचे",
-    "ecosystemTypes": "इकोसिस्टम प्रका"
+    "ecosystemTypes": "इकोसिस्टम प्रका",
+    "bchSubjects": "थीमॅटिक क्षेत्रे (जैवसुरक्षा)",
+    "bchSubjectGroups": "थीमॅटिक क्षेत्रे (जैवसुरक्षा)"
   },
   "mt": {
     "gbfTargets": "Miri GBF",
@@ -734,7 +824,9 @@
     "projectStatuses": "Status tal-proġett",
     "geoScopes": "Ambitu ġeografiċi",
     "documentTypes": "Tipi ta' dokumenti",
-    "ecosystemTypes": "Tipi tal-ekosistemi"
+    "ecosystemTypes": "Tipi tal-ekosistemi",
+    "bchSubjects": "Oqsma Tematiċi (Bijosigurtà)",
+    "bchSubjectGroups": "Oqsma Tematiċi (Bijosigurtà)"
   },
   "ms": {
     "gbfTargets": "Sasaran GBF",
@@ -750,7 +842,9 @@
     "projectStatuses": "Status projek",
     "geoScopes": "Skop geografi",
     "documentTypes": "Jenis dokumen",
-    "ecosystemTypes": "Jenis ekosistem"
+    "ecosystemTypes": "Jenis ekosistem",
+    "bchSubjects": "Kawasan tematik (biosafety)",
+    "bchSubjectGroups": "Kawasan tematik (biosafety)"
   },
   "nl": {
     "gbfTargets": "GBF-doelstellingen",
@@ -766,7 +860,9 @@
     "projectStatuses": "Statussen van het project",
     "geoScopes": "Geografische reikwijdte",
     "documentTypes": "Documenttypen",
-    "ecosystemTypes": "Soorten ecosystemen"
+    "ecosystemTypes": "Soorten ecosystemen",
+    "bchSubjects": "Thematische gebieden (Bioveiligheid)",
+    "bchSubjectGroups": "Thematische gebieden (Bioveiligheid)"
   },
   "pa": {
     "gbfTargets": "ਜੀਬੀਐਫ ਟੀਚੇ",
@@ -782,7 +878,9 @@
     "projectStatuses": "ਪ੍ਰੋਜੈਕਟ ਦੀਆਂ ਸਥਿਤੀਆਂ",
     "geoScopes": "ਭੂਗੋਲਿਕ ਸਕੋਪ",
     "documentTypes": "ਦਸਤਾਵੇਜ਼ ਦੀਆਂ ਕਿਸਮਾਂ",
-    "ecosystemTypes": "ਈਕੋਸਿਸਟਮ ਕਿਸਮਾਂ"
+    "ecosystemTypes": "ਈਕੋਸਿਸਟਮ ਕਿਸਮਾਂ",
+    "bchSubjects": "ਥੀਮੈਟਿਕ ਖੇਤਰ (ਬਾਇਓਸੁਰੱਖਿਆ)",
+    "bchSubjectGroups": "ਥੀਮੈਟਿਕ ਖੇਤਰ (ਬਾਇਓਸੁਰੱਖਿਆ)"
   },
   "no": {
     "gbfTargets": "GBF-mål",
@@ -798,7 +896,9 @@
     "projectStatuses": "Prosjektstatuser",
     "geoScopes": "Geografiske omfang",
     "documentTypes": "Dokumenttyper",
-    "ecosystemTypes": "Økosystemtyper"
+    "ecosystemTypes": "Økosystemtyper",
+    "bchSubjects": "Tematiske områder (biosikkerhet)",
+    "bchSubjectGroups": "Tematiske områder (biosikkerhet)"
   },
   "pl": {
     "gbfTargets": "Cele GBF",
@@ -814,7 +914,9 @@
     "projectStatuses": "Statusy projektu",
     "geoScopes": "Zakresy geograficzne",
     "documentTypes": "Typy dokumentów",
-    "ecosystemTypes": "Typy ekosystemów"
+    "ecosystemTypes": "Typy ekosystemów",
+    "bchSubjects": "Obszary tematyczne (bezpieczeństwo biologiczne)",
+    "bchSubjectGroups": "Obszary tematyczne (bezpieczeństwo biologiczne)"
   },
   "ps": {
     "gbfTargets": "د جی بی ایف اهداف",
@@ -830,7 +932,9 @@
     "projectStatuses": "د پروژې حالتونه",
     "geoScopes": "جغرافیایی دامنه",
     "documentTypes": "د سند ډولونه",
-    "ecosystemTypes": "د ایکوسیستم ډولونه"
+    "ecosystemTypes": "د ایکوسیستم ډولونه",
+    "bchSubjects": "موضوعی ساحې (بیو خوندیتوب)",
+    "bchSubjectGroups": "موضوعی ساحې (بیو خوندیتوب)"
   },
   "pt": {
     "gbfTargets": "Metas do GBF",
@@ -846,7 +950,9 @@
     "projectStatuses": "Status do projeto",
     "geoScopes": "Escopos geográficos",
     "documentTypes": "Tipos de documentos",
-    "ecosystemTypes": "Tipos de ecossistema"
+    "ecosystemTypes": "Tipos de ecossistema",
+    "bchSubjects": "Áreas Temáticas (Biossegurança)",
+    "bchSubjectGroups": "Áreas Temáticas (Biossegurança)"
   },
   "pt-PT": {
     "gbfTargets": "Objetivos GBF",
@@ -862,7 +968,9 @@
     "projectStatuses": "Estado dos projectos",
     "geoScopes": "Âmbitos geográficos",
     "documentTypes": "Tipos de documentos",
-    "ecosystemTypes": "Tipos de ecossistemas"
+    "ecosystemTypes": "Tipos de ecossistemas",
+    "bchSubjects": "Áreas Temáticas (Biossegurança)",
+    "bchSubjectGroups": "Áreas Temáticas (Biossegurança)"
   },
   "ru": {
     "gbfTargets": "Цели GBF",
@@ -878,7 +986,9 @@
     "projectStatuses": "Статусы проектов",
     "geoScopes": "Географические области",
     "documentTypes": "Типы документов",
-    "ecosystemTypes": "Типы экосистем"
+    "ecosystemTypes": "Типы экосистем",
+    "bchSubjects": "Тематические области (биобезопасность)",
+    "bchSubjectGroups": "Тематические области (биобезопасность)"
   },
   "ro": {
     "gbfTargets": "Obiectivele GBF",
@@ -894,7 +1004,9 @@
     "projectStatuses": "Stări ale proiectului",
     "geoScopes": "Domenii geografice",
     "documentTypes": "Tipuri de documente",
-    "ecosystemTypes": "Tipuri de ecosisteme"
+    "ecosystemTypes": "Tipuri de ecosisteme",
+    "bchSubjects": "Domenii tematice (Biosecuritate)",
+    "bchSubjectGroups": "Domenii tematice (Biosecuritate)"
   },
   "si": {
     "gbfTargets": "ජීබීඑෆ් ඉලක්ක",
@@ -910,7 +1022,9 @@
     "projectStatuses": "ව්යාපෘති තත්වයන්",
     "geoScopes": "භූගෝලීය විෂය පථයන්",
     "documentTypes": "ලේඛන වර්ග",
-    "ecosystemTypes": "පරිසර පද්ධති වර්ග"
+    "ecosystemTypes": "පරිසර පද්ධති වර්ග",
+    "bchSubjects": "තේමාත්මක ප්‍රදේශ (ජෛව ආරක්‍ෂාව)",
+    "bchSubjectGroups": "තේමාත්මක ප්‍රදේශ (ජෛව ආරක්‍ෂාව)"
   },
   "sk": {
     "gbfTargets": "Ciele GBF",
@@ -926,7 +1040,9 @@
     "projectStatuses": "Statusy projektu",
     "geoScopes": "Geografické rozsahy",
     "documentTypes": "Typy dokumentov",
-    "ecosystemTypes": "Typy ekosystémov"
+    "ecosystemTypes": "Typy ekosystémov",
+    "bchSubjects": "Tematické oblasti (biologická bezpečnosť)",
+    "bchSubjectGroups": "Tematické oblasti (biologická bezpečnosť)"
   },
   "sl": {
     "gbfTargets": "Cilji GBF",
@@ -942,7 +1058,9 @@
     "projectStatuses": "Statusi projekta",
     "geoScopes": "Geografski obseg",
     "documentTypes": "Vrste dokumentov",
-    "ecosystemTypes": "Vrste ekosistemov"
+    "ecosystemTypes": "Vrste ekosistemov",
+    "bchSubjects": "Tematska področja (biološka varnost)",
+    "bchSubjectGroups": "Tematska področja (biološka varnost)"
   },
   "so": {
     "gbfTargets": "Beegsadaha GBF",
@@ -958,7 +1076,9 @@
     "projectStatuses": "Maqaabka mashruuca",
     "geoScopes": "Waxyaafada jiraafka",
     "documentTypes": "Nooca Dhaqaaqa",
-    "ecosystemTypes": "Noocaha Ecosystem"
+    "ecosystemTypes": "Noocaha Ecosystem",
+    "bchSubjects": "Meelaha mawduuca leh (biosalkafety)",
+    "bchSubjectGroups": "Meelaha mawduuca leh (biosalkafety)"
   },
   "sr": {
     "gbfTargets": "GBF ciljevi",
@@ -974,7 +1094,9 @@
     "projectStatuses": "Statusi projekta",
     "geoScopes": "Geografski opsezi",
     "documentTypes": "Tipovi dokumenata",
-    "ecosystemTypes": "Tipovi ekosistema"
+    "ecosystemTypes": "Tipovi ekosistema",
+    "bchSubjects": "Тематске области (биолошка безбедност)",
+    "bchSubjectGroups": "Тематске области (биолошка безбедност)"
   },
   "sq": {
     "gbfTargets": "Objektivat e GBF",
@@ -990,7 +1112,9 @@
     "projectStatuses": "Statuset e projektit",
     "geoScopes": "Fushat gjeografike",
     "documentTypes": "Llojet e dokumenteve",
-    "ecosystemTypes": "Llojet e ekosistemit"
+    "ecosystemTypes": "Llojet e ekosistemit",
+    "bchSubjects": "Fushat tematike (Biosiguria)",
+    "bchSubjectGroups": "Fushat tematike (Biosiguria)"
   },
   "sv": {
     "gbfTargets": "GBF-mål",
@@ -1006,7 +1130,9 @@
     "projectStatuses": "Projektstatus",
     "geoScopes": "Geografiska omfattningar",
     "documentTypes": "Dokumenttyper",
-    "ecosystemTypes": "Ekosystemtyper"
+    "ecosystemTypes": "Ekosystemtyper",
+    "bchSubjects": "Tematiska områden (biosäkerhet)",
+    "bchSubjectGroups": "Tematiska områden (biosäkerhet)"
   },
   "sw": {
     "gbfTargets": "Malengo ya GBF",
@@ -1022,7 +1148,9 @@
     "projectStatuses": "Hali za mradi",
     "geoScopes": "Viwango vya kijiografia",
     "documentTypes": "Aina ya hati",
-    "ecosystemTypes": "Aina za mazingira"
+    "ecosystemTypes": "Aina za mazingira",
+    "bchSubjects": "Maeneo ya Mada (Biosafety)",
+    "bchSubjectGroups": "Maeneo ya Mada (Biosafety)"
   },
   "ta": {
     "gbfTargets": "ஜிபிஎஃப் இலக்குகள்",
@@ -1038,7 +1166,9 @@
     "projectStatuses": "திட்ட நிலைகள்",
     "geoScopes": "புவியியல் நோக்கங்கள்",
     "documentTypes": "ஆவண வகைகள்",
-    "ecosystemTypes": "சூழல் அமைப்பு வகைகள்"
+    "ecosystemTypes": "சூழல் அமைப்பு வகைகள்",
+    "bchSubjects": "கருப்பொருள் பகுதிகள் (உயிர் பாதுகாப்பு)",
+    "bchSubjectGroups": "கருப்பொருள் பகுதிகள் (உயிர் பாதுகாப்பு)"
   },
   "te": {
     "gbfTargets": "GBF లక్ష్యాలు",
@@ -1054,7 +1184,9 @@
     "projectStatuses": "ప్రాజెక్ట్ స్థితిగతులు",
     "geoScopes": "భౌగోళిక పరిధులు",
     "documentTypes": "పత్రం రకాలు",
-    "ecosystemTypes": "పర్యావరణ వ్యవస్థ రకాలు"
+    "ecosystemTypes": "పర్యావరణ వ్యవస్థ రకాలు",
+    "bchSubjects": "నేపథ్య ప్రాంతాలు (జీవ భద్రత)",
+    "bchSubjectGroups": "నేపథ్య ప్రాంతాలు (జీవ భద్రత)"
   },
   "th": {
     "gbfTargets": "เป้าหมาย GBF",
@@ -1070,7 +1202,9 @@
     "projectStatuses": "สถานะโครงการ",
     "geoScopes": "ขอบเขตทางภูมิศาสตร์",
     "documentTypes": "ประเภทเอกสาร",
-    "ecosystemTypes": "ประเภทระบบนิเวศ"
+    "ecosystemTypes": "ประเภทระบบนิเวศ",
+    "bchSubjects": "พื้นที่เฉพาะเรื่อง (ความปลอดภัยทางชีวภาพ)",
+    "bchSubjectGroups": "พื้นที่เฉพาะเรื่อง (ความปลอดภัยทางชีวภาพ)"
   },
   "tl": {
     "gbfTargets": "Mga Target ng GBF",
@@ -1086,7 +1220,9 @@
     "projectStatuses": "Mga katayuan ng proyekto",
     "geoScopes": "Mga saklaw ng heograpiya",
     "documentTypes": "Mga uri ng dokumento",
-    "ecosystemTypes": "Mga uri ng ecosystem"
+    "ecosystemTypes": "Mga uri ng ecosystem",
+    "bchSubjects": "Pampakay na lugar (biosafety)",
+    "bchSubjectGroups": "Pampakay na lugar (biosafety)"
   },
   "tr": {
     "gbfTargets": "GBF Hedefleri",
@@ -1102,7 +1238,9 @@
     "projectStatuses": "Proje Durumları",
     "geoScopes": "Coğrafi kapsamlar",
     "documentTypes": "Belge türleri",
-    "ecosystemTypes": "Ekosistem türleri"
+    "ecosystemTypes": "Ekosistem türleri",
+    "bchSubjects": "Tematik Alanlar (Biyogüvenlik)",
+    "bchSubjectGroups": "Tematik Alanlar (Biyogüvenlik)"
   },
   "uk": {
     "gbfTargets": "Цілі GBF",
@@ -1118,7 +1256,9 @@
     "projectStatuses": "Статуси проекту",
     "geoScopes": "Географічні сфери",
     "documentTypes": "Типи документів",
-    "ecosystemTypes": "Типи екосистем"
+    "ecosystemTypes": "Типи екосистем",
+    "bchSubjects": "Тематичні напрями (Біобезпека)",
+    "bchSubjectGroups": "Тематичні напрями (Біобезпека)"
   },
   "ur": {
     "gbfTargets": "جی بی ایف اہداف",
@@ -1134,7 +1274,9 @@
     "projectStatuses": "پروجیکٹ کی حیثیت",
     "geoScopes": "جغرافیائی دائرے",
     "documentTypes": "دستاویز کی اقسا",
-    "ecosystemTypes": "ماحولیاتی نظام"
+    "ecosystemTypes": "ماحولیاتی نظام",
+    "bchSubjects": "موضوعاتی علاقوں (بایوسافٹی)",
+    "bchSubjectGroups": "موضوعاتی علاقوں (بایوسافٹی)"
   },
   "uz": {
     "gbfTargets": "GBF maqsadlari",
@@ -1150,7 +1292,9 @@
     "projectStatuses": "Loyiha statuslari",
     "geoScopes": "Geografik doiralar",
     "documentTypes": "Hujjat turlari",
-    "ecosystemTypes": "Ekotizim turlari"
+    "ecosystemTypes": "Ekotizim turlari",
+    "bchSubjects": "Tematik yo'nalishlar (Biositet)",
+    "bchSubjectGroups": "Tematik yo'nalishlar (Biositet)"
   },
   "zh": {
     "gbfTargets": "GBF 目标",
@@ -1166,7 +1310,9 @@
     "projectStatuses": "项目状态",
     "geoScopes": "地理范围",
     "documentTypes": "文件类型",
-    "ecosystemTypes": "生态系统类型"
+    "ecosystemTypes": "生态系统类型",
+    "bchSubjects": "专题领域（生物安全）",
+    "bchSubjectGroups": "专题领域（生物安全）"
   },
   "vi": {
     "gbfTargets": "Mục tiêu GBF",
@@ -1182,7 +1328,9 @@
     "projectStatuses": "Trạng thái dự án",
     "geoScopes": "Phạm vi địa lý",
     "documentTypes": "Các loại tài liệu",
-    "ecosystemTypes": "Các loại hệ sinh thái"
+    "ecosystemTypes": "Các loại hệ sinh thái",
+    "bchSubjects": "Lĩnh vực chuyên đề (An toàn sinh học)",
+    "bchSubjectGroups": "Lĩnh vực chuyên đề (An toàn sinh học)"
   },
   "zh-TW": {
     "gbfTargets": "英鎊目標",
@@ -1198,6 +1346,8 @@
     "projectStatuses": "專案狀態",
     "geoScopes": "地理範圍",
     "documentTypes": "文件類型",
-    "ecosystemTypes": "生態系統類型"
+    "ecosystemTypes": "生態系統類型",
+    "bchSubjects": "專題領域（生物安全）",
+    "bchSubjectGroups": "專題領域（生物安全）"
   }
 }

@@ -13,13 +13,16 @@ export const en = {
                             geoScopes        : 'Geographic scopes',
                             documentTypes    : 'Document types',
                             ecosystemTypes   : 'Ecosystem types',
-                            eventStatuses: "Event statuses"
+                            eventStatuses    : 'Event statuses',
+                            bchSubjects      : 'Biosafety Subjects',
+                            bchSubjectGroups : 'Biosafety Subjects'
                         };
 
 // Export all language keys from data.json
 import data from './data.json';
 
 export const ar = data.ar;
+export const bn = data.bn;
 export const bg = data.bg;
 export const am = data.am;
 export const az = data.az;
@@ -91,6 +94,7 @@ export const vi = data.vi;
 // Export all as default
 export default {
   ar,
+  bn,
   bg,
   am,
   az,
