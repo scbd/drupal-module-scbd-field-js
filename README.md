@@ -113,12 +113,15 @@ createApp(ScbdFieldComponent, {
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `name` | String | **Yes** | - | Field name (matches Drupal field machine name) |
-| `description` | String | No | `''` | Help text displayed above the field |
+| `description` | String | No | `' '` | Help text displayed above the field |
 | `locale` | String | No | `'en'` | Current interface language (ISO 639-1 code) |
 | `locales` | Array | No | `['en']` | Available fallback locales for term names |
-| `countries` | Array | No | `['lk']` | Country codes for filtering national targets |
-| `domains` | Array | No | `['gbfTargets', 'nationalTargets7', 'countries', 'subjects', 'sdgs']` | Taxonomy domains to display |
+| `countries` | Array | No | `['be']` | Country codes for filtering national targets |
+| `domains` | Array | No | `['nationalTargets7', 'gbfTargets', 'countries', 'subjects', 'sdgs', 'bchSubjects']` | Taxonomy domains to display |
+| `singleValueDomains` | Array | No | `['orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes', 'jurisdictions', 'eventStatuses']` | Domains that allow only single selection instead of multi-select |
+| `singleField` | Boolean | No | `false` | If true, groups all domains in one multiselect instead of separate fields |
 | `isAdditionalField` | Boolean | No | `false` | If true, reads/writes to `value2` instead of `value` |
+| `debug` | Boolean | No | `false` | If true, displays current selected values in a debug panel |
 
 ### Available Domains
 
@@ -129,6 +132,8 @@ createApp(ScbdFieldComponent, {
 - `sdgs` - Sustainable Development Goals
 - `countries` - Countries
 - `subjects` - Thematic Areas/Subjects
+- `bchSubjects` - Biosafety Thematic Areas
+- `bchSubjectGroups` - Biosafety Thematic Areas
 - `regions` - Geographic Regions
 - `ecosystemTypes` - Ecosystem Types
 

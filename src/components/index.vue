@@ -4,6 +4,10 @@
 
   <div v-if="description" class="help-text">{{ description }}</div>
 
+  <div v-if="debug" class="debug-info">
+    <strong>Debug - Current Values:</strong> {{ getAllKeys().join(', ') }}
+  </div>
+
   <div v-if="!singleField" class="multi-field-container">
     <div v-for="(domain,index) in domains" :key="index" >
       <div v-if="optionsList[domain]?.length" class="multi-field-child">
@@ -90,7 +94,8 @@ export default {
                   domains       : { type: Array,  required: false, default: () => [ 'nationalTargets7', 'gbfTargets','countries', 'subjects', 'sdgs', 'bchSubjects' ] }, //
                   singleValueDomains : { type: Array,  required: false, default: () => [ 'orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes','jurisdictions','eventStatuses'] },
                   singleField   : { type: Boolean, required: false, default: false },
-                  isAdditionalField: { type: Boolean, required: false, default: false }
+                  isAdditionalField: { type: Boolean, required: false, default: false },
+                  debug         : { type: Boolean, required: false, default: false }
                 },
   methods    : { handleGbf,loadInitialValues, handleChange, t, getAllKeys, isMultiple, isGroupedDomain, getInputElement },
   setup,  mounted
@@ -333,7 +338,20 @@ function normalizeNationalTarget(currentLocale, locales, obj) {
 
 
 <style scoped>
-.multiselect{ padding-top: .25em;}
+.multiselect{ 
+    padding-top: .25em;
+    width: 100%;
+}
+
+.debug-info {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+}
 
 .help-text {
     margin-top: calc(6rem / 16);
@@ -344,11 +362,11 @@ function normalizeNationalTarget(currentLocale, locales, obj) {
 }
 
 .multi-field-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: block;
 }
 .multi-field-child {
-    margin: 0 1rem 0 0;
-    min-width: 22%;
+    display: block;
+    margin: 0 0 1rem 0;
+    width: 100%;
 }
 </style>
