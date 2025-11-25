@@ -6,9 +6,15 @@ import postCssPurge from '@fullhuman/postcss-purgecss';
 
 const alias = [ { find: '@', replacement:'/src' } ]
 
+const safelist = [
+  /multiselect/,
+  'chm-multiselect',
+  'has-grouped-options'
+];
+
 const config = {
-    plugins  : [ vue() ],
-    css      : { postcss: { plugins: [ postCssPurge({ contentFunction, defaultExtractor }) ] } },
+  plugins  : [ vue() ],
+  css      : { postcss: { plugins: [ postCssPurge({ contentFunction, defaultExtractor, safelist }) ] } },
     resolve: {
       alias,
       dedupe: [ 'vue' ],

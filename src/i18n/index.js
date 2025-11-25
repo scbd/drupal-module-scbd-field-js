@@ -14,7 +14,6 @@ export const en = {
                             documentTypes    : 'Document types',
                             ecosystemTypes   : 'Ecosystem types',
                             eventStatuses    : 'Event statuses',
-                            bchSubjects      : 'Thematic Areas (Biosafety)',
                             bchSubjectGroups : 'Thematic Areas (Biosafety)'
                         };
 

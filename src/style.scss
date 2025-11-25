@@ -5,4 +5,28 @@
   *::before,
   *::after { box-sizing: border-box; }
 
- 
+.hide{display:none!important}
+
+// Ensure grouped vue-multiselect children are visually nested under their headers
+.multiselect.has-grouped-options {
+  .multiselect__option {
+    &.multiselect__option--group {
+      padding-left: 12px;
+    }
+
+    &:not(.multiselect__option--group) {
+      padding-left: calc(12px + 1.25rem);
+      position: relative;
+    }
+
+    &:not(.multiselect__option--group)::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1rem;
+      border-bottom: 1px solid var(--multiselect-group-connector, #d6d6d6);
+    }
+  }
+}

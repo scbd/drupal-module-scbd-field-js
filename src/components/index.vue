@@ -16,15 +16,16 @@
         <multiselect v-if="optionsList[domain]?.length && !isGroupedDomain(domain)"
           :id="`${name}-${domain}`"
           v-model="inputValue[domain]"
+          :class="['chm-multiselect']"
           track-by="identifier"
           label="name"
           :options="optionsList[domain]"
           :multiple="isMultiple(domain)"
           :taggable="true"
           :group-select="false"
-          @select="handleGbf"
+          @select="handleSelect"
           @close="handleChange"
-          @remove="handleChange"
+          @remove="handleRemove"
           :searchable="true"
           :hide-selected="isMultiple(domain)"
           :ref="`multiSelect-${domain}`"
@@ -33,6 +34,7 @@
         <multiselect v-if="optionsList[domain]?.length && isGroupedDomain(domain)"
           :id="`${name}-${domain}`"
           v-model="inputValue[domain]"
+          :class="['chm-multiselect', 'has-grouped-options']"
           track-by="identifier"
           label="name"
           :options="optionsList[domain]"
@@ -41,9 +43,9 @@
           :group-select="true"
           group-values="children"
           group-label="name"
-          @select="handleGbf"
+          @select="handleSelect"
           @close="handleChange"
-          @remove="handleChange"
+          @remove="handleRemove"
           :searchable="true"
           :hide-selected="isMultiple(domain)"
           :ref="`multiSelect-${domain}`"
@@ -54,9 +56,10 @@
     </div>
   </div>
 
-  <multiselect v-if="singleField"
+    <multiselect v-if="singleField"
       :id="name"
       v-model="inputValue"
+      :class="['chm-multiselect', singleField ? 'has-grouped-options' : null]"
       track-by="identifier"
       label="name"
       :options="optionsList"
@@ -91,13 +94,13 @@ export default {
                   countries     : { type: Array,  required: false, default: () => ['be'] },
                   locale        : { type: String, required: false, default: 'en' },
                   locales       : { type: Array,  required: false, default: () => ['en'] },
-                  domains       : { type: Array,  required: false, default: () => [ 'nationalTargets7', 'gbfTargets','countries', 'subjects', 'sdgs', 'bchSubjects' ] }, //
+                  domains       : { type: Array,  required: false, default: () => [ 'nationalTargets7', 'gbfTargets','countries', 'subjects', 'sdgs', 'bchSubjectGroups' ] }, //
                   singleValueDomains : { type: Array,  required: false, default: () => [ 'orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes','jurisdictions','eventStatuses'] },
                   singleField   : { type: Boolean, required: false, default: false },
                   isAdditionalField: { type: Boolean, required: false, default: false },
                   debug         : { type: Boolean, required: false, default: false }
                 },
-  methods    : { handleGbf,loadInitialValues, handleChange, t, getAllKeys, isMultiple, isGroupedDomain, getInputElement },
+  methods    : { handleSelect, handleRemove, loadInitialValues, handleChange, t, getAllKeys, isMultiple, isGroupedDomain, getInputElement },
   setup,  mounted
 }
 
@@ -117,8 +120,8 @@ function setup(props) {
     const countries           = toRef(props, 'countries');
     const locale              = toRef(props, 'locale');
     const locales             = toRef(props, 'locales');
-    const optionsList         = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': [], 'govTypes': [], 'projectStatuses': [], 'geoScopes': [], 'documentTypes': [],'jurisdictions': [] , eventStatuses: [], bchSubjects: []});
-    const inputValue          = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': null, 'govTypes': null, 'projectStatuses': null, 'geoScopes': null, 'documentTypes': null,'jurisdictions': null , eventStatuses: null, bchSubjects: []});
+    const optionsList         = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': [], 'govTypes': [], 'projectStatuses': [], 'geoScopes': [], 'documentTypes': [],'jurisdictions': [] , eventStatuses: [], bchSubjectGroups: []});
+    const inputValue          = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': null, 'govTypes': null, 'projectStatuses': null, 'geoScopes': null, 'documentTypes': null,'jurisdictions': null , eventStatuses: null, bchSubjectGroups: []});
 
     const windowWidth = computed(() => window?.innerWidth);
 
@@ -142,7 +145,7 @@ async function getOptionList(domains, optionsList, countries, locale, locales){
       promisesForData.push(getData(domain).then((data) => optionsList.value? optionsList.value[domain] = data: optionsList[domain] = data))
 
   await Promise.all(promisesForData)
-console.log(optionsList)
+
   return optionsList
 }
 
@@ -181,21 +184,76 @@ async function loadInitialValues(locale){
   const keysString   = inputElement?.value;
   const keys         = keysString? keysString.split(',') : [];
 
-
   if(!keys.length) return;
 
   if(this.singleField) this.inputValue = await lookUp('all', keys, false);
-  else
+  else {
     for(const domain of this.domains){
       if(domain === 'nationalTargets7')
           this.inputValue[domain] = await getNationalTargets7({countries:this.countries, start:0, rows:300, locale:this.locale, locales:this.locales}).then((data) => data.filter(({ identifier }) => keys.includes(identifier)));
+      else if(domain === 'bchSubjectGroups'){
+        // Fetch bchSubjects data and populate bchSubjectGroups
+        // lookUp uses 'bchSubjects' but we populate into bchSubjectGroups
+        const bchSubjectsData = await lookUp('bchSubjects', keys, false);
+        
+        if(bchSubjectsData && bchSubjectsData.length && this.optionsList.bchSubjectGroups?.length) {
+          const selectedIds = new Set(bchSubjectsData.map(item => item.identifier));
+          const groupedItems = [];
+          
+          // Find matching items in the grouped options
+          for(const identifier of selectedIds) {
+            const groupItem = findInGroupedOptions(this.optionsList.bchSubjectGroups, identifier);
+            if(groupItem) {
+              groupedItems.push(groupItem);
+            }
+          }
+          
+          this.inputValue[domain] = groupedItems;
+        } else {
+          this.inputValue[domain] = [];
+        }
+      }
       else{
         const fullValues = await lookUp(domain, keys, this.singleValueDomains.includes(domain));
 
         this.inputValue[domain] = fullValues  || (this.singleValueDomains.includes(domain)? null : []);
       }
+    }
   }
   this.handleChange();
+}
+
+function handleSelect(selectedOption, id){
+  // Save the current selection first
+  this.handleChange();
+  
+  // Handle GBF target auto-linking to SDGs
+  if(id === 'tags-gbfTargets') {
+    const sdgNumbersRaw = selectedOption?.sameAs?.filter((x)=> x.includes('SDG-')).map((x)=> x.replace('SDG-GOAL-', '')).map((x)=> x.replace('SDG-TARGET-', '')).map((x)=>  Math.floor(Number(x))).filter((x)=> x) || [];
+   
+    if(sdgNumbersRaw && sdgNumbersRaw.length) {
+      const sdgNumbers = Array.from(new Set(sdgNumbersRaw));
+      const keys = sdgNumbers.map(numbersToSdgKeys).join(',')
+      const inputElement = this.getInputElement();
+      inputElement.value = inputElement.value? `${inputElement.value},${keys}` : keys; 
+      this.loadInitialValues();
+      return;
+    }
+  }
+}
+
+function handleRemove(removedOption, id){
+  this.handleChange();
+}
+
+function findInGroupedOptions(groupedOptions, identifier) {
+  for(const group of (groupedOptions || [])) {
+    if(group.children) {
+      const found = group.children.find(child => child.identifier === identifier);
+      if(found) return found;
+    }
+  }
+  return null;
 }
 
 function handleGbf(selectedOption, id){
@@ -244,13 +302,15 @@ function getAllKeys(){
 
   const keys = [];
 
-  for(const domain of this.domains)
+  for(const domain of this.domains) {
     if(this.inputValue[domain] && this.inputValue[domain].length)
       keys.push(...(this.inputValue[domain]||[]).map(({ identifier }) => identifier));
     else if(this.inputValue[domain] && this.singleValueDomains.includes(domain))
       keys.push(this.inputValue[domain]?.identifier);
+  }
 
-  return keys;
+  // Remove any duplicates that might have slipped through
+  return [...new Set(keys.filter(k => k))];
 }
 
 function t(domain){
@@ -369,4 +429,8 @@ function normalizeNationalTarget(currentLocale, locales, obj) {
     margin: 0 0 1rem 0;
     width: 100%;
 }
+
+</style>
+<style>
+.hide{display:none!important}
 </style>
