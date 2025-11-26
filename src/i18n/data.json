@@ -231,8 +231,8 @@
     "documentTypes": "Document types",
     "ecosystemTypes": "Ecosystem types",
     "eventStatuses": "Event statuses",
-    "bchSubjects": "Thematic Areas (Biosafety)",
-    "bchSubjectGroups": "Thematic Areas (Biosafety)"
+    "bchSubjects": "Biosafety Thematic Areas",
+    "bchSubjectGroups": "Biosafety Thematic Areas"
   },
   "el": {
     "gbfTargets": "Στόχοι GBF",
@@ -249,8 +249,8 @@
     "geoScopes": "Γεωγραφικά πεδία",
     "documentTypes": "Τύποι εγγράφων",
     "ecosystemTypes": "Τύποι οικοσυστημάτων",
-    "bchSubjects": "Θεματικοί Τομείς (Βιοασφάλεια)",
-    "bchSubjectGroups": "Θεματικοί Τομείς (Βιοασφάλεια)"
+    "bchSubjects": "Biosafety Thematic Areas",
+    "bchSubjectGroups": "Biosafety Thematic Areas"
   },
   "es": {
     "gbfTargets": "Objetivos de GBF",
