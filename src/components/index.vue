@@ -127,7 +127,7 @@ function setup(props) {
 
     initializeApiStore();
 
-    if(unref(singleField)) getOptionListSingle(optionsList);
+    if(unref(singleField)) getOptionListSingle(optionsList, unref(locale));
     else getOptionList(domains, optionsList, countries, locale, locales);
 
     return { singleValueDomains, singleField, name, domains, optionsList, inputValue, windowWidth }
@@ -150,18 +150,18 @@ async function getOptionList(domains, optionsList, countries, locale, locales){
 }
 
 
-async function getOptionListSingle(optionsList){
+async function getOptionListSingle(optionsList, locale){
 
-  const promisesForData = [ getData('subjects'), getData('countries'), getData('regions'), getData('gbfTargets'), getData('sdgs') ]
+  const promisesForData = [ getData('subjects'), getData('countries'), getData('regions'), getData('gbfTargets'), getData('sdgs'), getData('bchSubjects') ]
   const data            = await Promise.all(promisesForData)
 
   optionsList.value = [ 
-    { domain: 'Thematic Areas (Biosafety)',      terms: data[5] },
-    { domain: 'GBF Targets',    terms: data[3] }, 
-    { domain: 'SDGs',           terms: data[4] },
-    { domain: 'Countries',      terms: data[1] }, 
-    { domain: 'Regions',        terms: data[2] }, 
-    { domain: 'Thematic Areas', terms: data[0] }
+    { domain: t.call({ locale }, 'bchSubjects'),  terms: data[5] },
+    { domain: t.call({ locale }, 'gbfTargets'),   terms: data[3] }, 
+    { domain: t.call({ locale }, 'sdgs'),         terms: data[4] },
+    { domain: t.call({ locale }, 'countries'),    terms: data[1] }, 
+    { domain: t.call({ locale }, 'regions'),      terms: data[2] }, 
+    { domain: t.call({ locale }, 'subjects'),     terms: data[0] }
   ]
 }
 
