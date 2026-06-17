@@ -256,29 +256,6 @@ function findInGroupedOptions(groupedOptions, identifier) {
   return null;
 }
 
-function handleGbf(selectedOption, id){
-  this.handleChange();
-  if(id !== 'tags-gbfTargets') return;
-
-
-  const sdgNumbersRaw = selectedOption?.sameAs?.filter((x)=> x.includes('SDG-')).map((x)=> x.replace('SDG-GOAL-', '')).map((x)=> x.replace('SDG-TARGET-', '')).map((x)=>  Math.floor(Number(x))).filter((x)=> x) || [];
-
- 
-  if(!sdgNumbersRaw || !sdgNumbersRaw.length) return;
-
-  const sdgNumbers = Array.from(new Set(sdgNumbersRaw));
-
-   
-  const keys = sdgNumbers.map(numbersToSdgKeys).join(',')
-
-
-  const inputElement = document.querySelector(`input[name='field_${this.name.toLowerCase()}[0][value]']`) || document.querySelector(`edit-field-${this.name.toLowerCase()}-0-value`);
-
-  inputElement.value = inputElement.value? `${inputElement.value},${keys}` : keys; 
-  this.loadInitialValues();
-
-}
-
 function numbersToSdgKeys(x){
   const isSingleDigit = x < 10;
 

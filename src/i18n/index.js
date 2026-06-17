@@ -7,13 +7,13 @@ export const en = {
                             countries        : 'Countries' ,
                             regions          : 'Regions',
                             jurisdictions    : 'Jurisdictions',
-                            orgTypes         : 'Organization types',
-                            govTypes         : 'Government types',
-                            projectStatuses  : 'Project statuses',
-                            geoScopes        : 'Geographic scopes',
-                            documentTypes    : 'Document types',
-                            ecosystemTypes   : 'Ecosystem types',
-                            eventStatuses    : 'Event statuses',
+                            orgTypes         : 'Organization Type',
+                            govTypes         : 'Government Type',
+                            projectStatuses  : 'Project Status',
+                            geoScopes        : 'Geographic Scope',
+                            documentTypes    : 'Document Type',
+                            ecosystemTypes   : 'Ecosystem Type',
+                            eventStatuses    : 'Event Status',
                             bchSubjectGroups : 'Biosafety Thematic Areas'
                         };
 

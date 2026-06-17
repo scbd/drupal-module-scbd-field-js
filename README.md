@@ -139,10 +139,10 @@ createApp(ScbdFieldComponent, {
 
 #### Single-select Domains
 
-- `orgTypes` - Organization Types
-- `govTypes` - Government Types
+- `orgTypes` - Organization Type
+- `govTypes` - Government Type
 - `projectStatuses` - Project Status
-- `geoScopes` - Geographic Scopes
+- `geoScopes` - Geographic Scope
 - `documentTypes` - Document Types
 - `jurisdictions` - Jurisdictions
 - `eventStatuses` - Event Status
@@ -329,7 +329,6 @@ The component exposes these internal methods (advanced use only):
 
 - `loadInitialValues(locale)` - Loads values from hidden input
 - `handleChange()` - Updates hidden input when selection changes
-- `handleGbf(selectedOption, id)` - Processes GBF target selection and auto-links SDGs
 - `getAllKeys()` - Returns array of all selected identifier keys
 - `t(domain)` - Translates domain name to current locale
 
