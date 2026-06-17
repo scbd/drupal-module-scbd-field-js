@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF tikslai",
+  "nationalTargets7": "Nacionaliniai tikslai",
+  "subjects": "Teminės sritys",
+  "geoLocations": "Šalys ir regionai",
+  "sdgs": "DVT",
+  "countries": "Šalys",
+  "regions": "Regionai",
+  "jurisdictions": "Jurisdikcijos",
+  "orgTypes": "Organizacijos tipas",
+  "govTypes": "Vyriausybės tipas",
+  "projectStatuses": "Projekto būsena",
+  "geoScopes": "Geografinė taikymo sritis",
+  "documentTypes": "Dokumento tipas",
+  "ecosystemTypes": "Ekosistemos tipas",
+  "eventStatuses": "Įvykio būsena",
+  "bchSubjects": "Biologinės saugos teminės sritys",
+  "bchSubjectGroups": "Biologinės saugos teminės sritys",
+  "other": "Kita"
+}

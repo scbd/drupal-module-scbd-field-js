@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Target GBF",
+  "nationalTargets7": "Target Nasional",
+  "subjects": "Area Tematik",
+  "geoLocations": "Negara dan Wilayah",
+  "sdgs": "SDGs",
+  "countries": "Negara-negara",
+  "regions": "Daerah",
+  "jurisdictions": "Yurisdiksi",
+  "orgTypes": "Jenis Organisasi",
+  "govTypes": "Jenis Pemerintah",
+  "projectStatuses": "Status Proyek",
+  "geoScopes": "Lingkup Geografis",
+  "documentTypes": "Jenis Dokumen",
+  "ecosystemTypes": "Jenis Ekosistem",
+  "eventStatuses": "Status Acara",
+  "bchSubjects": "Bidang Tematik Keamanan Hayati",
+  "bchSubjectGroups": "Bidang Tematik Keamanan Hayati",
+  "other": "Lainnya"
+}

@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF mērķi",
+  "nationalTargets7": "Valsts mērķi",
+  "subjects": "Tematiskās jomas",
+  "geoLocations": "Valstis un reģioni",
+  "sdgs": "SDG",
+  "countries": "Valstis",
+  "regions": "Reģioni",
+  "jurisdictions": "Jurisdikcijas",
+  "orgTypes": "Organizācijas veids",
+  "govTypes": "Valdības veids",
+  "projectStatuses": "Projekta statuss",
+  "geoScopes": "Ģeogrāfiskā darbības",
+  "documentTypes": "Dokumenta veids",
+  "ecosystemTypes": "Ekosistēmas tips",
+  "eventStatuses": "Pasākuma statuss",
+  "bchSubjects": "Bioloģiskās drošības tematiskās jomas",
+  "bchSubjectGroups": "Bioloģiskās drošības tematiskās jomas",
+  "other": "Cits"
+}

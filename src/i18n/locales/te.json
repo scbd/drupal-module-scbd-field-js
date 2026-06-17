@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF లక్ష్యాలు",
+  "nationalTargets7": "జాతీయ లక్ష్యాలు",
+  "subjects": "నేపథ్య ప్రాంతాలు",
+  "geoLocations": "దేశాలు మరియు ప్రాంతాలు",
+  "sdgs": "SDG లు",
+  "countries": "దేశాలు",
+  "regions": "ప్రాంతాలు",
+  "jurisdictions": "అధికార పరిధులు",
+  "orgTypes": "సంస్థ రకం",
+  "govTypes": "ప్రభుత్వ రకం",
+  "projectStatuses": "ప్రాజెక్ట్ స్థితి",
+  "geoScopes": "భౌగోళిక పరిధి",
+  "documentTypes": "పత్రం రకం",
+  "ecosystemTypes": "పర్యావరణ వ్యవస్థ రకం",
+  "eventStatuses": "ఈవెంట్ స్థితి",
+  "bchSubjects": "జీవ భద్రత నేపథ్య ప్రాంతాలు",
+  "bchSubjectGroups": "జీవ భద్రత నేపథ్య ప్రాంతాలు",
+  "other": "ఇతర"
+}

@@ -1,65 +1,44 @@
 <template>
   <section>
+    <div v-if="description" class="help-text">{{ description }}</div>
 
+    <div v-if="debug" class="debug-info">
+      <strong>Debug - Current Values:</strong> {{ getAllKeys().join(', ') }}
+    </div>
 
-  <div v-if="description" class="help-text">{{ description }}</div>
+    <div v-if="!singleField" class="multi-field-container">
+      <div v-for="domain in domains" :key="domain">
+        <div v-if="optionsList[domain]?.length" class="multi-field-child">
+          <label :for="`${name}-${domain}`" class="control-label" :class="{ 'fw-bold': isAdditionalField }">{{ t(domain) }}</label>
 
-  <div v-if="debug" class="debug-info">
-    <strong>Debug - Current Values:</strong> {{ getAllKeys().join(', ') }}
-  </div>
-
-  <div v-if="!singleField" class="multi-field-container">
-    <div v-for="(domain,index) in domains" :key="index" >
-      <div v-if="optionsList[domain]?.length" class="multi-field-child">
-        <label   :for="`${name}-${domain}`" class="control-label" :class="{'fw-bold':isAdditionalField}">{{ t(domain) }}</label>
-
-        <multiselect v-if="optionsList[domain]?.length && !isGroupedDomain(domain)"
-          :id="`${name}-${domain}`"
-          v-model="inputValue[domain]"
-          :class="['chm-multiselect']"
-          track-by="identifier"
-          label="name"
-          :options="optionsList[domain]"
-          :multiple="isMultiple(domain)"
-          :taggable="true"
-          :group-select="false"
-          @select="handleSelect"
-          @close="handleChange"
-          @remove="handleRemove"
-          :searchable="true"
-          :hide-selected="isMultiple(domain)"
-          :ref="`multiSelect-${domain}`"
-          :placeholder="''"
-        />
-        <multiselect v-if="optionsList[domain]?.length && isGroupedDomain(domain)"
-          :id="`${name}-${domain}`"
-          v-model="inputValue[domain]"
-          :class="['chm-multiselect', 'has-grouped-options']"
-          track-by="identifier"
-          label="name"
-          :options="optionsList[domain]"
-          :multiple="isMultiple(domain)"
-          :taggable="true"
-          :group-select="true"
-          group-values="children"
-          group-label="name"
-          @select="handleSelect"
-          @close="handleChange"
-          @remove="handleRemove"
-          :searchable="true"
-          :hide-selected="isMultiple(domain)"
-          :ref="`multiSelect-${domain}`"
-          :placeholder="''"
-        />
-        <br>
+          <multiselect
+            :id="`${name}-${domain}`"
+            v-model="inputValue[domain]"
+            :class="['chm-multiselect', { 'has-grouped-options': isGroupedDomain(domain) }]"
+            track-by="identifier"
+            label="name"
+            :options="optionsList[domain]"
+            :multiple="isMultiple(domain)"
+            :taggable="true"
+            :group-select="isGroupedDomain(domain)"
+            :group-values="isGroupedDomain(domain) ? 'children' : null"
+            :group-label="isGroupedDomain(domain) ? 'name' : null"
+            :searchable="true"
+            :hide-selected="isMultiple(domain)"
+            :placeholder="''"
+            @select="handleSelect"
+            @remove="handleChange"
+            @close="handleChange"
+          />
+          <br>
+        </div>
       </div>
     </div>
-  </div>
 
     <multiselect v-if="singleField"
       :id="name"
       v-model="inputValue"
-      :class="['chm-multiselect', singleField ? 'has-grouped-options' : null]"
+      :class="['chm-multiselect', 'has-grouped-options']"
       track-by="identifier"
       label="name"
       :options="optionsList"
@@ -69,313 +48,154 @@
       group-values="terms"
       group-label="domain"
       :placeholder="description"
-      @close="handleChange"
       :searchable="true"
       :hide-selected="true"
-      ref="multiSelect"
       @remove="handleChange"
+      @close="handleChange"
     />
   </section>
 </template>
 
-<script>
-import { toRef, ref, unref, computed } from 'vue'
-import { initializeApiStore, getData, lookUp } from '../composables/useTaxonomies'
-import   Multiselect        from 'vue-multiselect'
-import { ofetch as $fetch } from "ofetch";
-import   domainNamesMap     from '../i18n'
+<script setup>
+import { ref, onMounted } from 'vue';
+import Multiselect from 'vue-multiselect';
+import { useTaxonomies } from '../composables/use-taxonomies';
+import { getNationalTargets7 } from '../utils/national-targets.js';
+import { relatedKeys, LINKABLE_DOMAINS } from '../utils/relations.js';
+import { useTranslations } from '../composables/use-translations';
 
-export default {
-  name       : 'ChmSelectInputControl',
-  components : { Multiselect },
-  props      : {
-                  name          : { type: String, required: true },
-                  description   : { type: String, required: false, default: ' ' },
-                  countries     : { type: Array,  required: false, default: () => ['be'] },
-                  locale        : { type: String, required: false, default: 'en' },
-                  locales       : { type: Array,  required: false, default: () => ['en'] },
-                  domains       : { type: Array,  required: false, default: () => [ 'nationalTargets7', 'gbfTargets','countries', 'subjects', 'sdgs', 'bchSubjectGroups' ] }, //
-                  singleValueDomains : { type: Array,  required: false, default: () => [ 'orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes','jurisdictions','eventStatuses'] },
-                  singleField   : { type: Boolean, required: false, default: false },
-                  isAdditionalField: { type: Boolean, required: false, default: false },
-                  debug         : { type: Boolean, required: false, default: false }
-                },
-  methods    : { handleSelect, handleRemove, loadInitialValues, handleChange, t, getAllKeys, isMultiple, isGroupedDomain, getInputElement },
-  setup,  mounted
+const props = defineProps({
+  name              : { type: String,  required: true },
+  description       : { type: String,  default: ' ' },
+  countries         : { type: Array,   default: () => ['be'] },
+  locale            : { type: String,  default: 'en' },
+  locales           : { type: Array,   default: () => ['en'] },
+  domains           : { type: Array,   default: () => ['nationalTargets7', 'gbfTargets', 'countries', 'subjects', 'sdgs', 'bchSubjectGroups'] },
+  singleValueDomains: { type: Array,   default: () => ['orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes', 'jurisdictions', 'eventStatuses'] },
+  singleField       : { type: Boolean, default: false },
+  isAdditionalField : { type: Boolean, default: false },
+  debug             : { type: Boolean, default: false },
+});
+
+// Locale-bound taxonomy access (in-module replacement for @scbd/cached-apis); reused by lookups below.
+const { getData, lookUp } = useTaxonomies(props.locale, props.locales);
+
+// UI-label translations (domain names, group labels) for the active locale, with English fallback.
+// `t(domain)` defaults to props.locale because it leads the list passed to useTranslations.
+const { t } = useTranslations([props.locale, ...props.locales]);
+
+const isGroupedDomain = (domain) => domain.toLowerCase().includes('group');
+const isMultiple = (domain) => !props.singleValueDomains.includes(domain);
+
+// Available options per domain, and the current selection (single-value domains hold one object or null).
+const optionsList = ref(props.singleField ? [] : Object.fromEntries(props.domains.map((d) => [d, []])));
+const inputValue  = ref(props.singleField ? [] : Object.fromEntries(props.domains.map((d) => [d, isMultiple(d) ? [] : null])));
+
+if (props.singleField) loadOptionsSingle();
+else loadOptions();
+
+onMounted(loadInitialValues);
+
+/** Populate optionsList for every configured domain (national targets come from the Solr index). */
+async function loadOptions() {
+  await Promise.all(props.domains.map(async (domain) => {
+    optionsList.value[domain] = domain === 'nationalTargets7'
+      ? await getNationalTargets7({ countries: props.countries, rows: 300, locale: props.locale, locales: props.locales })
+      : await getData(domain);
+  }));
 }
 
-function isGroupedDomain(domain){
-  return domain.toLowerCase().includes('group');
+/** Single-field mode: one grouped multiselect listing several domains together. */
+async function loadOptionsSingle() {
+  const domains = ['bchSubjects', 'gbfTargets', 'sdgs', 'countries', 'regions', 'subjects'];
+  const data = await Promise.all(domains.map(getData));
+  optionsList.value = domains.map((domain, i) => ({ domain: t(domain), terms: data[i] }));
 }
 
-function isMultiple(domain){
-  return this.singleValueDomains.includes(domain)? false : true;
+/** Hydrate the selection from the comma-separated keys saved in the hidden Drupal input. */
+async function loadInitialValues() {
+  const keys = getInputElement()?.value?.split(',').filter(Boolean) ?? [];
+  if (!keys.length) return;
+
+  if (props.singleField) inputValue.value = await lookUp('all', keys, false);
+  else await Promise.all(props.domains.map(async (domain) => {
+    inputValue.value[domain] = await resolveSavedValue(domain, keys);
+  }));
+
+  handleChange();
 }
 
-function setup(props) {
-    const singleField         = toRef(props, 'singleField');
-    const name                = toRef(props, 'name');
-    const domains             = toRef(props, 'domains');
-    const singleValueDomains  = toRef(props, 'singleValueDomains');
-    const countries           = toRef(props, 'countries');
-    const locale              = toRef(props, 'locale');
-    const locales             = toRef(props, 'locales');
-    const optionsList         = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': [], 'govTypes': [], 'projectStatuses': [], 'geoScopes': [], 'documentTypes': [],'jurisdictions': [] , eventStatuses: [], bchSubjectGroups: []});
-    const inputValue          = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': null, 'govTypes': null, 'projectStatuses': null, 'geoScopes': null, 'documentTypes': null,'jurisdictions': null , eventStatuses: null, bchSubjectGroups: []});
-
-    const windowWidth = computed(() => window?.innerWidth);
-
-    initializeApiStore();
-
-    if(unref(singleField)) getOptionListSingle(optionsList, unref(locale));
-    else getOptionList(domains, optionsList, countries, locale, locales);
-
-    return { singleValueDomains, singleField, name, domains, optionsList, inputValue, windowWidth }
-}
-
-
-async function getOptionList(domains, optionsList, countries, locale, locales){
-
-  const promisesForData = []
-
-  for(const domain of unref(domains))
-    if(domain === 'nationalTargets7')
-      promisesForData.push(getNationalTargets7({countries:unref(countries), start:0, rows:300,locale:unref(locale), locales:unref(locales)}).then((data) => optionsList?.value? optionsList.value[domain] = data : optionsList[domain] = data))
-    else  
-      promisesForData.push(getData(domain).then((data) => optionsList.value? optionsList.value[domain] = data: optionsList[domain] = data))
-
-  await Promise.all(promisesForData)
-
-  return optionsList
-}
-
-
-async function getOptionListSingle(optionsList, locale){
-
-  const promisesForData = [ getData('subjects'), getData('countries'), getData('regions'), getData('gbfTargets'), getData('sdgs'), getData('bchSubjects') ]
-  const data            = await Promise.all(promisesForData)
-
-  optionsList.value = [ 
-    { domain: t.call({ locale }, 'bchSubjects'),  terms: data[5] },
-    { domain: t.call({ locale }, 'gbfTargets'),   terms: data[3] }, 
-    { domain: t.call({ locale }, 'sdgs'),         terms: data[4] },
-    { domain: t.call({ locale }, 'countries'),    terms: data[1] }, 
-    { domain: t.call({ locale }, 'regions'),      terms: data[2] }, 
-    { domain: t.call({ locale }, 'subjects'),     terms: data[0] }
-  ]
-}
-
-async function mounted(){
-
-  await this.loadInitialValues(this.locale);
-}
-
-function getInputElement(){
-  const mainEl       = document.querySelector(`input[name='field_${this.name.toLowerCase()}[0][value]']`) || document.querySelector(`edit-field-${this.name.toLowerCase()}-0-value`);
-  const additionalEl = document.querySelector(`input[name='field_${this.name.toLowerCase()}[0][value2]']`) || document.querySelector(`edit-field-${this.name.toLowerCase()}-0-value2`);
-
-
-  return  this.isAdditionalField? additionalEl : mainEl;
-}
-
-async function loadInitialValues(locale){
-
-  const inputElement = this.getInputElement();
-  const keysString   = inputElement?.value;
-  const keys         = keysString? keysString.split(',') : [];
-
-  if(!keys.length) return;
-
-  if(this.singleField) this.inputValue = await lookUp('all', keys, false);
-  else {
-    for(const domain of this.domains){
-      if(domain === 'nationalTargets7')
-          this.inputValue[domain] = await getNationalTargets7({countries:this.countries, start:0, rows:300, locale:this.locale, locales:this.locales}).then((data) => data.filter(({ identifier }) => keys.includes(identifier)));
-      else if(domain === 'bchSubjectGroups'){
-        // Fetch bchSubjects data and populate bchSubjectGroups
-        // lookUp uses 'bchSubjects' but we populate into bchSubjectGroups
-        const bchSubjectsData = await lookUp('bchSubjects', keys, false);
-        
-        if(bchSubjectsData && bchSubjectsData.length && this.optionsList.bchSubjectGroups?.length) {
-          const selectedIds = new Set(bchSubjectsData.map(item => item.identifier));
-          const groupedItems = [];
-          
-          // Find matching items in the grouped options
-          for(const identifier of selectedIds) {
-            const groupItem = findInGroupedOptions(this.optionsList.bchSubjectGroups, identifier);
-            if(groupItem) {
-              groupedItems.push(groupItem);
-            }
-          }
-          
-          this.inputValue[domain] = groupedItems;
-        } else {
-          this.inputValue[domain] = [];
-        }
-      }
-      else{
-        const fullValues = await lookUp(domain, keys, this.singleValueDomains.includes(domain));
-
-        this.inputValue[domain] = fullValues  || (this.singleValueDomains.includes(domain)? null : []);
-      }
-    }
+/** Resolve one domain's saved keys to the full term object(s) it should display. */
+async function resolveSavedValue(domain, keys) {
+  if (domain === 'nationalTargets7') {
+    const data = await getNationalTargets7({ countries: props.countries, rows: 300, locale: props.locale, locales: props.locales });
+    return data.filter(({ identifier }) => keys.includes(identifier));
   }
-  this.handleChange();
+  if (domain === 'bchSubjectGroups') {
+    const matched = await lookUp('bchSubjects', keys, false);
+    const ids = new Set((matched || []).map(({ identifier }) => identifier));
+    return (optionsList.value.bchSubjectGroups || []).flatMap((g) => g.children || []).filter((c) => ids.has(c.identifier));
+  }
+  const single = props.singleValueDomains.includes(domain);
+  return (await lookUp(domain, keys, single)) || (single ? null : []);
 }
 
-function handleSelect(selectedOption, id){
-  // Save the current selection first
-  this.handleChange();
-  
-  // Handle GBF target auto-linking to SDGs
-  if(id === 'tags-gbfTargets') {
-    const sdgNumbersRaw = selectedOption?.sameAs?.filter((x)=> x.includes('SDG-')).map((x)=> x.replace('SDG-GOAL-', '')).map((x)=> x.replace('SDG-TARGET-', '')).map((x)=>  Math.floor(Number(x))).filter((x)=> x) || [];
-   
-    if(sdgNumbersRaw && sdgNumbersRaw.length) {
-      const sdgNumbers = Array.from(new Set(sdgNumbersRaw));
-      const keys = sdgNumbers.map(numbersToSdgKeys).join(',')
-      const inputElement = this.getInputElement();
-      inputElement.value = inputElement.value? `${inputElement.value},${keys}` : keys; 
-      this.loadInitialValues();
-      return;
-    }
+/** The hidden Drupal input this widget reads/writes (main or "additional" value). */
+function getInputElement() {
+  const name = props.name.toLowerCase();
+  const key = props.isAdditionalField ? 'value2' : 'value';
+  return document.querySelector(`input[name='field_${name}[0][${key}]']`)
+    || document.querySelector(`edit-field-${name}-0-${key}`);
+}
+
+/** Every selected identifier across all domains, de-duplicated. */
+function getAllKeys() {
+  if (props.singleField) return inputValue.value.map(({ identifier }) => identifier);
+
+  const keys = props.domains.flatMap((domain) => {
+    const value = inputValue.value[domain];
+    if (Array.isArray(value)) return value.map(({ identifier }) => identifier);
+    return value && props.singleValueDomains.includes(domain) ? [value.identifier] : [];
+  });
+  return [...new Set(keys.filter(Boolean))];
+}
+
+/** On selecting a GBF Target, auto-fill its related SDGs + Subjects, then persist. */
+function handleSelect(option) {
+  autoLinkRelated(option);
+  handleChange();
+}
+
+/**
+ * One-way auto-link: when a GBF Target is selected, add its related SDG/Subject options into those
+ * domains. Only GBF Target picks resolve to relations (relatedKeys returns [] for SDGs/Subjects, so
+ * there is no inverse). Add-only: existing picks stay, and deselecting never strips linked terms.
+ */
+function autoLinkRelated(option) {
+  const related = new Set(relatedKeys(option?.identifier));
+  if (!related.size) return;
+
+  for (const domain of props.domains) {
+    if (!LINKABLE_DOMAINS.includes(domain) || !Array.isArray(optionsList.value[domain])) continue;
+
+    const current = inputValue.value[domain] ?? [];
+    const have = new Set(current.map(({ identifier }) => identifier));
+    const additions = optionsList.value[domain].filter(({ identifier }) => related.has(identifier) && !have.has(identifier));
+    if (additions.length) inputValue.value[domain] = [...current, ...additions];
   }
 }
 
-function handleRemove(removedOption, id){
-  this.handleChange();
-}
-
-function findInGroupedOptions(groupedOptions, identifier) {
-  for(const group of (groupedOptions || [])) {
-    if(group.children) {
-      const found = group.children.find(child => child.identifier === identifier);
-      if(found) return found;
-    }
-  }
-  return null;
-}
-
-function numbersToSdgKeys(x){
-  const isSingleDigit = x < 10;
-
-  return isSingleDigit? `SUSTAINABLE-DEVELOPMENT-GOAL-0${x}` : `SUSTAINABLE-DEVELOPMENT-GOAL-${x}`;
-
-}
-
-function handleChange(valuer, id){
-  // console.log( arguments)
-  const inputElement = this.getInputElement();
-
-  const keys = this.getAllKeys();
-
-  if(!inputElement) throw new Error(`Could not find element with name: field_${this.name.toLowerCase()}[0][value]`);
-
-  inputElement.value =  keys.join();
-}
-
-function getAllKeys(){
-  if(this.singleField) return this.inputValue.map(({ identifier }) => identifier);
-
-  const keys = [];
-
-  for(const domain of this.domains) {
-    if(this.inputValue[domain] && this.inputValue[domain].length)
-      keys.push(...(this.inputValue[domain]||[]).map(({ identifier }) => identifier));
-    else if(this.inputValue[domain] && this.singleValueDomains.includes(domain))
-      keys.push(this.inputValue[domain]?.identifier);
-  }
-
-  // Remove any duplicates that might have slipped through
-  return [...new Set(keys.filter(k => k))];
-}
-
-function t(domain){
-  const locale = this.locale || 'en';
-
-  const hasLocale = (!!domainNamesMap[locale] && !!domainNamesMap[locale][domain]);
-
-  return  hasLocale?  domainNamesMap[locale][domain] : domainNamesMap['en'][domain] || domain;
-}
-
-function indexQuery(countries = [],   start = 0, rows = 25, locale = 'en', locales = ['en']) {
-    const fq = [
-        "_state_s:public",
-        "realm_ss:ort"
-    ];
-    
-    const governmentQuery = countries.length > 0 ? `AND government_s : (${countries.join(' ')})` : '';
-
-    const q = `(schema_s : (nationalTarget7)${governmentQuery})`;
-
-    const titles =  getTitles(locales, locale);
-
-    return JSON.stringify({
-        df: `text_${locale.toUpperCase()}_txt`,
-        fq,
-        q,
-        sort: `title_${locale.toUpperCase()}_s asc`,
-        fl: `identifier:uniqueIdentifier_s, name:title_${mapLocaleFromDrupal(locale).toUpperCase()}_t${titles}`,
-        wt: "json",
-        start,
-        rows
-    });
-}
-function getTitles(locales, locale){
-  let t = '';
-
-  if(locales?.length === 1 && locales[0] === locale) return t;
-
-  for(const aLocale of locales.filter((l)=> l!==locale))
-    t += `, title_${mapLocaleFromDrupal(aLocale).toUpperCase()}_t`
-
-  return t
-}
-
-function mapLocaleFromDrupal(locale){
-  if(locale === 'zh-hans') return 'zh';
-  if(locale === 'fil') return 'tl';
-
-  return locale
-}
-
-async function getNationalTargets7(ctx = {}) {
-    const { countries = [], start = 0, rows = 25, locale, locales } = ctx;
-    const query = indexQuery(countries, start, rows, locale, locales);
-
-    const uri = `https://api.cbd.int/api/v2013/index/select`;
-
-    try {
-        const { response } = await $fetch(uri, {
-            method: 'post',
-            body: query,
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        return response.docs.map((doc)=>normalizeNationalTarget(mapLocaleFromDrupal(locale), locales, doc));
-    } catch (error) {
-        console.error('Error fetching national targets:', error);
-        throw error;
-    }
-}
-
-function normalizeNationalTarget(currentLocale, locales, obj) {
-  if (!obj.name) {
-    for (const locale of locales.filter((l) => l !== currentLocale)) {
-      const alternativeTitleKey = `title_${mapLocaleFromDrupal(locale).toUpperCase()}_t`;
-      if (obj[alternativeTitleKey]) {
-        obj.name = obj[alternativeTitleKey];
-        break;
-      }
-    }
-  }
-  return obj;
+/** Write the current selection back to the hidden Drupal input. */
+function handleChange() {
+  const inputElement = getInputElement();
+  if (!inputElement) throw new Error(`Could not find element with name: field_${props.name.toLowerCase()}[0][value]`);
+  inputElement.value = getAllKeys().join();
 }
 </script>
 
 
 <style scoped>
-.multiselect{ 
+.multiselect{
     padding-top: .25em;
     width: 100%;
 }

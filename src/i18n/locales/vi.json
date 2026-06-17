@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Mục tiêu GBF",
+  "nationalTargets7": "Mục tiêu quốc gia",
+  "subjects": "Khu vực chuyên đề",
+  "geoLocations": "Các quốc gia và khu vực",
+  "sdgs": "SDGs",
+  "countries": "Các quốc gia",
+  "regions": "Khu vực",
+  "jurisdictions": "Khu vực pháp lý",
+  "orgTypes": "Loại tổ chức",
+  "govTypes": "Loại chính phủ",
+  "projectStatuses": "Tình trạng dự án",
+  "geoScopes": "Phạm vi địa lý",
+  "documentTypes": "Loại tài liệu",
+  "ecosystemTypes": "Loại hệ sinh thái",
+  "eventStatuses": "Trạng thái sự kiện",
+  "bchSubjects": "Các lĩnh vực chuyên đề an toàn sinh học",
+  "bchSubjectGroups": "Các lĩnh vực chuyên đề an toàn sinh học",
+  "other": "Khác"
+}

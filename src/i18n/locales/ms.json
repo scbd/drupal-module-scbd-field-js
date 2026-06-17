@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Sasaran GBF",
+  "nationalTargets7": "Sasaran Negara",
+  "subjects": "Kawasan Tematik",
+  "geoLocations": "Negara dan Wilayah",
+  "sdgs": "SDG",
+  "countries": "Negara",
+  "regions": "Rantau",
+  "jurisdictions": "Bidang Kuasa",
+  "orgTypes": "Jenis Organisasi",
+  "govTypes": "Jenis Kerajaan",
+  "projectStatuses": "Status Projek",
+  "geoScopes": "Skop Geografi",
+  "documentTypes": "Jenis Dokumen",
+  "ecosystemTypes": "Jenis Ekosistem",
+  "eventStatuses": "Status Acara",
+  "bchSubjects": "Kawasan Tematik Biokeselamatan",
+  "bchSubjectGroups": "Kawasan Tematik Biokeselamatan",
+  "other": "Lain"
+}

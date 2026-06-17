@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "የጂቢኤፍ ኢላማዎች",
+  "nationalTargets7": "ብሔራዊ ኢላማዎች",
+  "subjects": "ጭብጥ አካባቢዎች",
+  "geoLocations": "አገሮች እና ክልሎች",
+  "sdgs": "ኤስዲጂዎች",
+  "countries": "አገሮች",
+  "regions": "ክልሎች",
+  "jurisdictions": "የክልሎች",
+  "orgTypes": "የድርጅት ዓይነት",
+  "govTypes": "የመንግስት ዓይነት",
+  "projectStatuses": "የፕሮጀክት ሁኔታ",
+  "geoScopes": "የጂኦግራፊያዊ",
+  "documentTypes": "የሰነድ ዓይነት",
+  "ecosystemTypes": "የሥነ ምህዳር ዓ",
+  "eventStatuses": "የክስተት ሁኔታ",
+  "bchSubjects": "የባዮሴክሪቲ የትምህርት ቦታዎች",
+  "bchSubjectGroups": "የባዮሴክሪቲ የትምህርት ቦታዎች",
+  "other": "ሌላ"
+}

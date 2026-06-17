@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF Hedefleri",
+  "nationalTargets7": "Ulusal Hedefler",
+  "subjects": "Tematik Alanlar",
+  "geoLocations": "Ülkeler ve Bölgeler",
+  "sdgs": "Sürdürülebilir Kalkınma",
+  "countries": "Ülkeler",
+  "regions": "Bölgeler",
+  "jurisdictions": "Yargı bölgeleri",
+  "orgTypes": "Organizasyon Türü",
+  "govTypes": "Devlet Türü",
+  "projectStatuses": "Proje Durumu",
+  "geoScopes": "Coğrafi Kapsam",
+  "documentTypes": "Belge Türü",
+  "ecosystemTypes": "Ekosistem Türü",
+  "eventStatuses": "Etkinlik Durumu",
+  "bchSubjects": "Biyogüvenlik Tematik Alanları",
+  "bchSubjectGroups": "Biyogüvenlik Tematik Alanları",
+  "other": "Diğer"
+}

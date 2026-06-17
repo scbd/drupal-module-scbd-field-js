@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Cele GBF",
+  "nationalTargets7": "Cele krajowe",
+  "subjects": "Obszary tematyczne",
+  "geoLocations": "Kraje i regiony",
+  "sdgs": "SDG",
+  "countries": "Kraje",
+  "regions": "Regiony",
+  "jurisdictions": "Jurysdykcje",
+  "orgTypes": "Typ organizacji",
+  "govTypes": "Typ rządu",
+  "projectStatuses": "Status projektu",
+  "geoScopes": "Zakres geograficzny",
+  "documentTypes": "Typ dokumentu",
+  "ecosystemTypes": "Typ ekosystemu",
+  "eventStatuses": "Status zdarzenia",
+  "bchSubjects": "Obszary tematyczne bezpieczeństwa biologicznego",
+  "bchSubjectGroups": "Obszary tematyczne bezpieczeństwa biologicznego",
+  "other": "Inne"
+}

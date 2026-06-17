@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "اهداف GBF",
+  "nationalTargets7": "اهداف ملی",
+  "subjects": "حوزه های موضوعی",
+  "geoLocations": "کشورها و مناطق",
+  "sdgs": "اهداف توسعه",
+  "countries": "کشورها",
+  "regions": "مناطق",
+  "jurisdictions": "حوزه قضایی",
+  "orgTypes": "نوع سازمان",
+  "govTypes": "نوع دولتی",
+  "projectStatuses": "وضعیت پروژه",
+  "geoScopes": "محدوده جغرافیایی",
+  "documentTypes": "نوع سند",
+  "ecosystemTypes": "نوع اکوسیستم",
+  "eventStatuses": "وضعیت رویداد",
+  "bchSubjects": "حوزه های موضوعی ایمنی زیستی",
+  "bchSubjectGroups": "حوزه های موضوعی ایمنی زیستی",
+  "other": "دیگر"
+}

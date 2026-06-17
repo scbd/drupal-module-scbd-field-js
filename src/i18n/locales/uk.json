@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Цілі GBF",
+  "nationalTargets7": "Національні цілі",
+  "subjects": "Тематичні напрямки",
+  "geoLocations": "Країни та регіони",
+  "sdgs": "ЦСР",
+  "countries": "Країни",
+  "regions": "Регіони",
+  "jurisdictions": "Юрисдикції",
+  "orgTypes": "Тип організації",
+  "govTypes": "Тип уряду",
+  "projectStatuses": "Статус проекту",
+  "geoScopes": "Географічний обсяг",
+  "documentTypes": "Тип документа",
+  "ecosystemTypes": "Тип екосистеми",
+  "eventStatuses": "Статус події",
+  "bchSubjects": "Тематичні напрямки біобезпеки",
+  "bchSubjectGroups": "Тематичні напрямки біобезпеки",
+  "other": "Інше"
+}

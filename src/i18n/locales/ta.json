@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "ஜிபிஎஃப் இலக்குகள்",
+  "nationalTargets7": "தேசிய இலக்குகள்",
+  "subjects": "கருப்பொருள் பகுதிகள்",
+  "geoLocations": "நாடுகள் மற்றும் பிராந்தியங்கள்",
+  "sdgs": "SDGs",
+  "countries": "நாடுகள்",
+  "regions": "பிராந்தியங்கள்",
+  "jurisdictions": "அதிகார வரம்புகள்",
+  "orgTypes": "நிறுவன வகை",
+  "govTypes": "அரசு வகை",
+  "projectStatuses": "திட்ட நிலை",
+  "geoScopes": "புவியியல் நோக்கம்",
+  "documentTypes": "ஆவண வகை",
+  "ecosystemTypes": "சூழல் அமைப்பு வகை",
+  "eventStatuses": "நிகழ்வு நிலை",
+  "bchSubjects": "உயிரியல் பாதுகாப்பு கருப்பொருள் பகுதிகள்",
+  "bchSubjectGroups": "உயிரியல் பாதுகாப்பு கருப்பொருள் பகுதிகள்",
+  "other": "மற்றவை"
+}

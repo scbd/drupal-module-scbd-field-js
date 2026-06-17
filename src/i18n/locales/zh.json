@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF 目标",
+  "nationalTargets7": "国家目标",
+  "subjects": "主题区域",
+  "geoLocations": "国家和地区",
+  "sdgs": "可持续发展目标",
+  "countries": "国家",
+  "regions": "地区",
+  "jurisdictions": "司法管辖区",
+  "orgTypes": "组织类型",
+  "govTypes": "政府类型",
+  "projectStatuses": "项目状态",
+  "geoScopes": "地理范围",
+  "documentTypes": "文件类型",
+  "ecosystemTypes": "生态系统类型",
+  "eventStatuses": "活动状态",
+  "bchSubjects": "生物安全主题领域",
+  "bchSubjectGroups": "生物安全主题领域",
+  "other": "其他"
+}

@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "জিবিএফ টার্গেট",
+  "nationalTargets7": "জাতীয় লক্ষ্য",
+  "subjects": "থিম্যাটিক এলাকা",
+  "geoLocations": "দেশ ও অঞ্চল",
+  "sdgs": "এসডিজি",
+  "countries": "দেশসমূহ",
+  "regions": "অঞ্চল",
+  "jurisdictions": "বিচার বিভাগ",
+  "orgTypes": "সংস্থার ধরণ",
+  "govTypes": "সরকারি প্রকার",
+  "projectStatuses": "প্রকল্পের অবস্থা",
+  "geoScopes": "ভৌগলিক সুযোগ",
+  "documentTypes": "ডকুমেন্ট টাইপ",
+  "ecosystemTypes": "ইকোসিস্টেম টাইপ",
+  "eventStatuses": "ইভেন্ট স্ট্যাটাস",
+  "bchSubjects": "বায়োসেফটি থিম্যাটিক অঞ্চল",
+  "bchSubjectGroups": "বায়োসেফটি থিম্যাটিক অঞ্চল",
+  "other": "অন্যান্য"
+}

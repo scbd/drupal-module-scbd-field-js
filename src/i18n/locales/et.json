@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF-i eesmärgid",
+  "nationalTargets7": "Riiklikud eesmärgid",
+  "subjects": "Temaatilised valdkonnad",
+  "geoLocations": "Riigid ja piirkonnad",
+  "sdgs": "Säästva arengu eesmärgid",
+  "countries": "Riigid",
+  "regions": "Piirkonnad",
+  "jurisdictions": "Kohtualluvused",
+  "orgTypes": "Organisatsiooni tüüp",
+  "govTypes": "Valitsuse tüüp",
+  "projectStatuses": "Projekti staatus",
+  "geoScopes": "Geograafiline ulatus",
+  "documentTypes": "Dokumendi tüüp",
+  "ecosystemTypes": "Ökosüsteemi tüüp",
+  "eventStatuses": "Sündmuse olek",
+  "bchSubjects": "Bioloogilise ohutuse temaatilised valdkonnad",
+  "bchSubjectGroups": "Bioloogilise ohutuse temaatilised valdkonnad",
+  "other": "Muu"
+}

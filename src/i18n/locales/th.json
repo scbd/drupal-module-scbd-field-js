@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "เป้าหมาย GBF",
+  "nationalTargets7": "เป้าหมายระดับชาติ",
+  "subjects": "พื้นที่เฉพาะเรื่อง",
+  "geoLocations": "ประเทศและภูมิภาค",
+  "sdgs": "SDGs",
+  "countries": "ประเทศ",
+  "regions": "ภูมิภาค",
+  "jurisdictions": "เขตอำนาจศาล",
+  "orgTypes": "ประเภทองค์กร",
+  "govTypes": "ประเภทรัฐบาล",
+  "projectStatuses": "สถานะโครงการ",
+  "geoScopes": "ขอบเขตทางภูมิศาสตร์",
+  "documentTypes": "ประเภทเอกสาร",
+  "ecosystemTypes": "ประเภทระบบนิเวศ",
+  "eventStatuses": "สถานะกิจกรรม",
+  "bchSubjects": "พื้นที่เฉพาะเรื่องความปลอดภัยทางชีวภาพ",
+  "bchSubjectGroups": "พื้นที่เฉพาะเรื่องความปลอดภัยทางชีวภาพ",
+  "other": "อื่น ๆ"
+}

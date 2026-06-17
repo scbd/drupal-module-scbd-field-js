@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF мақсаттары",
+  "nationalTargets7": "Ұлттық мақсаттар",
+  "subjects": "Тақырыптық бағыттар",
+  "geoLocations": "Елдер мен аймақтар",
+  "sdgs": "ТДМ",
+  "countries": "Елдер",
+  "regions": "Аймақтар",
+  "jurisdictions": "Юрисдикциялар",
+  "orgTypes": "Ұйым түрі",
+  "govTypes": "Үкімет түрі",
+  "projectStatuses": "Жобаның мәртебесі",
+  "geoScopes": "Географиялық ауқымы",
+  "documentTypes": "Құжат түрі",
+  "ecosystemTypes": "Экожүйе түрі",
+  "eventStatuses": "Оқиға күйі",
+  "bchSubjects": "Биологиялық қауіпсіздік тақырыптық бағыттары",
+  "bchSubjectGroups": "Биологиялық қауіпсіздік тақырыптық бағыттары",
+  "other": "Басқа"
+}

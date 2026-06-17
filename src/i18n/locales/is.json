@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF markmið",
+  "nationalTargets7": "Landsmarkmið",
+  "subjects": "Þemasvæði",
+  "geoLocations": "Lönd og svæði",
+  "sdgs": "SDGs",
+  "countries": "Lönd",
+  "regions": "Svæði",
+  "jurisdictions": "Lögsagnarumdæmi",
+  "orgTypes": "Tegund stofnunar",
+  "govTypes": "Stjórnartegund",
+  "projectStatuses": "Staða verkefnis",
+  "geoScopes": "Landfræðilegt umfang",
+  "documentTypes": "Tegund skjala",
+  "ecosystemTypes": "Tegund vistkerfis",
+  "eventStatuses": "Staða viðburðar",
+  "bchSubjects": "Þemasvæði líföryggis",
+  "bchSubjectGroups": "Þemasvæði líföryggis",
+  "other": "Annað"
+}

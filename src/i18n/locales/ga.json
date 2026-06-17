@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Spriocanna GBF",
+  "nationalTargets7": "Spriocanna Náisiúnta",
+  "subjects": "Réimsí Téamacha",
+  "geoLocations": "Tíortha agus Réigiúin",
+  "sdgs": "SDGanna",
+  "countries": "Tíortha",
+  "regions": "Réigiúin",
+  "jurisdictions": "Dlínsí",
+  "orgTypes": "Cineál Eagraíochta",
+  "govTypes": "Cineál Rialtais",
+  "projectStatuses": "Stádas Tionscadail",
+  "geoScopes": "Raon feidhme Geografach",
+  "documentTypes": "Cineál Doiciméad",
+  "ecosystemTypes": "Cineál Éiceachrais",
+  "eventStatuses": "Stádas Imeachta",
+  "bchSubjects": "Réimsí Téamacha Bitshábháilteachta",
+  "bchSubjectGroups": "Réimsí Téamacha Bitshábháilteachta",
+  "other": "Eile"
+}

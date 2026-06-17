@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "GBF-teikens",
+  "nationalTargets7": "Nasionale doelwitte",
+  "subjects": "Tematiese gebiede",
+  "geoLocations": "Lande en streke",
+  "sdgs": "SDG's",
+  "countries": "Lande",
+  "regions": "Streke",
+  "jurisdictions": "jurisdiksies",
+  "orgTypes": "Organisasie tipe",
+  "govTypes": "Regeringstipe",
+  "projectStatuses": "Projekstatus",
+  "geoScopes": "Geografiese omvang",
+  "documentTypes": "Dokumenttipe",
+  "ecosystemTypes": "Ekosisteem tipe",
+  "eventStatuses": "Gebeurtenisstatus",
+  "bchSubjects": "Bioseveiligheidstematiese gebiede",
+  "bchSubjectGroups": "Bioseveiligheidstematiese gebiede",
+  "other": "Ander"
+}

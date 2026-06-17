@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Objektif GBF",
+  "nationalTargets7": "Objektif Nasyonal",
+  "subjects": "Zòn tematik",
+  "geoLocations": "Peyi ak Rejyon",
+  "sdgs": "SDGs",
+  "countries": "Peyi",
+  "regions": "Rejyon",
+  "jurisdictions": "Jiridiksyon",
+  "orgTypes": "Kalite òganizasyon",
+  "govTypes": "Kalite Gouvènman",
+  "projectStatuses": "Estati Pwojè",
+  "geoScopes": "Sijòde jeyografik",
+  "documentTypes": "Kalite Dokiman",
+  "ecosystemTypes": "Kalite Ekosistèm",
+  "eventStatuses": "Estati Evènman",
+  "bchSubjects": "Zòn tematik biosekirite",
+  "bchSubjectGroups": "Zòn tematik biosekirite",
+  "other": "Lòt"
+}

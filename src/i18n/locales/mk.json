@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Цели на GBF",
+  "nationalTargets7": "Национални цели",
+  "subjects": "Тематски области",
+  "geoLocations": "Земји и региони",
+  "sdgs": "ЦДГ",
+  "countries": "Земји",
+  "regions": "Региони",
+  "jurisdictions": "Јурисдикции",
+  "orgTypes": "Тип на организација",
+  "govTypes": "Вид на владата",
+  "projectStatuses": "Статус на проектот",
+  "geoScopes": "Географски опсег",
+  "documentTypes": "Тип на документ",
+  "ecosystemTypes": "Тип на екосистем",
+  "eventStatuses": "Статус на настанот",
+  "bchSubjects": "Тематски области за биосигурност",
+  "bchSubjectGroups": "Тематски области за биосигурност",
+  "other": "Друго"
+}

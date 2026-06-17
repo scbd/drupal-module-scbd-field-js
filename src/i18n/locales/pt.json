@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Metas do GBF",
+  "nationalTargets7": "Metas nacionais",
+  "subjects": "Áreas temáticas",
+  "geoLocations": "Países e regiões",
+  "sdgs": "ODS",
+  "countries": "Países",
+  "regions": "Regiões",
+  "jurisdictions": "Jurisdições",
+  "orgTypes": "Tipo de organização",
+  "govTypes": "Tipo de governo",
+  "projectStatuses": "Status do projeto",
+  "geoScopes": "Escopo geográfico",
+  "documentTypes": "Tipo de documento",
+  "ecosystemTypes": "Tipo de ecossistema",
+  "eventStatuses": "Status do evento",
+  "bchSubjects": "Áreas temáticas de biossegurança",
+  "bchSubjectGroups": "Áreas temáticas de biossegurança",
+  "other": "Outro"
+}

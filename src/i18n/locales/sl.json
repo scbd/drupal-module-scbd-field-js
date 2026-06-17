@@ -1,0 +1,20 @@
+{
+  "gbfTargets": "Cilji GBF",
+  "nationalTargets7": "Nacionalni cilji",
+  "subjects": "Tematska področja",
+  "geoLocations": "Države in regije",
+  "sdgs": "Cilji trajnostnega razvoja",
+  "countries": "Države",
+  "regions": "Regije",
+  "jurisdictions": "Pristojnosti",
+  "orgTypes": "Vrsta organizacije",
+  "govTypes": "Vrsta vlade",
+  "projectStatuses": "Status projekta",
+  "geoScopes": "Geografski obseg",
+  "documentTypes": "Vrsta dokumenta",
+  "ecosystemTypes": "Vrsta ekosistema",
+  "eventStatuses": "Stanje dogodka",
+  "bchSubjects": "Tematska področja biološke varnosti",
+  "bchSubjectGroups": "Tematska področja biološke varnosti",
+  "other": "Drugo"
+}
