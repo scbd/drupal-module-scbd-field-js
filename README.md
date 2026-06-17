@@ -224,8 +224,12 @@ createApp(ScbdFieldComponent, {
 Values are stored as comma-separated identifier keys:
 
 ```text
-GBF-TARGET-03,GBF-TARGET-05,SDG-GOAL-06,SDG-GOAL-11,SDG-GOAL-12
+GBF-TARGET-03,GBF-TARGET-05,SUSTAINABLE-DEVELOPMENT-GOAL-06,SUSTAINABLE-DEVELOPMENT-GOAL-11,SUSTAINABLE-DEVELOPMENT-GOAL-12
 ```
+
+> SDGs are sourced from the `SUSTAINABLE-DEVELOPMENT-GOALS` thesaurus. Legacy `SDG-GOAL-01…17`
+> keys saved by earlier versions are read transparently and rewritten to their
+> `SUSTAINABLE-DEVELOPMENT-GOAL-01…17` equivalents on the next save.
 
 For country-specific identifiers (like national targets), UUIDs are used:
 

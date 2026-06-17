@@ -256,7 +256,7 @@ function findInGroupedOptions(groupedOptions, identifier) {
 function numbersToSdgKeys(x){
   const isSingleDigit = x < 10;
 
-  return isSingleDigit? `SDG-GOAL-0${x}` : `SDG-GOAL-${x}`;
+  return isSingleDigit? `SUSTAINABLE-DEVELOPMENT-GOAL-0${x}` : `SUSTAINABLE-DEVELOPMENT-GOAL-${x}`;
 
 }
 
@@ -311,7 +311,7 @@ function indexQuery(countries = [],   start = 0, rows = 25, locale = 'en', local
         df: `text_${locale.toUpperCase()}_txt`,
         fq,
         q,
-        sort: `title_${locale.toUpperCase()}_t asc`,
+        sort: `title_${locale.toUpperCase()}_s asc`,
         fl: `identifier:uniqueIdentifier_s, name:title_${mapLocaleFromDrupal(locale).toUpperCase()}_t${titles}`,
         wt: "json",
         start,
