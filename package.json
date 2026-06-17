@@ -37,7 +37,6 @@
     "./src/": "./src/"
   },
   "dependencies": {
-    "@scbd/cached-apis": "file:/Users/randyhoulahan/projects/@scbd/@bioland/cached-apis",
     "change-case": "5.4.4",
     "ofetch": "1.4.1",
     "vue": "^3.5.15",

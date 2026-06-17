@@ -1,0 +1,160 @@
+{
+  "GBF-TARGET-01": [
+    "AICHI-TARGET-05",
+    "SDG-GOAL-14",
+    "SDG-GOAL-15",
+    "SDG-TARGET-14.2",
+    "SDG-TARGET-14.c",
+    "SDG-TARGET-15.2",
+    "SDG-TARGET-15.3",
+    "SDG-TARGET-15.4",
+    "SDG-TARGET-15.5",
+    "SDG-TARGET-15.9"
+  ],
+  "GBF-TARGET-02": [
+    "AICHI-TARGET-15",
+    "SDG-GOAL-6",
+    "SDG-GOAL-14",
+    "SDG-GOAL-15",
+    "SDG-TARGET-6.6",
+    "SDG-TARGET-14.2",
+    "SDG-TARGET-15.1",
+    "SDG-TARGET-15.3"
+  ],
+  "GBF-TARGET-03": [
+    "AICHI-TARGET-11",
+    "SDG-TARGET-6.6",
+    "SDG-TARGET-11.4",
+    "SDG-TARGET-14.5",
+    "SDG-TARGET-15.4"
+  ],
+  "GBF-TARGET-04": [
+    "AICHI-TARGET-12",
+    "AICHI-TARGET-13",
+    "SDG-TARGET-15.5",
+    "SDG-TARGET-2.5"
+  ],
+  "GBF-TARGET-05": [
+    "AICHI-TARGET-6",
+    "SDG-TARGET-12.2",
+    "SDG-TARGET-14.4",
+    "SDG-TARGET-14.7",
+    "SDG-TARGET-15.2",
+    "SDG-TARGET-15.7",
+    "SDG-TARGET-15.c"
+  ],
+  "GBF-TARGET-06": [
+    "AICHI-TARGET-09",
+    "SDG-TARGET-15.8"
+  ],
+  "GBF-TARGET-07": [
+    "AICHI-TARGET-8",
+    "SDG-TARGET-3.9",
+    "SDG-TARGET-6.3",
+    "SDG-TARGET-11.6",
+    "SDG-TARGET-12.4",
+    "SDG-TARGET-12.5",
+    "SDG-TARGET-14.1"
+  ],
+  "GBF-TARGET-08": [
+    "AICHI-TARGET-10",
+    "AICHI-TARGET-15",
+    "SDG-TARGET-13.1",
+    "SDG-TARGET-13.2",
+    "SDG-TARGET-14.3"
+  ],
+  "GBF-TARGET-09": [
+    "SDG-TARGET-12.2",
+    "SDG-TARGET-14.7",
+    "SDG-TARGET-15.7"
+  ],
+  "GBF-TARGET-10": [
+    "AICHI-TARGET-7",
+    "SDG-TARGET-2.3",
+    "SDG-TARGET-2.4",
+    "SDG-TARGET-12.1",
+    "SDG-TARGET-12.2",
+    "SDG-TARGET-14.7",
+    "SDG-TARGET-15.2"
+  ],
+  "GBF-TARGET-11": [
+    "AICHI-TARGET-14",
+    "SDG-TARGET-1.5",
+    "SDG-TARGET-15.4"
+  ],
+  "GBF-TARGET-12": [
+    "AICHI-TARGET-14",
+    "SDG-TARGET-11.7",
+    "SDG-TARGET-11.b"
+  ],
+  "GBF-TARGET-13": [
+    "AICHI-TARGET-16",
+    "SDG-TARGET-15.6"
+  ],
+  "GBF-TARGET-14": [
+    "AICHI-TARGET-2",
+    "AICHI-TARGET-15",
+    "SDG-TARGET-15.9"
+  ],
+  "GBF-TARGET-15": [
+    "AICHI-TARGET-4",
+    "SDG-TARGET-9.4",
+    "SDG-TARGET-12.6"
+  ],
+  "GBF-TARGET-16": [
+    "AICHI-TARGET-1",
+    "AICHI-TARGET-4",
+    "SDG-TARGET-4.7",
+    "SDG-TARGET-8.4",
+    "SDG-TARGET-9.4",
+    "SDG-TARGET-12.1",
+    "SDG-TARGET-12.2",
+    "SDG-TARGET-12.3",
+    "SDG-TARGET-12.5",
+    "SDG-TARGET-12.8",
+    "SDG-TARGET-12.a"
+  ],
+  "GBF-TARGET-17": [],
+  "GBF-TARGET-18": [
+    "AICHI-TARGET-3",
+    "SDG-TARGET-12.c",
+    "SDG-TARGET-14.6"
+  ],
+  "GBF-TARGET-19": [
+    "AICHI-TARGET-20",
+    "SDG-TARGET-1.a",
+    "SDG-TARGET-10.b",
+    "SDG-TARGET-15.a",
+    "SDG-TARGET-15.b",
+    "SDG-TARGET-17.3"
+  ],
+  "GBF-TARGET-20": [
+    "AICHI-TARGET-19",
+    "SDG-TARGET-17.6",
+    "SDG-TARGET-17.7",
+    "SDG-TARGET-17.9",
+    "SDG-TARGET-17.16",
+    "SDG-TARGET-17.18"
+  ],
+  "GBF-TARGET-21": [
+    "AICHI-TARGET-19",
+    "SDG-TARGET-14.a"
+  ],
+  "GBF-TARGET-22": [
+    "AICHI-TARGET-18",
+    "SDG-TARGET-1.4",
+    "SDG-TARGET-5.5",
+    "SDG-TARGET-5.a",
+    "SDG-TARGET-10.2",
+    "SDG-TARGET-10.3",
+    "SDG-TARGET-16.3",
+    "SDG-TARGET-16.7",
+    "SDG-TARGET-16.10"
+  ],
+  "GBF-TARGET-23": [
+    "AICHI-TARGET-14",
+    "SDG-TARGET-5.1",
+    "SDG-TARGET-5.5",
+    "SDG-TARGET-5.c"
+  ]
+}

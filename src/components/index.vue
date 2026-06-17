@@ -80,7 +80,7 @@
 
 <script>
 import { toRef, ref, unref, computed } from 'vue'
-import { initializeApiStore, getData, lookUp } from '@scbd/cached-apis'
+import { initializeApiStore, getData, lookUp } from '../composables/useTaxonomies'
 import   Multiselect        from 'vue-multiselect'
 import { ofetch as $fetch } from "ofetch";
 import   domainNamesMap     from '../i18n'
