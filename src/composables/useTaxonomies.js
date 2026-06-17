@@ -7,7 +7,7 @@
 // LOCALE NOTE: term.name for API-fetched domains is localized via the `Preferences` cookie in
 // getLocale(), NOT the component's `locale` prop (the prop only drives the t() label map in
 // ../i18n). Do not "fix" this — it preserves provider behavior. The bundled datasets
-// (ecosystem-types, sdgs-short, gbf-sameas, org-type-other) are English-only by design; a
+// (ecosystem-types, gbf-sameas, org-type-other) are English-only by design; a
 // cookie-less non-English page therefore renders English option names for API domains. To
 // harden, port the full getUnLocale chain inline (html lang → <meta content-language> →
 // navigator.languages → Intl, matched to ['ar','en','es','fr','ru','zh']) — do NOT re-add
@@ -16,7 +16,6 @@
 import { ofetch } from 'ofetch';
 
 import ecosystemTypesData  from '../../i18n/locales/en/ecosystem-types.json';
-import sdgsShort           from '../../i18n/locales/en/sdgs-short.json';
 import orgTypeOther        from '../../i18n/locales/en/org-type-other.json';
 import docTypeIdentifiers  from '../../i18n/locales/doc-type-identifiers.json';
 import excludedOrgTypes    from '../../i18n/locales/excluded-org-types.json';
@@ -24,7 +23,6 @@ import gbfSameAs           from '../../i18n/locales/gbf-sameas.json';
 
 // --- integrity assertions (fail loud on data drift; see finding F3) ---
 if (ecosystemTypesData.length !== 40) console.error(`useTaxonomies: ecosystem-types.json expected 40, got ${ecosystemTypesData.length}`);
-if (sdgsShort.length !== 17)          console.error(`useTaxonomies: sdgs-short.json expected 17, got ${sdgsShort.length}`);
 if (docTypeIdentifiers.length !== 45) console.error(`useTaxonomies: doc-type-identifiers.json expected 45, got ${docTypeIdentifiers.length}`);
 if (excludedOrgTypes.length !== 4)    console.error(`useTaxonomies: excluded-org-types.json expected 4, got ${excludedOrgTypes.length}`);
 if (Object.keys(gbfSameAs).length !== 23) console.error(`useTaxonomies: gbf-sameas.json expected 23, got ${Object.keys(gbfSameAs).length}`);
@@ -40,7 +38,7 @@ const APIS = {
   geoScopes      : 'https://api.cbd.int/api/v2013/thesaurus/domains/4D4413D8-36F9-4CD2-8CC1-4F3C866DDE5A/terms',
   projectStatuses: 'https://api.cbd.int/api/v2013/thesaurus/domains/4E7731C7-791E-46E9-A579-7272AF261FED/terms',
   documentTypes  : 'https://api.cbd.int/api/v2013/thesaurus/domains/A762DF7E-B8D1-40D6-9DAC-D25E48C65528/terms',
-  sdgs           : 'https://unstats.un.org/SDGAPI/v1/sdg/Goal/List?includechildren=false',
+  sdgs           : 'https://api.cbd.int/api/v2013/thesaurus/domains/SUSTAINABLE-DEVELOPMENT-GOALS/terms',
   gbfTargets     : 'https://api.cbd.int/api/v2013/thesaurus/domains/GBF-TARGETS/terms',
   eventStatuses  : 'https://api.cbd.int/api/v2013/thesaurus/domains/NCHM-EVENT-STATUS/terms',
   bchSubjects    : 'https://api.cbd.int/api/v2013/thesaurus/domains/043C7F0D-2226-4E54-A56F-EE0B74CCC984/terms',
@@ -72,18 +70,23 @@ function lstr(prop) {
   return prop[getLocale()] || prop.en;
 }
 
-// getLocalizedNames port: name from `name` lstring, else `title` lstring.
-const localizedName = (item) => (isLstring(item.name) ? lstr(item.name) : lstr(item.title));
+// Display name for every SCBD thesaurus term: prefer `shortTitle`, fall back to `title`
+// (both per-locale lstrings resolved via the cookie), then the plain `name` string the API
+// returns. `lstr` yields undefined for an empty `{}` shortTitle, so those fall through to title.
+const localizedName = (item) => lstr(item.shortTitle) || lstr(item.title) || lstr(item.name) || item.name;
 
 // trimmed base shape — the consumer only reads identifier, name, children, sameAs.
 const base = (item) => omitNil({ identifier: item.identifier, name: localizedName(item) });
 
-// padCode port: 1-digit → zero-padded, so SDG-GOAL-01 … SDG-GOAL-17.
-function sanitizeSdg(item) {
-  const code = item.code;
-  const padded = String(code).length === 1 ? `0${code}` : `${code}`;
-  return omitNil({ identifier: `SDG-GOAL-${padded}`, name: sdgsShort[Number(code) - 1] });
-}
+// Legacy SDG keys (SDG-GOAL-01 … SDG-GOAL-17) predate the SUSTAINABLE-DEVELOPMENT-GOALS thesaurus,
+// whose identifiers are SUSTAINABLE-DEVELOPMENT-GOAL-01 … -17. Upgrade any legacy key read from a
+// saved value to the current identifier so the option still resolves (and is rewritten to the new
+// key on the next save). Non-SDG keys pass through untouched.
+const SDG_LEGACY_RE = /^SDG-GOAL-0*(\d{1,2})$/;
+const migrateSdgKey = (key) => {
+  const m = typeof key === 'string' ? key.match(SDG_LEGACY_RE) : null;
+  return m ? `SUSTAINABLE-DEVELOPMENT-GOAL-${m[1].padStart(2, '0')}` : key;
+};
 
 // buildBchSubjectChildren port: children[] from narrowerTerms, sorted by name; drop narrowerTerms.
 function buildBchChildren(data) {
@@ -121,7 +124,7 @@ export async function getData(domain) {
     // --- fetched datasets ---
     if (domain === 'sdgs') {
       const raw = await fetchDomain(APIS.sdgs);
-      return raw.map(sanitizeSdg).filter(Boolean).sort(byIdentifier); // sort by identifier (not name)
+      return raw.map(base).filter(Boolean).sort(byIdentifier); // SUSTAINABLE-DEVELOPMENT-GOAL-01..-17; sort by identifier (not name)
     }
 
     if (domain === 'gbfTargets') {
@@ -181,7 +184,8 @@ export async function lookUp(source, keys = [], single = false) {
     records = await getData(source);
   }
 
-  const matched = records.filter((t) => keys.includes(t.identifier));
+  const wantedKeys = keys.map(migrateSdgKey); // upgrade legacy SDG-GOAL-* keys to current thesaurus identifiers
+  const matched = records.filter((t) => wantedKeys.includes(t.identifier));
 
   if (matched.length === 1 && single) return matched[0];
   if (matched.length) return matched;
