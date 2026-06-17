@@ -7,7 +7,7 @@
 // LOCALE NOTE: term.name for API-fetched domains is localized via the `Preferences` cookie in
 // getLocale(), NOT the component's `locale` prop (the prop only drives the t() label map in
 // ../i18n). Do not "fix" this — it preserves provider behavior. The bundled datasets
-// (ecosystem-types, gbf-sameas, org-type-other) are English-only by design; a
+// (gbf-sameas, org-type-other) are English-only by design; a
 // cookie-less non-English page therefore renders English option names for API domains. To
 // harden, port the full getUnLocale chain inline (html lang → <meta content-language> →
 // navigator.languages → Intl, matched to ['ar','en','es','fr','ru','zh']) — do NOT re-add
@@ -15,14 +15,12 @@
 
 import { ofetch } from 'ofetch';
 
-import ecosystemTypesData  from '../../i18n/locales/en/ecosystem-types.json';
 import orgTypeOther        from '../../i18n/locales/en/org-type-other.json';
 import docTypeIdentifiers  from '../../i18n/locales/doc-type-identifiers.json';
 import excludedOrgTypes    from '../../i18n/locales/excluded-org-types.json';
 import gbfSameAs           from '../../i18n/locales/gbf-sameas.json';
 
 // --- integrity assertions (fail loud on data drift; see finding F3) ---
-if (ecosystemTypesData.length !== 40) console.error(`useTaxonomies: ecosystem-types.json expected 40, got ${ecosystemTypesData.length}`);
 if (docTypeIdentifiers.length !== 45) console.error(`useTaxonomies: doc-type-identifiers.json expected 45, got ${docTypeIdentifiers.length}`);
 if (excludedOrgTypes.length !== 4)    console.error(`useTaxonomies: excluded-org-types.json expected 4, got ${excludedOrgTypes.length}`);
 if (Object.keys(gbfSameAs).length !== 23) console.error(`useTaxonomies: gbf-sameas.json expected 23, got ${Object.keys(gbfSameAs).length}`);
@@ -38,14 +36,15 @@ const APIS = {
   geoScopes      : 'https://api.cbd.int/api/v2013/thesaurus/domains/4D4413D8-36F9-4CD2-8CC1-4F3C866DDE5A/terms',
   projectStatuses: 'https://api.cbd.int/api/v2013/thesaurus/domains/4E7731C7-791E-46E9-A579-7272AF261FED/terms',
   documentTypes  : 'https://api.cbd.int/api/v2013/thesaurus/domains/A762DF7E-B8D1-40D6-9DAC-D25E48C65528/terms',
+  ecosystemTypes : 'https://api.cbd.int/api/v2013/thesaurus/domains/ECOSYSTEM-TYPES-IUCN/terms',
   sdgs           : 'https://api.cbd.int/api/v2013/thesaurus/domains/SUSTAINABLE-DEVELOPMENT-GOALS/terms',
   gbfTargets     : 'https://api.cbd.int/api/v2013/thesaurus/domains/GBF-TARGETS/terms',
   eventStatuses  : 'https://api.cbd.int/api/v2013/thesaurus/domains/NCHM-EVENT-STATUS/terms',
   bchSubjects    : 'https://api.cbd.int/api/v2013/thesaurus/domains/043C7F0D-2226-4E54-A56F-EE0B74CCC984/terms',
 };
 
-// 'all' union leaf domains — mirrors provider generateAll minus dropped domains, plus
-// ecosystemTypes; bchSubjectGroups excluded (it is a subset of bchSubjects).
+// 'all' union leaf domains — mirrors provider generateAll minus dropped domains;
+// bchSubjectGroups excluded (it is a subset of bchSubjects).
 const ALL_DOMAINS = [
   'orgTypes', 'govTypes', 'sdgs', 'jurisdictions', 'subjects', 'countries', 'regions',
   'gbfTargets', 'geoScopes', 'projectStatuses', 'documentTypes', 'ecosystemTypes',
@@ -112,10 +111,7 @@ export const initializeApiStore = () => {}; // no-op; provider's only job was lo
 
 export async function getData(domain) {
   try {
-    // --- local datasets (no network) ---
-    if (domain === 'ecosystemTypes')
-      return ecosystemTypesData.map(base).sort(byName); // base() resolves name from the {en} lstring (en-only data)
-
+    // --- derived dataset (subset of bchSubjects) ---
     if (domain === 'bchSubjectGroups') {
       const subjects = await getData('bchSubjects');
       return subjects.filter((s) => s.children && s.children.length);
@@ -164,7 +160,7 @@ export async function getData(domain) {
 
     if (!APIS[domain]) return []; // unknown-domain guard — never ofetch(undefined)
 
-    const raw = await fetchDomain(APIS[domain]); // subjects, countries, regions, geoScopes, projectStatuses, jurisdictions, eventStatuses
+    const raw = await fetchDomain(APIS[domain]); // subjects, countries, regions, geoScopes, projectStatuses, jurisdictions, eventStatuses, ecosystemTypes
     return raw.map(base).filter(Boolean).sort(byName);
   } catch (e) {
     console.error(`useTaxonomies.getData(${domain}):`, e);
