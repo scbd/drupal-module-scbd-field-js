@@ -94,7 +94,7 @@ export default {
                   countries     : { type: Array,  required: false, default: () => ['be'] },
                   locale        : { type: String, required: false, default: 'en' },
                   locales       : { type: Array,  required: false, default: () => ['en'] },
-                  domains       : { type: Array,  required: false, default: () => [ 'nationalTargets7', 'gbfTargets','countries', 'subjects', 'sdgs', 'bchSubjectGroups' ] }, //
+                  domains       : { type: Array,  required: false, default: () => [ 'nationalTargets7', 'gbfTargets','countries', 'subjects', 'sdgs', 'bchSubjectGroups', 'regionsGroups' ] }, //
                   singleValueDomains : { type: Array,  required: false, default: () => [ 'orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes','jurisdictions','eventStatuses'] },
                   singleField   : { type: Boolean, required: false, default: false },
                   isAdditionalField: { type: Boolean, required: false, default: false },
@@ -108,6 +108,9 @@ function isGroupedDomain(domain){
   return domain.toLowerCase().includes('group');
 }
 
+// Maps each grouped domain to its flat lookUp source used to hydrate saved keys into the groups.
+const GROUP_SOURCE = { bchSubjectGroups: 'bchSubjects', regionsGroups: 'regions' };
+
 function isMultiple(domain){
   return this.singleValueDomains.includes(domain)? false : true;
 }
@@ -120,8 +123,8 @@ function setup(props) {
     const countries           = toRef(props, 'countries');
     const locale              = toRef(props, 'locale');
     const locales             = toRef(props, 'locales');
-    const optionsList         = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': [], 'govTypes': [], 'projectStatuses': [], 'geoScopes': [], 'documentTypes': [],'jurisdictions': [] , eventStatuses: [], bchSubjectGroups: []});
-    const inputValue          = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': null, 'govTypes': null, 'projectStatuses': null, 'geoScopes': null, 'documentTypes': null,'jurisdictions': null , eventStatuses: null, bchSubjectGroups: []});
+    const optionsList         = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': [], 'govTypes': [], 'projectStatuses': [], 'geoScopes': [], 'documentTypes': [],'jurisdictions': [] , eventStatuses: [], bchSubjectGroups: [], regionsGroups: []});
+    const inputValue          = unref(singleField)? ref([]) : ref({ 'gbfTargets': [], 'subjects': [], 'countries': [], 'sdgs': [], nationalTargets7: [], 'orgTypes': null, 'govTypes': null, 'projectStatuses': null, 'geoScopes': null, 'documentTypes': null,'jurisdictions': null , eventStatuses: null, bchSubjectGroups: [], regionsGroups: []});
 
     const windowWidth = computed(() => window?.innerWidth);
 
@@ -191,23 +194,17 @@ async function loadInitialValues(locale){
     for(const domain of this.domains){
       if(domain === 'nationalTargets7')
           this.inputValue[domain] = await getNationalTargets7({countries:this.countries, start:0, rows:300, locale:this.locale, locales:this.locales}).then((data) => data.filter(({ identifier }) => keys.includes(identifier)));
-      else if(domain === 'bchSubjectGroups'){
-        // Fetch bchSubjects data and populate bchSubjectGroups
-        // lookUp uses 'bchSubjects' but we populate into bchSubjectGroups
-        const bchSubjectsData = await lookUp('bchSubjects', keys, false);
-        
-        if(bchSubjectsData && bchSubjectsData.length && this.optionsList.bchSubjectGroups?.length) {
-          const selectedIds = new Set(bchSubjectsData.map(item => item.identifier));
+      else if (isGroupedDomain(domain)) {
+        // Hydrate saved keys into a grouped domain: look up the flat source (GROUP_SOURCE[domain])
+        // then map matched identifiers back to their group children via findInGroupedOptions.
+        const flatData = await lookUp(GROUP_SOURCE[domain], keys, false);
+        if (flatData && flatData.length && this.optionsList[domain]?.length) {
+          const selectedIds = new Set(flatData.map((item) => item.identifier));
           const groupedItems = [];
-          
-          // Find matching items in the grouped options
-          for(const identifier of selectedIds) {
-            const groupItem = findInGroupedOptions(this.optionsList.bchSubjectGroups, identifier);
-            if(groupItem) {
-              groupedItems.push(groupItem);
-            }
+          for (const identifier of selectedIds) {
+            const groupItem = findInGroupedOptions(this.optionsList[domain], identifier);
+            if (groupItem) groupedItems.push(groupItem);
           }
-          
           this.inputValue[domain] = groupedItems;
         } else {
           this.inputValue[domain] = [];

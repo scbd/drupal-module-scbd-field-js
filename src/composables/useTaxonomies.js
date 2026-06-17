@@ -85,8 +85,9 @@ function sanitizeSdg(item) {
   return omitNil({ identifier: `SDG-GOAL-${padded}`, name: sdgsShort[Number(code) - 1] });
 }
 
-// buildBchSubjectChildren port: children[] from narrowerTerms, sorted by name; drop narrowerTerms.
-function buildBchChildren(data) {
+// buildChildren port: children[] from narrowerTerms, sorted by name; drop narrowerTerms.
+// Generic over any term with identifier/narrowerTerms (bchSubjects, regions).
+function buildChildren(data) {
   const map = new Map(data.map((it) => [it.identifier, it]));
   data.forEach((s) => {
     if (s.narrowerTerms && s.narrowerTerms.length) {
@@ -97,7 +98,8 @@ function buildBchChildren(data) {
   return data;
 }
 
-function sanitizeBchSubject(item) {
+// Generic sanitizer that preserves narrowerTerms so buildChildren can group (bchSubjects, regions).
+function sanitizeWithChildren(item) {
   const out = base(item);
   if (item.narrowerTerms && item.narrowerTerms.length) out.narrowerTerms = item.narrowerTerms;
   return out;
@@ -138,8 +140,16 @@ export async function getData(domain) {
 
     if (domain === 'bchSubjects') {
       const raw = await fetchDomain(APIS.bchSubjects);
-      const data = raw.map(sanitizeBchSubject).filter(Boolean).sort(byName);
-      return buildBchChildren(data);
+      const data = raw.map(sanitizeWithChildren).filter(Boolean).sort(byName);
+      return buildChildren(data);
+    }
+
+    // regionsGroups: regions thesaurus built into parent/child groups (like bchSubjectGroups);
+    // self-fetches + filters to parents-with-children — flat getData('regions') stays untouched.
+    if (domain === 'regionsGroups') {
+      const raw = await fetchDomain(APIS.regions);
+      const data = buildChildren(raw.map(sanitizeWithChildren).filter(Boolean).sort(byName));
+      return data.filter((r) => r.children && r.children.length); // only parents that have children
     }
 
     if (domain === 'orgTypes') {

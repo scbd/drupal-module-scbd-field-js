@@ -14,7 +14,8 @@ export const en = {
                             documentTypes    : 'Document Type',
                             ecosystemTypes   : 'Ecosystem Type',
                             eventStatuses    : 'Event Status',
-                            bchSubjectGroups : 'Biosafety Thematic Areas'
+                            bchSubjectGroups : 'Biosafety Thematic Areas',
+                            regionsGroups    : 'Regions'
                         };
 
 // Export all language keys from data.json
