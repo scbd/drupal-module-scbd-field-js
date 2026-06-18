@@ -14,10 +14,9 @@ import {
   DOC_TYPE_IDENTIFIERS as docTypeIdentifiers,
   EXCLUDED_ORG_TYPE_IDENTIFIERS as excludedOrgTypes,
   APIS,
-  ALL_DOMAINS,
-} from '../utils/constants.js';
-import { omitNil, byName, byIdentifier, localizedName, migrateSdgKey, buildChildren } from '../utils/index.js';
-import { useOrgTypeOther } from './use-org-type-other.js';
+} from '@/utils/constants.js';
+import { omitNil, byName, byIdentifier, localizedName, migrateSdgKey, buildChildren } from '@/utils/index.js';
+import { useOrgTypeOther } from '@/composables/use-org-type-other.js';
 
 /**
  * @typedef {object} Term A trimmed option — the widget only reads these keys.
@@ -50,7 +49,7 @@ const resolveLocale = (locale) =>
  */
 export function useTaxonomies(locale, locales = []) {
   const lang = resolveLocale(locale);
-  const orgTypeOther = useOrgTypeOther([locale, ...locales]); // localized "Other" appended to orgTypes
+  const orgTypeOtherPromise = useOrgTypeOther([locale, ...locales]); // localized "Other" appended to orgTypes (loads on demand)
 
   /** Trim a raw thesaurus term to the keys the widget reads. */
   const base = (item) => omitNil({ identifier: item.identifier, name: localizedName(item, lang) });
@@ -71,7 +70,7 @@ export function useTaxonomies(locale, locales = []) {
     sdgs:          byIdSorted,
     gbfTargets:    byIdSorted,
     bchSubjects:   (raw) => buildChildren(raw.map(sanitizeBchSubject).filter(Boolean).sort(byName)),
-    orgTypes:      (raw) => raw.filter((it) => !excludedOrgTypes.includes(it.identifier)).map(base).filter(Boolean).sort(byName).concat(base(orgTypeOther)), // append sanitized "Other"
+    orgTypes:      (raw, orgTypeOther) => raw.filter((it) => !excludedOrgTypes.includes(it.identifier)).map(base).filter(Boolean).sort(byName).concat(base(orgTypeOther)), // append sanitized "Other"
     govTypes:      (raw) => raw.filter((it) => excludedOrgTypes.includes(it.identifier)).map(base).filter(Boolean).sort(byName), // inverse of the orgTypes split (same URL)
     documentTypes: (raw) => raw.filter((it) => docTypeIdentifiers.includes(it.identifier)).map(base).filter(Boolean).sort(byName),
   };
@@ -92,6 +91,7 @@ export function useTaxonomies(locale, locales = []) {
       if (!url) return []; // unknown-domain guard — never ofetch(undefined)
 
       const raw = await fetchDomain(url);
+      if (domain === 'orgTypes') return transforms.orgTypes(raw, await orgTypeOtherPromise); // needs the localized "Other"
       return (transforms[domain] || defaultTransform)(raw);
     } catch (e) {
       console.error(`useTaxonomies.getData(${domain}):`, e);
@@ -100,18 +100,16 @@ export function useTaxonomies(locale, locales = []) {
   }
 
   /**
-   * Resolve saved keys to full term objects within `source` (or every domain when
-   * source === 'all'). Keys are always string[] (consumer passes keysString.split(',')),
-   * matched exactly against string identifiers (M3); legacy SDG keys are migrated first.
-   * @param {string} source domain name or 'all'
+   * Resolve saved keys to full term objects within `source`. Keys are always string[]
+   * (consumer passes keysString.split(',')), matched exactly against string identifiers (M3);
+   * legacy SDG keys are migrated first.
+   * @param {string} source domain name
    * @param {string[]} [keys] record identifiers
    * @param {boolean} [single] return one object instead of an array
    * @returns {Promise<Term | Term[] | undefined>} `[]` (or `undefined` when single) if nothing matches (D9)
    */
   async function lookUp(source, keys = [], single = false) {
-    const records = source === 'all'
-      ? (await Promise.all(ALL_DOMAINS.map(getData))).flat() // flat concat — labels dropped
-      : await getData(source);
+    const records = await getData(source);
 
     const wanted = keys.map(migrateSdgKey); // upgrade legacy SDG-GOAL-* keys
     const matched = records.filter((t) => wanted.includes(t.identifier));

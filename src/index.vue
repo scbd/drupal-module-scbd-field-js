@@ -1,29 +1,33 @@
 <template>
-  <ChmComponent :isAdditionalField="isAdditionalField" :name="name" :description="description" :locale="locale" :locales="locales" :countries="countries" :domains="domains"/>
+  <ChmComponent
+    :isAdditionalField="isAdditionalField"
+    :name="name"
+    :description="description"
+    :locale="locale"
+    :locales="locales"
+    :countries="countries"
+    :domains="domains"
+    :debug="debug"
+  />
 </template>
 
 <script>
 import './style.scss'
 
-import ChmComponent from './components/index.vue';
+import ChmComponent from '@/components/index.vue';
 
 export default {
   name      : 'App',
   props     : {
-    name: { type: String, required: true },
-    description          : { type: String, required: false },
-    countries: { type: Array, required: false, default: () => ['lk'] },
-    locale: { type: String, required: false, default: 'en' },
-    locales: { type: Array, required: false, default: () => ['en'] },
-    domains: { type: Array, required: false, default: () =>  ['gbfTargets', 'nationalTargets7', 'countries', 'subjects','sdgs'] },
+    name             : { type: String,  required: true },
+    description      : { type: String,  required: false },
+    countries        : { type: Array,   required: false, default: () => ['be'] },
+    locale           : { type: String,  required: false, default: 'en' },
+    locales          : { type: Array,   required: false, default: () => ['en'] },
+    domains          : { type: Array,   required: false, default: () => ['gbfTargets', 'nationalTargets7', 'countries', 'subjects', 'sdgs'] },
     isAdditionalField: { type: Boolean, required: false, default: false },
-    //['gbfTargets', 'nationalTargets7', 'countries', 'subjects','sdgs', 'jurisdictions', 'orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'ecosystemTypes','documentTypes']
-    options   : { type: Object }
+    debug            : { type: Boolean, required: false, default: false },
   },
   components: { ChmComponent }
 };
-
-
 </script>
-
-

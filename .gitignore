@@ -34,5 +34,9 @@ TODO*
 .out/
 .nuxt/
 .astro/
-.github/   
+.github/*
+!.github/workflows/
+!.github/workflows/*.yml
 dist* 
+.claude
+graphify-out/

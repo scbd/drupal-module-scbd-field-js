@@ -1,4 +1,4 @@
-import   component    from './index.vue'
+import   component    from '@/index.vue'
 import { pascalCase } from 'change-case'
 import { name       } from '../package.json'
 

@@ -74,14 +74,6 @@ export const APIS = {
   bchSubjects    : 'https://api.cbd.int/api/v2013/thesaurus/domains/043C7F0D-2226-4E54-A56F-EE0B74CCC984/terms',
 };
 
-// 'all' union leaf domains — mirrors provider generateAll minus dropped domains;
-// bchSubjectGroups excluded (it is a subset of bchSubjects).
-export const ALL_DOMAINS = [
-  'orgTypes', 'govTypes', 'sdgs', 'jurisdictions', 'subjects', 'countries', 'regions',
-  'gbfTargets', 'geoScopes', 'projectStatuses', 'documentTypes', 'ecosystemTypes',
-  'eventStatuses', 'bchSubjects',
-];
-
 export const GBF_SAMEAS = {
   'GBF-TARGET-01': ['AICHI-TARGET-05', 'CBD-SUBJECT-MAR', 'CBD-SUBJECT-GSPC', 'CBD-SUBJECT-PA', 'SUSTAINABLE-DEVELOPMENT-GOAL-14', 'SUSTAINABLE-DEVELOPMENT-GOAL-15'],
   'GBF-TARGET-02': ['AICHI-TARGET-15', 'CBD-SUBJECT-MAR', 'CBD-SUBJECT-GSPC', 'CBD-SUBJECT-PA', 'SUSTAINABLE-DEVELOPMENT-GOAL-06', 'SUSTAINABLE-DEVELOPMENT-GOAL-14', 'SUSTAINABLE-DEVELOPMENT-GOAL-15'],

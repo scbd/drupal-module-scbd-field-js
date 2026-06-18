@@ -8,6 +8,19 @@ import { ofetch } from 'ofetch';
 
 const INDEX_URL = 'https://api.cbd.int/api/v2013/index/select';
 
+// Solr-injection guards (S1): only clean ISO/locale tokens are interpolated into the query.
+// `government_s` takes ISO-3166-1 alpha-2 codes; locales build `title_<LANG>_t/_s` field names.
+// These whitelists reject Solr metacharacters (space, `(`, `)`, `:`, `*`, quotes) at the boundary.
+const COUNTRY_RE = /^[a-z]{2}$/i;
+const LOCALE_RE = /^[a-z]{2,3}(-[a-z0-9]+)?$/i;
+
+/** Drop any country token that is not a clean ISO-3166-1 alpha-2 code. */
+const safeCountries = (countries = []) => countries.filter((c) => COUNTRY_RE.test(c));
+/** Drop any locale token that carries Solr metacharacters or is otherwise malformed. */
+const safeLocales = (locales = []) => locales.filter((l) => LOCALE_RE.test(l));
+/** Fall back to 'en' when the primary locale is malformed (still needed for field names). */
+const safeLocale = (locale) => (LOCALE_RE.test(locale) ? locale : 'en');
+
 /** Map Drupal locale codes to the index's `title_<LANG>_t` field language. */
 const mapLocaleFromDrupal = (locale) =>
   locale === 'zh-hans' ? 'zh' : locale === 'fil' ? 'tl' : locale;
@@ -49,15 +62,20 @@ const normalizeNationalTarget = (currentLocale, locales, doc) => {
  * @returns {Promise<Array<{ identifier: string, name: string }>>}
  */
 export async function getNationalTargets7({ countries = [], start = 0, rows = 25, locale, locales } = {}) {
+  // Sanitize once at the boundary, then thread the safe values through query + normalize (S1).
+  const loc = safeLocale(locale);
+  const locs = safeLocales(locales ?? [loc]);
+  const ctry = safeCountries(countries);
   try {
     const { response } = await ofetch(INDEX_URL, {
       method: 'post',
-      body: indexQuery(countries, start, rows, locale, locales),
+      body: indexQuery(ctry, start, rows, loc, locs),
       headers: { 'Content-Type': 'application/json' },
     });
-    return response.docs.map((doc) => normalizeNationalTarget(mapLocaleFromDrupal(locale), locales, doc));
+    return response.docs.map((doc) => normalizeNationalTarget(mapLocaleFromDrupal(loc), locs, doc));
   } catch (error) {
+    // Resolve to [] (like getData) so one failure can't reject the shared Promise.all batch (C3).
     console.error('Error fetching national targets:', error);
-    throw error;
+    return [];
   }
 }

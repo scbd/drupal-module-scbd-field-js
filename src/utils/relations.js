@@ -6,7 +6,7 @@
 // one-directional: picking an SDG or Subject returns [] and fills nothing (no inverse). This
 // replaces decorating the term objects with a `sameAs` array.
 
-import { GBF_SAMEAS } from './constants.js';
+import { GBF_SAMEAS } from '@/utils/constants.js';
 
 // Domains a GBF Target selection fills. A target's related list never contains other targets, and
 // AICHI ids / stray GUIDs are ignored for free — they never match a loaded option in these domains.
