@@ -28,6 +28,11 @@ beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn(() => {
     throw new Error('Network access is disabled for this unit test')
   }))
+  vi.stubGlobal('XMLHttpRequest', class {
+    open() {
+      throw new Error('Network access is disabled for this unit test')
+    }
+  })
 })
 
 afterEach(() => {
@@ -48,12 +53,30 @@ describe('scbd-field taggable contract (CR-7)', () => {
     expect(multiselect.props('taggable')).toBe(false)
   })
 
-  it('exposes no tag-create affordance in the rendered DOM', async () => {
+  it('exposes no tag-create affordance even with an open dropdown and a no-match query', async () => {
     wrapper = mount(ScbdField, {
       props: { name: 'bl2_tags', domains: ['subjects'] },
+      attachTo: document.body,
     })
     await flushPromises()
 
+    // Drive the multiselect into the exact state where vue-multiselect injects the
+    // "create a tag" option: dropdown OPEN + a search query that matches no existing
+    // option. With :taggable="true" this would render an <li> whose option carries
+    // data-select="Press enter to create a tag"; with :taggable="false" it must not.
+    const multiselect = wrapper.findComponent(Multiselect)
+    await multiselect.find('.multiselect').trigger('focus')
+    const search = multiselect.find('input.multiselect__input')
+    await search.setValue('zzz-no-such-subject-zzz')
+    await flushPromises()
+
+    // Guard the test itself: confirm we actually opened the dropdown and produced a
+    // no-match query (otherwise the assertion below would pass vacuously / non-bitingly).
+    expect(multiselect.find('.multiselect__content-wrapper').exists()).toBe(true)
+    expect(search.element.value).toBe('zzz-no-such-subject-zzz')
+
+    // The actual contract: no create-a-tag option, no created-tag remove icon.
+    expect(multiselect.find('[data-select="Press enter to create a tag"]').exists()).toBe(false)
     expect(wrapper.find('.multiselect__tag-icon').exists()).toBe(false)
     expect(wrapper.text()).not.toContain('Press enter to create a tag')
   })
