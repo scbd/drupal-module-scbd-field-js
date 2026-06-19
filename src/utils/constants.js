@@ -1,6 +1,32 @@
 // ORG-TYPE-OTHER is no longer a constant — its localized title is generated from the locale
 // translation files (the `other` key) via composables/use-org-type-other.js.
 
+/**
+ * Canonical default multi-value domains rendered by the widget when a host does not pass an
+ * explicit `domains` prop. This is the single source of truth for the shipped default: the
+ * wrapper (`src/index.vue`) and the inner component (`src/components/index.vue`) both reference
+ * it, so their defaults can never drift apart.
+ *
+ * Membership and order are load-bearing — the order here is the order the fields render. Keep it
+ * byte-for-byte stable; changing it changes shipped behavior.
+ *
+ * `bchSubjectGroups` is intentionally NOT included: it is a biosafety-site (BSL) concern, opted
+ * into per-site via an explicit `domains` prop (see `src/dev/harness.vue`), not a shared default.
+ * Adding it here would silently render an extra field on every host that relies on the default.
+ *
+ * @type {readonly string[]}
+ */
+export const DEFAULT_DOMAINS = ['gbfTargets', 'nationalTargets7', 'countries', 'subjects', 'sdgs'];
+
+/**
+ * Canonical default single-value domains (each holds one term object or null rather than an array).
+ * Referenced by the inner component's `singleValueDomains` prop default so the membership lives in
+ * one place. A domain listed here renders as a single-select; everything else is multi-select.
+ *
+ * @type {readonly string[]}
+ */
+export const DEFAULT_SINGLE_VALUE_DOMAINS = ['orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes', 'ecosystemTypes', 'jurisdictions', 'eventStatuses'];
+
 export const DOC_TYPE_IDENTIFIERS = [
   '474BC340-A877-4827-81AF-38B9378F56D0',
   '36742817-25C3-4FB1-A436-AABC8E253382',
