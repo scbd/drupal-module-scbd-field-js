@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Cíle GBF",
+  "nationalTargets7": "Národní cíle",
+  "subjects": "Tematické oblasti",
+  "sdgs": "Cíle udržitelného rozvoje",
+  "countries": "Země",
+  "regions": "Regiony",
+  "jurisdictions": "Jurisdikce",
+  "orgTypes": "Typ organizace",
+  "govTypes": "Vládní typ",
+  "projectStatuses": "Stav projektu",
+  "geoScopes": "Geografický rozsah",
+  "documentTypes": "Typ dokumentu",
+  "ecosystemTypes": "Typ ekosystému",
+  "eventStatuses": "Stav události",
+  "bchSubjects": "Tematické oblasti biologické bezpečnosti",
+  "bchSubjectGroups": "Tematické oblasti biologické bezpečnosti",
+  "other": "Ostatní"
+}

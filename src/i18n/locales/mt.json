@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Miri GBF",
+  "nationalTargets7": "Miri Nazzjonali",
+  "subjects": "Oqsma Tematiċi",
+  "sdgs": "SDGs",
+  "countries": "Pajjiżi",
+  "regions": "Reġjuni",
+  "jurisdictions": "Ġurisdizzjonijiet",
+  "orgTypes": "Tip ta' Organizzazzjoni",
+  "govTypes": "Tip ta' Gvern",
+  "projectStatuses": "Status tal-Proġett",
+  "geoScopes": "Kamp Ġeografiku",
+  "documentTypes": "Tip ta' Dokument",
+  "ecosystemTypes": "Tip ta' Ekosistema",
+  "eventStatuses": "Status tal-Avveniment",
+  "bchSubjects": "Żoni Tematiċi tal-Bijosigurtà",
+  "bchSubjectGroups": "Żoni Tematiċi tal-Bijosigurtà",
+  "other": "Oħrajn"
+}
