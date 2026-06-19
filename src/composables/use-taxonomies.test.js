@@ -11,7 +11,7 @@
 //
 // Fully offline/deterministic: `ofetch` and `useOrgTypeOther` are mocked; no network.
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import {
   APIS,
@@ -48,10 +48,9 @@ const edgeTerms = (prefix) => [
   { identifier: `${prefix}-C` }, // identifier only → omitNil -> { identifier }
 ];
 
-beforeEach(() => {
-  ofetchMock.mockReset();
-});
-
+// No beforeEach mock reset needed: `clearMocks: true` (vitest.config.js) clears call
+// history between tests, and every test re-establishes its own `ofetch` implementation
+// via respondWith() before use, so there is no shared/default impl to wipe.
 describe('useTaxonomies dead-filter removal (CR-11)', () => {
   it('byIdSorted path (sdgs) keeps every element despite falsy-name edges', async () => {
     const raw = edgeTerms('SDG');
