@@ -16,7 +16,7 @@
  *
  * @type {readonly string[]}
  */
-export const DEFAULT_DOMAINS = ['gbfTargets', 'nationalTargets7', 'countries', 'subjects', 'sdgs'];
+export const DEFAULT_DOMAINS = Object.freeze(['gbfTargets', 'nationalTargets7', 'countries', 'subjects', 'sdgs']);
 
 /**
  * Canonical default single-value domains (each holds one term object or null rather than an array).
@@ -25,7 +25,7 @@ export const DEFAULT_DOMAINS = ['gbfTargets', 'nationalTargets7', 'countries', '
  *
  * @type {readonly string[]}
  */
-export const DEFAULT_SINGLE_VALUE_DOMAINS = ['orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes', 'ecosystemTypes', 'jurisdictions', 'eventStatuses'];
+export const DEFAULT_SINGLE_VALUE_DOMAINS = Object.freeze(['orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes', 'ecosystemTypes', 'jurisdictions', 'eventStatuses']);
 
 export const DOC_TYPE_IDENTIFIERS = [
   '474BC340-A877-4827-81AF-38B9378F56D0',

@@ -24,6 +24,11 @@ describe('canonical domain consts', () => {
       'documentTypes', 'ecosystemTypes', 'jurisdictions', 'eventStatuses',
     ])
   })
+
+  it('both canonical consts are frozen to honor the readonly contract', () => {
+    expect(Object.isFrozen(DEFAULT_DOMAINS)).toBe(true)
+    expect(Object.isFrozen(DEFAULT_SINGLE_VALUE_DOMAINS)).toBe(true)
+  })
 })
 
 describe('SFCs consume the canonical consts', () => {
