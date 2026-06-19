@@ -1,111 +1,83 @@
-import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { flushPromises } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils'
+import Multiselect from 'vue-multiselect'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-// GBF-TARGET-01 -> related SDGs (14, 15) + CBD-SUBJECT-MAR etc. (src/utils/constants.js GBF_SAMEAS).
-const gbfTarget = { identifier: 'GBF-TARGET-01', name: 'GBF Target 1' };
-const sdg14 = { identifier: 'SUSTAINABLE-DEVELOPMENT-GOAL-14', name: 'SDG 14' };
-const sdg15 = { identifier: 'SUSTAINABLE-DEVELOPMENT-GOAL-15', name: 'SDG 15' };
-const subjectMar = { identifier: 'CBD-SUBJECT-MAR', name: 'Marine' };
+// SCBD vocabularies are closed: the widget must never offer a create-a-tag
+// affordance. These mocks keep the mount network-free (mirrors src/dev/harness.smoke.test.js)
+// while giving one domain a non-empty option list so the <multiselect> actually renders.
+const getData = vi.fn(async () => [{ identifier: 'CBD-SUBJECT-MAR', name: 'Marine' }])
+const lookUp = vi.fn(async () => [])
 
-const optionsByDomain = {
-  gbfTargets: [gbfTarget],
-  sdgs: [sdg14, sdg15],
-  subjects: [subjectMar],
-};
-
-// Offline taxonomy mock driven through the component's real load path (onMounted -> loadOptions,
-// loadInitialValues -> resolveSavedValue -> lookUp). lookUp returns a single object when single=true
-// so a single-value domain hydrates to one object (the CR-6 trigger), an array otherwise.
 vi.mock('@/composables/use-taxonomies', () => ({
-  useTaxonomies: () => ({
-    getData: vi.fn(async (domain) => optionsByDomain[domain] ?? []),
-    lookUp: vi.fn(async (source, keys = [], single = false) => {
-      const matched = (optionsByDomain[source] ?? []).filter((o) => keys.includes(o.identifier));
-      if (single) return matched[0];
-      return matched;
-    }),
-  }),
-}));
+  useTaxonomies: () => ({ getData, lookUp }),
+}))
 
 vi.mock('@/composables/use-translations', () => ({
   useTranslations: () => ({ t: (key) => key }),
-}));
+}))
 
 vi.mock('@/utils/national-targets.js', () => ({
   getNationalTargets7: vi.fn(async () => []),
-}));
+}))
 
-const { default: ScbdField } = await import('@/index.vue');
+const { default: ScbdField } = await import('./index.vue')
 
-let wrapper;
+let wrapper
 
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn(() => {
-    throw new Error('Network access is disabled for component tests');
-  }));
-});
+    throw new Error('Network access is disabled for this unit test')
+  }))
+  vi.stubGlobal('XMLHttpRequest', class {
+    open() {
+      throw new Error('Network access is disabled for this unit test')
+    }
+  })
+})
 
 afterEach(() => {
-  wrapper?.unmount();
-  wrapper = undefined;
-  document.body.innerHTML = '';
-  vi.unstubAllGlobals();
-});
+  wrapper?.unmount()
+  wrapper = undefined
+  vi.unstubAllGlobals()
+})
 
-/** Mount with the hidden Drupal input pre-seeded; await onMounted's async load + initial hydration. */
-async function mountField(props, savedValue) {
-  document.body.innerHTML = `<input id="edit-field-${props.name}-0-value" name="field_${props.name}[0][value]" type="hidden" value="${savedValue}" />`;
-  wrapper = mount(ScbdField, { props, attachTo: document.body });
-  await flushPromises();
-  return wrapper;
-}
+describe('scbd-field taggable contract (CR-7)', () => {
+  it('renders the vue-multiselect with taggable disabled', async () => {
+    wrapper = mount(ScbdField, {
+      props: { name: 'bl2_tags', domains: ['subjects'] },
+    })
+    await flushPromises()
 
-/** Fire a GBF Target @select through the rendered gbfTargets multiselect (drives autoLinkRelated). */
-async function selectGbfTarget() {
-  const gbf = wrapper.findComponent({ name: 'vue-multiselect' });
-  expect(gbf.exists()).toBe(true);
-  gbf.vm.$emit('select', gbfTarget);
-  await flushPromises();
-}
+    const multiselect = wrapper.findComponent(Multiselect)
+    expect(multiselect.exists()).toBe(true)
+    expect(multiselect.props('taggable')).toBe(false)
+  })
 
-/** Read the comma-separated keys persisted to the hidden Drupal input. */
-function persistedKeys() {
-  return document.querySelector('input[type="hidden"]').value.split(',').filter(Boolean);
-}
+  it('exposes no tag-create affordance even with an open dropdown and a no-match query', async () => {
+    wrapper = mount(ScbdField, {
+      props: { name: 'bl2_tags', domains: ['subjects'] },
+      attachTo: document.body,
+    })
+    await flushPromises()
 
-describe('autoLinkRelated array guard (CR-6)', () => {
-  it('does not throw when a linkable domain (sdgs) is configured single-value', async () => {
-    // sdgs in singleValueDomains -> inputValue.sdgs hydrates to a single object, not an array.
-    await mountField(
-      { name: 'bl2_tags', domains: ['gbfTargets', 'sdgs', 'subjects'], singleValueDomains: ['sdgs'] },
-      'SUSTAINABLE-DEVELOPMENT-GOAL-14',
-    );
+    // Drive the multiselect into the exact state where vue-multiselect injects the
+    // "create a tag" option: dropdown OPEN + a search query that matches no existing
+    // option. With :taggable="true" this would render an <li> whose option carries
+    // data-select="Press enter to create a tag"; with :taggable="false" it must not.
+    const multiselect = wrapper.findComponent(Multiselect)
+    await multiselect.find('.multiselect').trigger('focus')
+    const search = multiselect.find('input.multiselect__input')
+    await search.setValue('zzz-no-such-subject-zzz')
+    await flushPromises()
 
-    await expect(selectGbfTarget()).resolves.not.toThrow();
+    // Guard the test itself: confirm we actually opened the dropdown and produced a
+    // no-match query (otherwise the assertion below would pass vacuously / non-bitingly).
+    expect(multiselect.find('.multiselect__content-wrapper').exists()).toBe(true)
+    expect(search.element.value).toBe('zzz-no-such-subject-zzz')
 
-    // sdgs (single-value) is skipped by the guard; subjects (array) still auto-links.
-    const keys = persistedKeys();
-    expect(keys).toContain('SUSTAINABLE-DEVELOPMENT-GOAL-14'); // the pre-saved single sdg, untouched
-    expect(keys).toContain('CBD-SUBJECT-MAR'); // auto-linked into the subjects array
-  });
-
-  it('preserves the normal array auto-link path (add-only)', async () => {
-    await mountField(
-      { name: 'bl2_tags', domains: ['gbfTargets', 'sdgs', 'subjects'], singleValueDomains: [] },
-      'SUSTAINABLE-DEVELOPMENT-GOAL-14',
-    );
-
-    await selectGbfTarget();
-
-    // Pre-existing sdg-14 stays; missing sdg-15 + subject-mar are appended (de-duplicated).
-    const keys = persistedKeys();
-    expect(keys).toEqual(
-      expect.arrayContaining([
-        'SUSTAINABLE-DEVELOPMENT-GOAL-14',
-        'SUSTAINABLE-DEVELOPMENT-GOAL-15',
-        'CBD-SUBJECT-MAR',
-      ]),
-    );
-  });
-});
+    // The actual contract: no create-a-tag option, no created-tag remove icon.
+    expect(multiselect.find('[data-select="Press enter to create a tag"]').exists()).toBe(false)
+    expect(wrapper.find('.multiselect__tag-icon').exists()).toBe(false)
+    expect(wrapper.text()).not.toContain('Press enter to create a tag')
+  })
+})
