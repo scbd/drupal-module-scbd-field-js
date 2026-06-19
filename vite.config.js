@@ -20,7 +20,7 @@ const config = {
       preserveSymlinks: false
     },
     build    : {
-        outDir:'dist', emptyOutDir:true,  sourcemap:true, copyPublicDir : false,
+        outDir:'dist', emptyOutDir:true,  sourcemap:'hidden', copyPublicDir : false,
         minify: 'esbuild', // Vite's built-in minifier strips comments; drops the deprecated, redundant rollup-plugin-terser (B3)
         lib      : { formats:['iife'], entry:'src/index.js', name:'ScbdDrupalScbdFieldJs', fileName:() => 'index.min.js', cssFileName:'style' }, // lib build as opposed to app build
         rollupOptions: {

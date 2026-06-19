@@ -59,7 +59,9 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: dist-${{ github.sha }}
-          path: dist/
+          path: |
+            dist/
+            !dist/*.map
           retention-days: 14
 
   release-assets:
@@ -122,12 +124,11 @@ jobs:
         run: |
           test -f dist/index.min.js
           test -f dist/style.css
-          test -f dist/index.min.js.map
 
       - name: Generate checksums
         run: |
           cd dist
-          sha256sum index.min.js style.css index.min.js.map > SHA256SUMS
+          sha256sum index.min.js style.css > SHA256SUMS
 
       - name: Upload release assets
         env:
@@ -137,7 +138,6 @@ jobs:
           gh release upload "$TAG_NAME" \
             dist/index.min.js \
             dist/style.css \
-            dist/index.min.js.map \
             dist/SHA256SUMS
 
       - name: Verify uploaded release assets
@@ -149,7 +149,6 @@ jobs:
           gh release download "$TAG_NAME" \
             --pattern index.min.js \
             --pattern style.css \
-            --pattern index.min.js.map \
             --pattern SHA256SUMS \
             --dir release-download
           cd release-download
