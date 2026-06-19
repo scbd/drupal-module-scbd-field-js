@@ -207,7 +207,7 @@ For `field_tags` these are `edit-field-tags-0-value` and `edit-field-tags-0-valu
 
 ### Drupal library wiring
 
-`scbd_field.libraries.yml` loads Vue from a CDN and this bundle from its GitHub release. The CI in this repo publishes `index.min.js`, `style.css`, and `index.min.js.map` to a release tagged `v<version>`, so the library references those release URLs:
+`scbd_field.libraries.yml` loads Vue from a CDN and this bundle from its GitHub release. The CI in this repo publishes `index.min.js` and `style.css` to a release tagged `v<version>`, so the library references those release URLs:
 
 ```yaml
 vue:
@@ -221,12 +221,12 @@ vue:
       https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css: { type: external, minified: true }
 
 thesaurus:
-  version: 2.0.9
+  version: 3.0.0
   css:
     theme:
-      https://github.com/scbd/drupal-module-scbd-field-js/releases/download/v2.0.9/style.css: { type: external, minified: true }
+      https://github.com/scbd/drupal-module-scbd-field-js/releases/download/v3.0.0/style.css: { type: external, minified: true }
   js:
-    https://github.com/scbd/drupal-module-scbd-field-js/releases/download/v2.0.9/index.min.js: { type: external, minified: true }
+    https://github.com/scbd/drupal-module-scbd-field-js/releases/download/v3.0.0/index.min.js: { type: external, minified: true }
     scbd_field-2-0-9.js: {}
   dependencies:
     - scbd_field/vue
@@ -297,7 +297,7 @@ Vue is marked external and is **not** bundled — the host page (or Drupal `vue`
 
 ### Release
 
-The CI workflow ([.github/workflows/ci.yml](.github/workflows/ci.yml)) builds on every push and, on a published GitHub release, uploads the three `dist/` artifacts plus a `SHA256SUMS` checksum file to the release tag. The Drupal `libraries.yml` then references those release URLs. The release tag must be `v<version>` and match `package.json`.
+The CI workflow ([.github/workflows/ci.yml](.github/workflows/ci.yml)) builds on every push and, on a published GitHub release, uploads the two `dist/` artifacts plus a `SHA256SUMS` checksum file to the release tag. The Drupal `libraries.yml` then references those release URLs. The release tag must be `v<version>` and match `package.json`.
 
 ## Internationalization
 
