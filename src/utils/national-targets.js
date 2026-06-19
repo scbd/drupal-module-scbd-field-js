@@ -1,4 +1,4 @@
-// src/utils/nationalTargets.js
+// src/utils/national-targets.js
 //
 // "National Targets 7" come from the api.cbd.int Solr index (index/select) rather than the
 // thesaurus domains handled by useTaxonomies, so their fetch + query-building lives here.

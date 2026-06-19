@@ -1,4 +1,4 @@
-// src/composables/useTaxonomies.js
+// src/composables/use-taxonomies.js
 //
 // In-module replacement for @scbd/cached-apis, exposed as a composable. No caching, no
 // sourceMap, no reverse lookup, no extra deps — ofetch is already bundled.
@@ -65,16 +65,16 @@ export function useTaxonomies(locale, locales = []) {
   // sdgs/gbfTargets sort by identifier (stable provider order, robust to the D5 name change, B1);
   // everything else sorts by localized name. GBF<->SDG<->Subject relations now live in
   // utils/relations.js (built from GBF_SAMEAS), so terms are no longer decorated with `sameAs`.
-  const byIdSorted = (raw) => raw.map(base).filter(Boolean).sort(byIdentifier);
+  const byIdSorted = (raw) => raw.map(base).sort(byIdentifier);
   const transforms = {
     sdgs:          byIdSorted,
     gbfTargets:    byIdSorted,
-    bchSubjects:   (raw) => buildChildren(raw.map(sanitizeBchSubject).filter(Boolean).sort(byName)),
-    orgTypes:      (raw, orgTypeOther) => raw.filter((it) => !excludedOrgTypes.includes(it.identifier)).map(base).filter(Boolean).sort(byName).concat(base(orgTypeOther)), // append sanitized "Other"
-    govTypes:      (raw) => raw.filter((it) => excludedOrgTypes.includes(it.identifier)).map(base).filter(Boolean).sort(byName), // inverse of the orgTypes split (same URL)
-    documentTypes: (raw) => raw.filter((it) => docTypeIdentifiers.includes(it.identifier)).map(base).filter(Boolean).sort(byName),
+    bchSubjects:   (raw) => buildChildren(raw.map(sanitizeBchSubject).sort(byName)),
+    orgTypes:      (raw, orgTypeOther) => raw.filter((it) => !excludedOrgTypes.includes(it.identifier)).map(base).sort(byName).concat(base(orgTypeOther)), // append sanitized "Other"
+    govTypes:      (raw) => raw.filter((it) => excludedOrgTypes.includes(it.identifier)).map(base).sort(byName), // inverse of the orgTypes split (same URL)
+    documentTypes: (raw) => raw.filter((it) => docTypeIdentifiers.includes(it.identifier)).map(base).sort(byName),
   };
-  const defaultTransform = (raw) => raw.map(base).filter(Boolean).sort(byName);
+  const defaultTransform = (raw) => raw.map(base).sort(byName);
 
   /**
    * Fetch and normalize one taxonomy domain. Always resolves to an array
