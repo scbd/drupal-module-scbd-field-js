@@ -8,9 +8,12 @@ import { ofetch } from 'ofetch';
 
 const INDEX_URL = 'https://api.cbd.int/api/v2013/index/select';
 
-// Solr-injection guards (S1): only clean ISO/locale tokens are interpolated into the query.
+// Solr-injection guards (S1): only clean ISO/locale codes are interpolated into the query.
 // `government_s` takes ISO-3166-1 alpha-2 codes; locales build `title_<LANG>_t/_s` field names.
-// These whitelists reject Solr metacharacters (space, `(`, `)`, `:`, `*`, quotes) at the boundary.
+// These whitelists reject Solr metacharacters (space, `(`, `)`, `:`, `*`, quotes). They are applied
+// at the boundary (getNationalTargets7) AND re-asserted inside indexQuery (defense-in-depth, CR-8 /
+// SEC-2): indexQuery fails closed for any caller, and the re-assertion is idempotent — sanitized
+// input yields byte-identical output, so the boundary caller's behavior is unchanged.
 const COUNTRY_RE = /^[a-z]{2}$/i;
 const LOCALE_RE = /^[a-z]{2,3}(-[a-z0-9]+)?$/i;
 
@@ -31,15 +34,33 @@ const extraTitleFields = (locales = [], locale) =>
     ? ''
     : locales.filter((l) => l !== locale).map((l) => `, title_${mapLocaleFromDrupal(l).toUpperCase()}_t`).join('');
 
-/** Build the Solr `index/select` request body. Sort on the `_s` string twin, never the `_t` text field. */
-const indexQuery = (countries = [], start = 0, rows = 1000, locale = 'en', locales = ['en']) => {
-  const governmentQuery = countries.length ? `AND government_s : (${countries.join(' ')})` : '';
+/**
+ * Build the Solr `index/select` request body. Sort on the `_s` string twin, never the `_t` text field.
+ *
+ * Whitelists (COUNTRY_RE / LOCALE_RE) are re-asserted here via the boundary helpers so the function
+ * fails closed regardless of caller (defense-in-depth, CR-8 / SEC-2). This is idempotent with the
+ * boundary sanitizer in getNationalTargets7 — already-sanitized input produces byte-identical output —
+ * while an invalid DIRECT call drops bad country/locale values (locale falls back to 'en') instead of
+ * injecting Solr metacharacters into the df/sort/fl field names.
+ *
+ * @param {string[]} [countries] ISO-3166-1 alpha-2 country codes; non-conforming values are dropped.
+ * @param {number} [start]
+ * @param {number} [rows]
+ * @param {string} [locale] primary locale; falls back to 'en' if malformed.
+ * @param {string[]} [locales] alternate locales for fallback name fields; malformed values dropped.
+ * @returns {string} JSON request body for `index/select`.
+ */
+export const indexQuery = (countries = [], start = 0, rows = 1000, locale = 'en', locales = ['en']) => {
+  const ctry = safeCountries(countries);
+  const loc = safeLocale(locale);
+  const locs = safeLocales(locales);
+  const governmentQuery = ctry.length ? `AND government_s : (${ctry.join(' ')})` : '';
   return JSON.stringify({
-    df: `text_${locale.toUpperCase()}_txt`,
+    df: `text_${loc.toUpperCase()}_txt`,
     fq: ['_state_s:public', 'realm_ss:ort'],
     q: `(schema_s : (nationalTarget7)${governmentQuery})`,
-    sort: `title_${locale.toUpperCase()}_s asc`,
-    fl: `identifier:uniqueIdentifier_s, name:title_${mapLocaleFromDrupal(locale).toUpperCase()}_t${extraTitleFields(locales, locale)}`,
+    sort: `title_${loc.toUpperCase()}_s asc`,
+    fl: `identifier:uniqueIdentifier_s, name:title_${mapLocaleFromDrupal(loc).toUpperCase()}_t${extraTitleFields(locs, loc)}`,
     wt: 'json',
     start,
     rows,
