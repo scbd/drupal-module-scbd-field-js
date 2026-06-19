@@ -15,7 +15,7 @@
             label="name"
             :options="optionsList[domain]"
             :multiple="domainFlags[domain].multiple"
-            :taggable="true"
+            :taggable="false"
             :group-select="domainFlags[domain].grouped"
             :group-values="domainFlags[domain].grouped ? 'children' : null"
             :group-label="domainFlags[domain].grouped ? 'name' : null"
