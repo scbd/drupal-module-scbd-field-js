@@ -1,447 +1,293 @@
-# Drupal SCBD Field JS
+# drupal-module-scbd-field-js
 
-A Vue 3 multiselect component library for biodiversity and sustainability taxonomy fields, designed for seamless integration with Drupal forms. The component provides an intuitive interface for selecting GBF targets, SDGs, national targets, countries, and other SCBD thesaurus terms.
+The browser front-end for the [SCBD Thesaurus Tags](https://github.com/scbd/drupal-module-scbd-thesaurus-tags) Drupal field. It is a Vue 3 app, bundled as a single IIFE script, that renders one or more multiselect dropdowns for the controlled vocabularies published by the Secretariat of the Convention on Biological Diversity (SCBD).
 
-## Features
+Each dropdown ("domain") is backed by a thesaurus on `api.cbd.int` — Global Biodiversity Framework targets, Sustainable Development Goals, national biodiversity targets, countries, CBD subjects, IUCN ecosystem types, and others. The app reads the field's saved value from a hidden Drupal text input, lets an editor pick terms, and writes the selected term keys back to that input as a comma-separated string on every change. Selecting a GBF target also auto-selects its related SDGs.
 
-- 🌍 **Multi-domain Support**: GBF Targets, SDGs, National Targets, Countries, Subjects, and more
-- 🔗 **Smart Linking**: Auto-links related SDG goals when selecting GBF targets
-- 🌐 **Internationalization**: Supports 60+ languages with automatic fallback
-- 📦 **IIFE Bundle**: Browser-ready bundle with all dependencies except Vue
-- 🎨 **Flexible Modes**: Single-field grouped or multi-field separated layouts
-- 🔌 **Drupal Integration**: Reads/writes directly to Drupal hidden form inputs
+This repository builds and publishes the bundle. The Drupal module that defines the field type, widget, and admin settings lives in [drupal-module-scbd-thesaurus-tags](https://github.com/scbd/drupal-module-scbd-thesaurus-tags) and loads this bundle as a library.
 
-## Table of Contents
+## Architecture
 
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Usage](#usage)
-  - [Basic Example](#basic-example)
-  - [Configuration Options](#configuration-options)
-  - [Available Domains](#available-domains)
-- [Drupal Integration](#drupal-integration)
-- [Development](#development)
-- [API Reference](#api-reference)
-- [License](#license)
+```
+Drupal node form
+  └─ field_<name> (scbd_field_thesaurus field type)
+       ├─ hidden <input> value   ← comma-separated term keys, persisted to DB
+       ├─ hidden <input> value2  ← optional second value (isAdditionalField)
+       └─ <div id="scbd-field-thesaurus-<name>">
+              └─ Vue app (this bundle) reads the inputs, renders multiselects,
+                 fetches terms from api.cbd.int, writes keys back to the inputs
+```
 
 ## Installation
 
-### For Browser Use (IIFE)
-
-**Include Vue 3** (required external dependency):
-
-```html
-<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-```
-
-**Include the component bundle**:
-
-```html
-<script src="https://cdn.cbd.int/drupal-module-scbd-field-js@1.0.1/dist/index.min.js"></script>
-<link rel="stylesheet" href="https://cdn.cbd.int/drupal-module-scbd-field-js@1.0.1/dist/style.css">
-```
-
-### For Development
+The bundle is consumed by Drupal, not added to a page by hand. Install the [SCBD Thesaurus Tags](https://github.com/scbd/drupal-module-scbd-thesaurus-tags) module and enable it:
 
 ```bash
-# Clone the repository
-git clone https://github.com/scbd/drupal-module-scbd-field-js.git
-cd drupal-module-scbd-field-js
-
-# Install dependencies
-yarn install
-
-# Run development server
-yarn dev
-
-# Build for production
-yarn build
+composer require scbd/drupal-module-scbd-thesaurus-tags
+drush en scbd_field
 ```
 
-## Quick Start
+That module's `scbd_field.libraries.yml` pulls this bundle from the GitHub release matching its version (see [Drupal library wiring](#drupal-library-wiring)). Once enabled, add a field of type **SCBD Thesaurus** to any content type — the widget renders automatically.
 
-### Minimal Example
+For local development of the bundle itself, see [Development](#development).
+
+## Component props
+
+The bundle exposes one global, `ScbdDrupalScbdFieldJs.default`, which is the Vue component. Mount it with `Vue.createApp(...)`. All props are passed by the Drupal behavior from `drupalSettings`; only `name` is required.
+
+**The widget does not take initial values as a prop.** It reads the saved selection directly from the hidden Drupal `<input>` (located by `name`) at mount and writes the selection back to that same input on every change. Preloading and the new-entity "auto-add" defaults are therefore the host page's job: Drupal renders the input with the saved value as its `#default_value`, and the behavior seeds any auto-add keys into the input *before* mount (see [Drupal integration](#drupal-integration)).
+
+| Prop                 | Type    | Default       | Description |
+| -------------------- | ------- | ------------- | ----------- |
+| `name`               | String  | **required**  | Field machine name **without** the `field_` prefix. Used to locate the mount `<div>` (`#scbd-field-thesaurus-<name>`) and the hidden input (`field_<name>[0][value]` / `#edit-field-<name>-0-value`). |
+| `description`        | String  | `' '`         | Help text rendered above the widget. |
+| `locale`             | String  | `'en'`        | Current interface language (ISO 639-1). |
+| `locales`            | Array   | `['en']`      | All enabled languages, used for term-name fallback resolution. |
+| `countries`          | Array   | `['be']`      | ISO 3166-1 alpha-2 codes. Scopes the `nationalTargets7` lookup. |
+| `domains`            | Array   | see below     | Ordered domain keys to render. Each becomes a separate labeled multiselect. |
+| `singleValueDomains` | Array   | see below     | Domains rendered as single-select instead of multi-select (when present in `domains`). |
+| `isAdditionalField`  | Boolean | `false`       | Read/write the hidden input's `value2` column (`field_<name>[0][value2]`) instead of `value`. |
+| `debug`              | Boolean | `false`       | Render the input id beside each multiselect (the harness also shows the raw saved value). |
+
+Default `domains`: `gbfTargets`, `nationalTargets7`, `countries`, `subjects`, `sdgs`.
+
+Default `singleValueDomains`: `orgTypes`, `govTypes`, `projectStatuses`, `geoScopes`, `documentTypes`, `ecosystemTypes`, `jurisdictions`, `eventStatuses`.
+
+> Both default lists are defined once in [src/utils/constants.js](src/utils/constants.js) (`DEFAULT_DOMAINS` / `DEFAULT_SINGLE_VALUE_DOMAINS`) and shared by the wrapper and inner component, so this table and the code cannot drift.
+
+## Domains
+
+A domain is one controlled vocabulary fetched from `api.cbd.int`. Multi-select domains allow many terms; single-select domains allow one.
+
+### Multi-select
+
+| Key                | Vocabulary |
+| ------------------ | ---------- |
+| `gbfTargets`       | Global Biodiversity Framework targets (`GBF-TARGET-01` … `GBF-TARGET-23`) |
+| `nationalTargets7` | National biodiversity targets, filtered by the `countries` prop |
+| `sdgs`             | Sustainable Development Goals 1–17 (`SUSTAINABLE-DEVELOPMENT-GOALS` thesaurus) |
+| `countries`        | Countries |
+| `subjects`         | Thematic areas / subjects (`CBD-SUBJECTS` thesaurus) |
+| `bchSubjects`      | Biosafety Clearing-House thematic areas |
+| `bchSubjectGroups` | Biosafety Clearing-House thematic-area groups |
+| `regions`          | Geographic regions |
+
+### Single-select
+
+| Key               | Vocabulary |
+| ----------------- | ---------- |
+| `orgTypes`        | Organization type |
+| `govTypes`        | Government type |
+| `projectStatuses` | Project status |
+| `geoScopes`       | Geographic scope |
+| `documentTypes`   | Document types |
+| `ecosystemTypes`  | IUCN ecosystem types (`ECOSYSTEM-TYPES-IUCN` thesaurus) |
+| `jurisdictions`   | Jurisdictions |
+| `eventStatuses`   | Event status |
+
+## Value format
+
+The hidden input stores a comma-separated string of term keys:
+
+```
+GBF-TARGET-03,SUSTAINABLE-DEVELOPMENT-GOAL-06,SUSTAINABLE-DEVELOPMENT-GOAL-14
+```
+
+National targets are identified by UUID rather than a slug:
+
+```
+E6640AB5-975D-479F-92C0-FC6E3AC0ADFF,CCA4B662-8EF4-418D-B327-0D6F418AA703
+```
+
+**SDG key migration.** Older data saved SDGs as `SDG-GOAL-01` … `SDG-GOAL-17`. These are read transparently and rewritten to `SUSTAINABLE-DEVELOPMENT-GOAL-01` … `-17` on the next save.
+
+## GBF → SDG / Subject auto-linking
+
+Selecting a GBF target adds its related SDGs **and** CBD subjects, resolved from the local `GBF_SAMEAS` table in [src/utils/constants.js](src/utils/constants.js) (the linkable domains are `sdgs` and `subjects`). For example, picking `GBF-TARGET-03` also adds `SUSTAINABLE-DEVELOPMENT-GOAL-06`, `-11`, `-14`, `-15` and the `CBD-SUBJECT-*` subjects in its row — but only for whichever of those domains is actually rendered. The mapping is one-way and add-only: selecting an SDG or subject never adds a GBF target, and deselecting a GBF target never strips previously linked terms.
+
+## Drupal integration
+
+The companion module wires everything together. The relevant pieces, drawn from that module:
+
+### Field type and widget
+
+A custom field type `scbd_field_thesaurus` stores two `text/big` columns, `value` and `value2`. Its default widget `scbd_thesaurus_widget` renders the hidden inputs, the mount `<div>`, and attaches the library plus `drupalSettings`:
+
+```php
+$element['value'] = [
+  '#type' => 'textfield',
+  '#default_value' => $value,   // the widget reads this hidden input directly — no value is passed as a prop
+  '#suffix' => '<div id="scbd-field-thesaurus-' . $field_name . '"></div>',
+  '#attributes' => ['class' => ['edit-scbd_field-thesaurus']],
+  '#attached' => [
+    'library' => ['scbd_field/thesaurus'],
+    'drupalSettings' => [
+      'scbd_field' => [
+        'element_title'       => $field_name,        // 'tags' (no field_ prefix) — locates the input + mount div
+        'element_description' => $element['#description'] ?? '',
+        'countries'           => $countries,         // from bioland.settings
+        'locales'             => $locales,           // all enabled language codes
+        'locale'              => $current_locale,
+        'domains'             => $domain_order,       // from scbd_field.settings
+        'debug'               => $debug,
+        'auto_add_values'     => $auto_add_values,    // new-entity seed only, e.g. ['GBF-TARGET-17', 'be']
+      ],
+    ],
+  ],
+];
+// The `value2` column (read when the widget is mounted with `isAdditionalField: true`) is rendered
+// as a second textfield the same way, with its own `#default_value`.
+```
+
+### Drupal behavior
+
+`scbd_field-2-0-9.js` reads `drupalSettings.scbd_field`, finds `#scbd-field-thesaurus-<name>`, and mounts the Vue app once (guarded by `__vue_app__`). Because the widget reads the saved selection straight from the hidden input, the behavior's only data job is to **seed that input before mount** — and Drupal already populates it with the persisted value via `#default_value`, so the behavior only has to merge the configured `auto_add_values` into an *empty* (new-entity) input. It passes no initial-value or auto-add props, because the component has none:
+
+```js
+Drupal.behaviors.scbd_thesaurus_widget = {
+  attach(context, settings) {
+    const s = settings?.scbd_field ?? window.drupalSettings?.scbd_field;
+    if (!s) return;
+
+    const mountEl = document.querySelector(`#scbd-field-thesaurus-${s.element_title}`);
+    if (!mountEl || mountEl.__vue_app__) return;
+
+    // Seed the hidden input BEFORE mount — the widget reads its value directly. Drupal already set
+    // the saved value via #default_value; for a new (empty) entity, merge the auto-add defaults in.
+    const input = document.querySelector(`#edit-field-${s.element_title}-0-value`);
+    if (input && !input.value && Array.isArray(s.auto_add_values) && s.auto_add_values.length) {
+      input.value = s.auto_add_values.join(',');
+    }
+
+    const { createApp } = Vue;
+    const App = ScbdDrupalScbdFieldJs.default;
+
+    createApp(App, {
+      name:        s.element_title,
+      description: s.element_description,
+      countries:   s.countries ?? ['be'],
+      locale:      s.locale    ?? 'en',
+      locales:     s.locales   ?? ['en'],
+      domains:     s.domains   ?? ['gbfTargets', 'nationalTargets7', 'countries', 'subjects', 'sdgs'],
+      debug:       s.debug     ?? false,
+    }).mount(`#scbd-field-thesaurus-${s.element_title}`);
+
+    mountEl.__vue_app__ = true;
+  }
+};
+```
+
+> A second widget for the `value2` column is mounted the same way with `isAdditionalField: true` (and seeds `#edit-field-<name>-0-value2`). `singleValueDomains` can also be passed here if a site needs to override which domains render single-select.
+
+### Hidden input selector convention
+
+The widget locates the hidden inputs by `name` (`field_<name>[0][value]`), falling back to the Drupal auto-id (`data-drupal-selector` form, underscores replaced with hyphens):
+
+```
+edit-field-<name>-0-value
+edit-field-<name>-0-value2
+```
+
+For `field_tags` these are `edit-field-tags-0-value` and `edit-field-tags-0-value2`.
+
+### Drupal library wiring
+
+`scbd_field.libraries.yml` loads Vue from a CDN and this bundle from its GitHub release. The CI in this repo publishes `index.min.js`, `style.css`, and `index.min.js.map` to a release tagged `v<version>`, so the library references those release URLs:
+
+```yaml
+vue:
+  remote: https://github.com/vuejs/core
+  version: "3.5.24"
+  js:
+    https://unpkg.com/vue@^3.5.24/dist/vue.global.prod.js: { type: external, minified: true }
+  css:
+    component:
+      https://unpkg.com/vue-multiselect@3.2.0/dist/vue-multiselect.css: { type: external, minified: true }
+      https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css: { type: external, minified: true }
+
+thesaurus:
+  version: 2.0.9
+  css:
+    theme:
+      https://github.com/scbd/drupal-module-scbd-field-js/releases/download/v2.0.9/style.css: { type: external, minified: true }
+  js:
+    https://github.com/scbd/drupal-module-scbd-field-js/releases/download/v2.0.9/index.min.js: { type: external, minified: true }
+    scbd_field-2-0-9.js: {}
+  dependencies:
+    - scbd_field/vue
+    - core/jquery
+    - core/drupalSettings
+```
+
+### Admin settings
+
+The module exposes a config form at `/admin/config/scbd-field`:
+
+- **Domain order** — one domain key per line; defines which domains render and in what order. Defaults to `gbfTargets`, `nationalTargets7`, `countries`, `subjects`, `sdgs`.
+- **Debug mode** — show the hidden input beside the widget.
+- **Disable auto-add GBF Target 17** — on biosafety sites, `GBF-TARGET-17` is preselected on new entities unless disabled.
+- **Disable auto-add countries** — on biosafety sites, the site country is preselected on new entities unless disabled.
+
+On biosafety sites with no saved order, the form offers the biosafety defaults: `bchSubjectGroups`, `gbfTargets`, `nationalTargets7`, `countries`.
+
+## Standalone usage
+
+Useful for testing the component outside Drupal. Vue must load before the bundle.
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/vue@3.5.25/dist/vue.global.prod.js"></script>
   <script src="dist/index.min.js"></script>
   <link rel="stylesheet" href="dist/style.css">
 </head>
 <body>
-  <div id="app"></div>
-  
-  <!-- Hidden Drupal form input -->
   <input type="hidden" name="field_tags[0][value]" value="">
-  
+  <div id="scbd-field-thesaurus-tags"></div>
+
   <script>
-    const { createApp } = Vue;
-    const { default: ScbdFieldComponent } = ScbdDrupalScbdFieldJs;
-    
-    createApp(ScbdFieldComponent, {
-      name: 'tags',
-      locale: 'en',
-      domains: ['gbfTargets', 'sdgs', 'countries']
-    }).mount('#app');
+    Vue.createApp(ScbdDrupalScbdFieldJs.default, {
+      name:      'tags',
+      locale:    'en',
+      locales:   ['en', 'fr', 'es'],
+      countries: ['ca'],
+      domains:   ['gbfTargets', 'nationalTargets7', 'countries', 'subjects', 'sdgs'],
+    }).mount('#scbd-field-thesaurus-tags');
   </script>
 </body>
 </html>
 ```
 
-## Usage
-
-### Basic Example
-
-```javascript
-const { createApp } = Vue;
-const { default: ScbdFieldComponent } = ScbdDrupalScbdFieldJs;
-
-createApp(ScbdFieldComponent, {
-  name: 'my_field',
-  description: 'Select relevant tags',
-  locale: 'en',
-  locales: ['en', 'fr', 'es'],
-  countries: ['us', 'gb'],
-  domains: ['gbfTargets', 'nationalTargets7', 'sdgs', 'subjects', 'countries']
-}).mount('#app');
-```
-
-### Configuration Options
-
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `name` | String | **Yes** | - | Field name (matches Drupal field machine name) |
-| `description` | String | No | `' '` | Help text displayed above the field |
-| `locale` | String | No | `'en'` | Current interface language (ISO 639-1 code) |
-| `locales` | Array | No | `['en']` | Available fallback locales for term names |
-| `countries` | Array | No | `['be']` | Country codes for filtering national targets |
-| `domains` | Array | No | `['nationalTargets7', 'gbfTargets', 'countries', 'subjects', 'sdgs', 'bchSubjects']` | Taxonomy domains to display |
-| `singleValueDomains` | Array | No | `['orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes', 'jurisdictions', 'eventStatuses']` | Domains that allow only single selection instead of multi-select |
-| `singleField` | Boolean | No | `false` | If true, groups all domains in one multiselect instead of separate fields |
-| `isAdditionalField` | Boolean | No | `false` | If true, reads/writes to `value2` instead of `value` |
-| `debug` | Boolean | No | `false` | If true, displays current selected values in a debug panel |
-
-### Available Domains
-
-#### Multi-select Domains (default)
-
-- `gbfTargets` - Global Biodiversity Framework Targets
-- `nationalTargets7` - National Biodiversity Targets (filtered by country)
-- `sdgs` - Sustainable Development Goals
-- `countries` - Countries
-- `subjects` - Thematic Areas/Subjects
-- `bchSubjects` - Biosafety Thematic Areas
-- `bchSubjectGroups` - Biosafety Thematic Areas
-- `regions` - Geographic Regions
-- `ecosystemTypes` - Ecosystem Types
-
-#### Single-select Domains
-
-- `orgTypes` - Organization Type
-- `govTypes` - Government Type
-- `projectStatuses` - Project Status
-- `geoScopes` - Geographic Scope
-- `documentTypes` - Document Types
-- `jurisdictions` - Jurisdictions
-- `eventStatuses` - Event Status
-
-### Display Modes
-
-#### Multi-field Layout (default)
-
-Each domain appears as a separate labeled field:
-
-```javascript
-createApp(ScbdFieldComponent, {
-  name: 'tags',
-  domains: ['gbfTargets', 'sdgs', 'countries']
-  // Each domain will be a separate dropdown
-}).mount('#app');
-```
-
-#### Single-field Layout
-
-All options grouped in one multiselect:
-
-```javascript
-createApp(ScbdFieldComponent, {
-  name: 'tags',
-  singleField: true  // Groups all domains together
-}).mount('#app');
-```
-
-## Drupal Integration
-
-### How It Works
-
-The component integrates with Drupal by reading from and writing to hidden form inputs. The expected input name pattern is:
-
-```text
-field_[FIELD_NAME][0][value]
-```
-
-For additional fields:
-
-```text
-field_[FIELD_NAME][0][value2]
-```
-
-### Setup in Drupal
-
-**Step 1: Create a hidden text field** in your Drupal form:
-
-```html
-<input 
-  type="hidden" 
-  name="field_tags[0][value]" 
-  value="" 
-  class="edit-scbd_field-thesaurus">
-```
-
-**Step 2: Add the Vue app container**:
-
-```html
-<div id="scbd-field-tags"></div>
-```
-
-**Step 3: Initialize the component**:
-
-```javascript
-const { createApp } = Vue;
-const { default: ScbdFieldComponent } = ScbdDrupalScbdFieldJs;
-
-createApp(ScbdFieldComponent, {
-  name: 'tags',  // Must match the field name (without 'field_' prefix)
-  locale: drupalSettings.locale || 'en',
-  domains: ['gbfTargets', 'sdgs', 'subjects']
-}).mount('#scbd-field-tags');
-```
-
-### Value Format
-
-Values are stored as comma-separated identifier keys:
-
-```text
-GBF-TARGET-03,GBF-TARGET-05,SUSTAINABLE-DEVELOPMENT-GOAL-06,SUSTAINABLE-DEVELOPMENT-GOAL-11,SUSTAINABLE-DEVELOPMENT-GOAL-12
-```
-
-> SDGs are sourced from the `SUSTAINABLE-DEVELOPMENT-GOALS` thesaurus. Legacy `SDG-GOAL-01…17`
-> keys saved by earlier versions are read transparently and rewritten to their
-> `SUSTAINABLE-DEVELOPMENT-GOAL-01…17` equivalents on the next save.
-
-For country-specific identifiers (like national targets), UUIDs are used:
-
-```text
-E6640AB5-975D-479F-92C0-FC6E3AC0ADFF,CCA4B662-8EF4-418D-B327-0D6F418AA703
-```
-
-### Smart GBF-SDG Linking
-
-When a user selects a GBF target that has related SDG goals, the component automatically:
-
-1. Extracts related SDG identifiers from the `sameAs` property
-2. Adds those SDG goals to the selection
-3. Updates the hidden input field
-
-This feature only works with the `gbfTargets` domain.
-
 ## Development
 
-### Project Structure
-
-```
-drupal-module-scbd-field-js/
-├── src/
-│   ├── index.js              # Entry point
-│   ├── index.vue             # Wrapper component
-│   ├── main.js               # Dev server entry
-│   ├── style.scss            # Styles
-│   ├── components/
-│   │   └── index.vue         # Main multiselect component
-│   └── i18n/
-│       ├── data.json         # Translation data (60+ languages)
-│       └── index.js          # i18n helper
-├── dist/                     # Built files (IIFE bundle)
-├── index.html                # Development test page
-├── vite.config.js            # Build configuration
-└── package.json
-```
-
-### Build Commands
-
 ```bash
-# Development server with hot reload
-yarn dev
-
-# Build production bundle
-yarn build
-
-# Preview production build
-yarn preview
-
-# Publish to npm
-yarn release
-
-# Clean reinstall dependencies
-yarn clean-reinstall
+yarn install
+yarn dev          # dev server at http://localhost:5173
+yarn build        # writes dist/index.min.js, dist/style.css, dist/index.min.js.map
+yarn test:smoke
 ```
 
-### Build Configuration
+`index.html` is a dev harness that simulates the Drupal hidden inputs. Edit it to exercise different domains and initial values.
 
-The build creates an IIFE bundle with:
+### Build output
 
-- **Entry**: `src/index.js`
-- **Output**: `dist/index.min.js`
-- **External**: Vue (must be loaded separately)
-- **Global name**: `ScbdDrupalScbdFieldJs`
-- **CSS**: Purged and minified in `dist/style.css`
+| File                    | Purpose |
+| ----------------------- | ------- |
+| `dist/index.min.js`     | IIFE bundle; registers the `ScbdDrupalScbdFieldJs` global |
+| `dist/style.css`        | PurgeCSS-minified stylesheet |
+| `dist/index.min.js.map` | Source map |
 
-### Testing Locally
+Vue is marked external and is **not** bundled — the host page (or Drupal `vue` library) must provide it.
 
-The included `index.html` simulates Drupal form inputs for testing:
+### Release
 
-```bash
-yarn dev
-```
-
-Then visit `http://localhost:5173` and modify the hidden input values to test different scenarios.
-
-## API Reference
-
-### Component Props
-
-```javascript
-{
-  // Required
-  name: String,              // Drupal field machine name
-  
-  // Optional
-  description: String,       // Help text
-  locale: String,            // Current language (e.g., 'en', 'fr')
-  locales: Array,            // Available languages for fallback
-  countries: Array,          // ISO country codes for filtering
-  domains: Array,            // Taxonomy domains to include
-  isAdditionalField: Boolean // Use value2 instead of value
-}
-```
-
-### Methods
-
-The component exposes these internal methods (advanced use only):
-
-- `loadInitialValues(locale)` - Loads values from hidden input
-- `handleChange()` - Updates hidden input when selection changes
-- `getAllKeys()` - Returns array of all selected identifier keys
-- `t(domain)` - Translates domain name to current locale
-
-### Data Sources
-
-The component fetches data from:
-
-- **SCBD Cached APIs**: Most domains (`@scbd/cached-apis`)
-- **CBD API**: National targets via Solr queries (`https://api.cbd.int/api/v2013/index/select`)
+The CI workflow ([.github/workflows/ci.yml](.github/workflows/ci.yml)) builds on every push and, on a published GitHub release, uploads the three `dist/` artifacts plus a `SHA256SUMS` checksum file to the release tag. The Drupal `libraries.yml` then references those release URLs. The release tag must be `v<version>` and match `package.json`.
 
 ## Internationalization
 
-### Supported Languages
-
-The component includes translations for 60+ languages including:
-
-- Arabic (ar), Chinese (zh-hans), English (en), French (fr), Russian (ru), Spanish (es)
-- And many more...
-
-### Language Fallback
-
-1. Requested locale (e.g., `fr`)
-2. English (`en`)
-3. Raw domain key (e.g., `gbfTargets`)
-
-### Adding Custom Translations
-
-Edit `src/i18n/data.json`:
-
-```json
-{
-  "de": {
-    "gbfTargets": "GBF-Ziele",
-    "sdgs": "SDGs",
-    "countries": "Länder"
-  }
-}
-```
-
-## Browser Support
-
-- Modern browsers with ES6+ support
-- Vue 3 compatible browsers
-- IE 11 not supported
-
-## Dependencies
-
-### Runtime
-
-- **Vue 3**: Required external dependency (must be loaded separately)
-- **@scbd/cached-apis**: SCBD data fetching library
-- **vue-multiselect**: Multiselect component
-- **ofetch**: HTTP client
-- **change-case**: String utilities
-
-### Development
-
-- **Vite**: Build tool
-- **@vitejs/plugin-vue**: Vue 3 Vite plugin
-- **rollup-plugin-terser**: Code minification
-- **PostCSS + PurgeCSS**: CSS optimization
-
-## Troubleshooting
-
-### Component doesn't load
-
-- Ensure Vue 3 is loaded **before** the component script
-- Check browser console for errors
-- Verify the global `Vue` object exists
-
-### Values not saving
-
-- Verify hidden input name matches pattern: `field_[name][0][value]`
-- Check `name` prop matches field name (without `field_` prefix)
-- Use browser DevTools to inspect input value changes
-
-### National targets not showing
-
-- Ensure `countries` prop includes relevant country codes
-- Check `nationalTargets7` is in `domains` array
-- Verify API access to `https://api.cbd.int`
-
-### Translation issues
-
-- Confirm `locale` prop uses valid ISO 639-1 codes
-- Check `src/i18n/data.json` for available locales
-- Falls back to English if locale not found
+Domain labels ship for 60+ languages. Resolution order: requested `locale` → `en` → the raw domain key. Add or override labels in `src/i18n/`.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details
-
-## Contributing
-
-Contributions welcome! Please follow these guidelines:
-
-1. Maintain Vue 3 Options API (not Composition API)
-2. Pin dependencies without `^` or `~` in package.json
-3. Define functions outside component object
-4. Update i18n files for new domains
-5. Test with actual Drupal form structure
-
-## Support
-
-For issues, questions, or contributions:
-
-- **GitHub**: <https://github.com/scbd/drupal-module-scbd-field-js>
-- **Issues**: <https://github.com/scbd/drupal-module-scbd-field-js/issues>
-
----
-
-Built with ❤️ for the biodiversity community
+MIT
