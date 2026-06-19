@@ -40,6 +40,7 @@ import Multiselect from 'vue-multiselect';
 import { useTaxonomies } from '@/composables/use-taxonomies';
 import { getNationalTargets7 } from '@/utils/national-targets.js';
 import { relatedKeys, LINKABLE_DOMAINS } from '@/utils/relations.js';
+import { DEFAULT_DOMAINS, DEFAULT_SINGLE_VALUE_DOMAINS } from '@/utils/constants.js';
 import { useTranslations } from '@/composables/use-translations';
 
 const props = defineProps({
@@ -48,8 +49,8 @@ const props = defineProps({
   countries         : { type: Array,   default: () => ['be'] },
   locale            : { type: String,  default: 'en' },
   locales           : { type: Array,   default: () => ['en'] },
-  domains           : { type: Array,   default: () => ['nationalTargets7', 'gbfTargets', 'countries', 'subjects', 'sdgs', 'bchSubjectGroups'] },
-  singleValueDomains: { type: Array,   default: () => ['orgTypes', 'govTypes', 'projectStatuses', 'geoScopes', 'documentTypes', 'ecosystemTypes', 'jurisdictions', 'eventStatuses'] },
+  domains           : { type: Array,   default: () => [...DEFAULT_DOMAINS] },
+  singleValueDomains: { type: Array,   default: () => [...DEFAULT_SINGLE_VALUE_DOMAINS] },
   isAdditionalField : { type: Boolean, default: false },
   debug             : { type: Boolean, default: false },
 });
