@@ -166,9 +166,12 @@ function autoLinkRelated(option) {
   if (!related.size) return;
 
   for (const domain of props.domains) {
-    if (!LINKABLE_DOMAINS.includes(domain) || !Array.isArray(optionsList.value[domain])) continue;
+    // Array guard covers both options and the current selection: a linkable domain configured as a
+    // single-value domain holds one object (not an array), so skip it — array auto-linking is
+    // meaningless there and current.map() would throw (CR-6).
+    if (!LINKABLE_DOMAINS.includes(domain) || !Array.isArray(optionsList.value[domain]) || !Array.isArray(inputValue.value[domain])) continue;
 
-    const current = inputValue.value[domain] ?? [];
+    const current = inputValue.value[domain];
     const have = new Set(current.map(({ identifier }) => identifier));
     const additions = optionsList.value[domain].filter(({ identifier }) => related.has(identifier) && !have.has(identifier));
     if (additions.length) inputValue.value[domain] = [...current, ...additions];
