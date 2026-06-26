@@ -6,6 +6,12 @@ date: 2026-06-23
 
 # SCBD Thesaurus Field Widget: Product Requirements
 
+> **⚠ Target-state PRD (v3.0.0) — this branch is v1.0.0.** This document describes the **target
+> v3.0.0** widget, reverse-engineered from the v3.0.0 source on `latest`. The code on this branch is
+> the **v1.0.0** bundle (one grouped `@scbd/cached-apis` multiselect); the in-module data layer,
+> `singleValueDomains`, `GBF_SAMEAS`, legacy-SDG migration, Solr guards, and locale files described
+> below arrive with the v3.0.0 cutover. See [decomp-seams.md](decomp-seams.md) for the migration.
+
 This is the umbrella PRD for `drupal-module-scbd-field-js`, reverse-engineered from the v3.0.0 codebase. It describes the product the bundle delivers: the browser front end for the SCBD Thesaurus Tags Drupal field. Treat it as a living document and append to it as the widget grows; do not fork a parallel copy.
 
 ## Problem Statement

@@ -2,12 +2,16 @@
 status: accepted
 date: 2026-06-17
 deciders: [project-lead]
-context: system-wide
+context: module (national-targets)
 code-path: src/utils/national-targets.js
 origin: standalone
 ---
 
 # 0002. Request alternate-locale titles as a fallback for National Targets
+
+> _Applies to the **v3.0.0** widget. `src/utils/national-targets.js` arrives with the v3.0.0 cutover
+> (see [decomp-seams.md](../decomp-seams.md)); on this branch (v1.0.0) National Targets is still
+> handled inside the legacy `@scbd/cached-apis` bundle._
 
 The National Targets 7 widget displays one locale at a time, but the `api.cbd.int` Solr index does
 not have a populated `title_<LANG>_t` for every served locale on every target — so an option whose

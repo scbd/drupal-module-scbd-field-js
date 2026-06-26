@@ -2,12 +2,17 @@
 status: accepted
 date: 2026-06-19
 deciders: [project-lead]
-context: system-wide
+context: module (build/release)
 code-path: vite.config.js
-origin: planning (final-touches-plan, D3)
+origin: planning (v3.0.0 final-touches plan, decision D3)
 ---
 
 # 0003. Stop publishing the JS source map for the IIFE bundle
+
+> _Applies to the **v3.0.0** widget. `vite.config.js` exists on this branch, but the
+> `.github/workflows/ci.yml` strip step and the `package.json` `files` allowlist
+> (`dist/index.min.js` + `dist/style.css`) described below land with the v3.0.0 cutover (see
+> [decomp-seams.md](../decomp-seams.md))._
 
 The release pipeline previously emitted and published `dist/index.min.js.map` alongside the minified
 IIFE bundle — as a GitHub release asset and inside the CI build artifact. A public source map exposes

@@ -11,8 +11,16 @@ references: [prd.md, CONTEXT.md, adr/]
 > **To revise:** run `/docs-architectural-planner` (update mode) and edit the affected sections in
 > place. Never fork or version-suffix this doc.
 >
-> **Plan vs. as-built.** This document is the *intended design* and the *owned contract*. The
-> companion [architecture.md](architecture.md) is the *as-built snapshot* of the current code; the
+> **⚠ Target-state plan (v3.0.0) — this branch is v1.0.0.** This plan describes the **intended
+> v3.0.0** widget: the in-module `ofetch` data layer, the `src/utils/` and `src/composables/`
+> structure, `singleValueDomains`, `GBF_SAMEAS`, the locale files, and the release CI. The code on
+> this branch is the **v1.0.0** bundle (one grouped `@scbd/cached-apis` multiselect); the v3.0.0
+> source lives on `latest`. Module paths below are written as inline code (e.g. `src/utils/constants.js`),
+> not links, because those files arrive with the v3.0.0 cutover. See
+> [decomp-seams.md](decomp-seams.md) for the migration.
+>
+> **Plan vs. as-built.** This document is the *intended design* and the *owned contract*. A companion
+> as-built `architecture.md` (not yet written) will be the *as-built snapshot* of the current code; the
 > [prd.md](prd.md) is the *what / why*; the glossary is [CONTEXT.md](CONTEXT.md). The plan and the
 > as-built doc overlap on purpose — one says what we meant to build, the other says what is there
 > today. When they disagree, `architecture.md` is the truth about the code and this plan is the truth
@@ -20,8 +28,8 @@ references: [prd.md, CONTEXT.md, adr/]
 >
 > **Place in the wider system.** This project is one project of the **Bioland** system. The
 > cross-project hub (actors, shared statuses, end-to-end flows that span repos) lives in the
-> designated **hub repo**; it is currently parked at [bioland/bioland.md](bioland/bioland.md) during
-> migration and moves to the hub repo with its sibling spokes. The only project this one shares a seam
+> designated **hub repo** (`bioland/bioland.md`, in the hub repo — not yet in this repo) during
+> migration, and moves there with its sibling spokes. The only project this one shares a seam
 > with is the companion Drupal module
 > [scbd/drupal-module-scbd-thesaurus-tags](https://github.com/scbd/drupal-module-scbd-thesaurus-tags) —
 > see [§2 Owned interface](#2-owned-interface-the-seam).
@@ -42,8 +50,8 @@ from a hidden Drupal `<input>`, lets the editor pick terms, and writes the selec
 that same input as a comma-separated string on every change. Drupal persists the input like any other
 form value. Picking a GBF target also auto-fills its related SDGs and subjects from a static table.
 
-**Why a plan as well as an `architecture.md`.** The code already exists, so both this plan and the
-as-built [architecture.md](architecture.md) were written after the fact. The plan still earns its keep:
+**Why a plan as well as an `architecture.md`.** The v3.0.0 code is being written against this plan, and
+a companion as-built `architecture.md` (not yet written) will capture what lands. The plan still earns its keep:
 it is the document a change is designed *against*, and it is deliberately rich enough to regenerate the
 as-built picture if the bundle were rebuilt from scratch. A design doc that is thinner than the artifact
 it describes is not a plan — it is a stub. This one carries the full surface (the seam, the C4 views,
@@ -98,7 +106,7 @@ default `''`), `debug`.
 **`singleValueDomains` default (load-bearing).** The Drupal glue never passes it, so the bundle's own
 frozen default applies:
 `DEFAULT_SINGLE_VALUE_DOMAINS = ['orgTypes','govTypes','projectStatuses','geoScopes','documentTypes','ecosystemTypes','jurisdictions','eventStatuses']`
-in [`src/utils/constants.js`](../src/utils/constants.js). A domain in this list renders single-select
+in `src/utils/constants.js`. A domain in this list renders single-select
 (one term or null); everything else is multi-select. Per-site single-select therefore needs a code
 change on the Drupal side, not just configuration — recorded as a deferred item.
 
@@ -203,13 +211,13 @@ flowchart TB
 
 | Module | Responsibility |
 | --- | --- |
-| [`composables/use-taxonomies.js`](../src/composables/use-taxonomies.js) | Fetch and normalize each thesaurus domain to the `{ identifier, name }` shape; per-domain shaping rules; resolve saved keys back to term objects (`lookUp`). In-module replacement for the former `@scbd/cached-apis`, with no caching layer. |
-| [`utils/national-targets.js`](../src/utils/national-targets.js) | The one domain that does not come from the thesaurus REST endpoint. Builds and posts a Solr `index/select` query, scoped by country and locale, and normalizes the docs. |
-| [`utils/relations.js`](../src/utils/relations.js) | The GBF auto-link source. `relatedKeys(id)` looks up `GBF_SAMEAS`; only GBF target ids resolve to a list, which keeps the link one-way. |
-| [`utils/constants.js`](../src/utils/constants.js) | Single source of truth for the default domain lists, the API URL map, document/org-type id filters, and the `GBF_SAMEAS` relation table. |
-| [`utils/index.js`](../src/utils/index.js) | Pure helpers: name localization, sort comparators, legacy SDG key migration, and the grouped-children builder. |
-| [`composables/use-translations.js`](../src/composables/use-translations.js) | UI-label translations loaded on demand per locale (`import.meta.glob`), with English bundled statically as the always-present fallback. |
-| [`composables/use-org-type-other.js`](../src/composables/use-org-type-other.js) | Builds the synthetic "Other" organization type (the thesaurus has no such term) with a localized title drawn from the translation files. |
+| `composables/use-taxonomies.js` | Fetch and normalize each thesaurus domain to the `{ identifier, name }` shape; per-domain shaping rules; resolve saved keys back to term objects (`lookUp`). In-module replacement for the former `@scbd/cached-apis`, with no caching layer. |
+| `utils/national-targets.js` | The one domain that does not come from the thesaurus REST endpoint. Builds and posts a Solr `index/select` query, scoped by country and locale, and normalizes the docs. |
+| `utils/relations.js` | The GBF auto-link source. `relatedKeys(id)` looks up `GBF_SAMEAS`; only GBF target ids resolve to a list, which keeps the link one-way. |
+| `utils/constants.js` | Single source of truth for the default domain lists, the API URL map, document/org-type id filters, and the `GBF_SAMEAS` relation table. |
+| `utils/index.js` | Pure helpers: name localization, sort comparators, legacy SDG key migration, and the grouped-children builder. |
+| `composables/use-translations.js` | UI-label translations loaded on demand per locale (`import.meta.glob`), with English bundled statically as the always-present fallback. |
+| `composables/use-org-type-other.js` | Builds the synthetic "Other" organization type (the thesaurus has no such term) with a localized title drawn from the translation files. |
 
 ## 6. Key Flows (sequence diagrams)
 
@@ -335,7 +343,7 @@ the business rules it enforces.
 
 - **Thesaurus source (the one external read).** Vocabularies are fetched client-side at runtime. REST
   domains hit `GET https://api.cbd.int/api/v2013/thesaurus/domains/<domain>/terms` via `ofetch` (20s
-  timeout, `[]` on error) in [`use-taxonomies.js`](../src/composables/use-taxonomies.js).
+  timeout, `[]` on error) in `use-taxonomies.js`.
 - **National Targets 7 via Solr.** The one domain not backed by a thesaurus domain. It `POST`s a Solr
   `index/select` query to `https://api.cbd.int/api/v2013/index/select`, scoped by the `government_s`
   country field and locale title fields, sorting on the `_s` string field (sorting a tokenized `_t`
@@ -391,7 +399,7 @@ flowchart LR
 ```
 
 The build is a Vite library build (IIFE, esbuild minify, PurgeCSS-trimmed CSS) configured in
-[`vite.config.js`](../vite.config.js). CI ([`.github/workflows/ci.yml`](../.github/workflows/ci.yml))
+[`vite.config.js`](../vite.config.js). CI (`.github/workflows/ci.yml`, arrives with v3.0.0)
 runs smoke tests and a build on every push. On a published release it rebuilds, verifies the tag matches
 `package.json` and sits on the default branch, uploads `index.min.js`, `style.css`, and a `SHA256SUMS`
 file, then re-downloads and checksum-verifies them. Source maps are emitted as `hidden` and excluded
@@ -425,7 +433,7 @@ Decisions are recorded as ADRs in [`docs/adr/`](adr/); rationale lives there, no
 
 The items below are consciously out of scope or unresolved for this project; each carries an owner and a
 provisional default. The cross-project register that supersedes this for system-wide items lives in the
-[hub](bioland/bioland.md#deferred--open-items).
+hub repo's deferred register (`bioland/bioland.md`, in the hub repo — not yet in this repo).
 
 | Item | Owner | Notes |
 | ---- | ----- | ----- |
@@ -440,7 +448,7 @@ provisional default. The cross-project register that supersedes this for system-
 ## 14. Verification Checklist
 
 End-to-end checks for this project. The ones marked *(cross)* also appear in the
-[hub checklist](bioland/bioland.md#verification-checklist) because they touch the companion module.
+hub checklist (`bioland/bioland.md`, in the hub repo) because they touch the companion module.
 
 - [ ] A saved value hydrates with no user change → the keys written back equal the saved keys after
       legacy-SDG migration, on every configured domain (including national-target identifiers — the
