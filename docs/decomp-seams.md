@@ -11,7 +11,7 @@
 >
 > **Post-review of the PR seam options.** "Post-review" here means **the three seam options below
 > were red-teamed before being finalized** — a seam-critic and a devil's-advocate pass ran over an
-> earlier draft of *these options* and proved several seams wrong using 3 leading llms. It does **not** mean a pull
+> earlier draft of *these options* and proved several seams wrong using three leading LLMs. It does **not** mean a pull
 > request was reviewed (no PR exists yet). Those fixes are folded in below, and what each reviewer
 > found is recorded under "What the reviewers said."
 
