@@ -15,7 +15,7 @@
 > request was reviewed (no PR exists yet). Those fixes are folded in below, and what each reviewer
 > found is recorded under "What the reviewers said."
 
-> **Heads-up on the base branch.**  **against `master`**, and that is what every
+> **Heads-up on the base branch.** Every PR here is opened **against `master`**, and that is what every
 > option targets. For context: branch `latest` already holds a **46-commit** version of this same
 > v3.0.0 work, and `master` has 0 commits `latest` doesn't — so these PRs effectively **re-seam**
 > that work onto `master`. 

@@ -108,13 +108,12 @@ docs/
 │           ├── context.md
 │           └── pXX-YY-<task>.md
 └── implementation-plan/
-│   └── implementation-plan/
-│       ├── index.md
-│       ├── roadmap.md
-│       ├── checkpoint.md
-│       └── phase-XX/
-│           ├── context.md
-│           └── pXX-YY-<task>.md
+    ├── index.md
+    ├── roadmap.md
+    ├── checkpoint.md
+    └── phase-XX/
+        ├── context.md
+        └── pXX-YY-<task>.md
 ```
 
 ###  **Tests / Code — *TDD at the bottom***
@@ -129,7 +128,7 @@ TBD
 
 ## Cross-Cutting: DDD
 
-### **Domain-Driven Design** is not a layer in the stack; it threads through every layer as a modeling discipline. Its ubiquitous language and bounded contexts shape PRD wording, architectural decomposition, spec contracts, implementation-plan task names, and code/test names, so the code mirrors the business domain rather than drifting from it. It is most valuable where the domain itself is complex and term-heavy; it adds little over a simple CRUD surface.
+Domain-Driven Design is not a layer in the stack; it threads through every layer as a modeling discipline. Its ubiquitous language and bounded contexts shape PRD wording, architectural decomposition, spec contracts, implementation-plan task names, and code/test names, so the code mirrors the business domain rather than drifting from it. It is most valuable where the domain itself is complex and term-heavy; it adds little over a simple CRUD surface.
 
 Repo shape:
 ```text

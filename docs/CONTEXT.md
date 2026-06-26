@@ -134,7 +134,7 @@ _Avoid_: domain list, field order, layout
 **GBF Target**:
 A Global Biodiversity Framework target, `GBF-TARGET-01` through `GBF-TARGET-23`, in the `gbfTargets`
 Domain. The only Domain whose selection triggers Auto-link.
-_Avoid_: Aichi target (a distinct, older framework that appears only inside the Relation table), biodiversity target, target (ambiguous with National Targets 7)
+_Avoid_: Aichi target (a distinct, older framework that appears only inside the Relation table — it is **ignored**, never a selectable Linkable domain), biodiversity target, target (ambiguous with National Targets 7)
 
 **National Targets 7**:
 National biodiversity targets (`nationalTargets7`) sourced from the `api.cbd.int` Solr index rather
