@@ -7,9 +7,9 @@ references: [prd.md, CONTEXT.md, adr/]
 
 > **▶ This is a living architectural plan** — the design-of-record for **SCBD Thesaurus Field (JS)**,
 > treated as a standalone system. It is NOT an implementation plan: it cuts no tasks, PRs, or branches.
-> **To cut implementation tasks:** run the `docs-implementation-planner` skill against this plan.
-> **To revise:** run `/docs-architectural-planner` (update mode) and edit the affected sections in
-> place. Never fork or version-suffix this doc.
+> **To cut implementation tasks:** create an implementation plan under `docs/implementation-plan/` derived from this plan.
+> **To revise:** update this document in place (edit the affected sections).
+> Never fork or version-suffix this doc.
 >
 > **⚠ Target-state plan (v3.0.0) — this branch is v1.0.0.** This plan describes the **intended
 > v3.0.0** widget: the in-module `ofetch` data layer, the `src/utils/` and `src/composables/`

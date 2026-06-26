@@ -11,14 +11,14 @@
 >
 > **Post-review of the PR seam options.** "Post-review" here means **the three seam options below
 > were red-teamed before being finalized** — a seam-critic and a devil's-advocate pass ran over an
-> earlier draft of *these options* and proved several seams wrong using 3 leading llms. It does **not** mean a pull
+> earlier draft of *these options* and proved several seams wrong using three leading LLMs. It does **not** mean a pull
 > request was reviewed (no PR exists yet). Those fixes are folded in below, and what each reviewer
 > found is recorded under "What the reviewers said."
 
-> **Heads-up on the base branch.** Every PR here is opened **against `master`**, and that is what every
+> **Heads-up on the base branch.** These options are written as PRs **against `master`**, and that is what every
 > option targets. For context: branch `latest` already holds a **46-commit** version of this same
 > v3.0.0 work, and `master` has 0 commits `latest` doesn't — so these PRs effectively **re-seam**
-> that work onto `master`. 
+> that work onto `master`.
 
 ---
 
