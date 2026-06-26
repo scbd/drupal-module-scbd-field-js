@@ -108,14 +108,12 @@ docs/
 │           ├── context.md
 │           └── pXX-YY-<task>.md
 └── implementation-plan/
-│   └── implementation-plan/
-│       ├── index.md
-│       ├── roadmap.md
-│       ├── checkpoint.md
-│       └── phase-XX/
-│           ├── context.md
-│           └── pXX-YY-<task>.md
-```
+    ├── index.md
+    ├── roadmap.md
+    ├── checkpoint.md
+    └── phase-XX/
+        ├── context.md
+        └── pXX-YY-<task>.md
 
 ###  **Tests / Code — *TDD at the bottom***
 Implementation discipline. Each acceptance criterion from the spec becomes a failing test; minimum code drives it to green; refactor follows. The test suite doubles as a regression net and executable documentation. Says nothing about *what* to build — only *how well* the already-decided behavior is realized.
