@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Objectifs du CMB",
+  "nationalTargets7": "Objectifs nationaux",
+  "subjects": "Domaines thématiques",
+  "sdgs": "ODD",
+  "countries": "Pays",
+  "regions": "Régions",
+  "jurisdictions": "Juridictions",
+  "orgTypes": "Type d'organisation",
+  "govTypes": "Type de gouvernement",
+  "projectStatuses": "Statut du projet",
+  "geoScopes": "Portée géographique",
+  "documentTypes": "Type de document",
+  "ecosystemTypes": "Type d'écosystème",
+  "eventStatuses": "Statut de l'événement",
+  "bchSubjects": "Domaines thématiques de la bio-sécurité",
+  "bchSubjectGroups": "Domaines thématiques de la bio-sécurité",
+  "other": "Autre"
+}

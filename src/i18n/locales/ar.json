@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "أهداف الإطار العالمي للتنوع البيولوجي",
+  "nationalTargets7": "الأهداف الوطنية",
+  "subjects": "المجالات المواضيعية",
+  "sdgs": "أهداف التنمية المستدامة",
+  "countries": "البلدان",
+  "regions": "المناطق",
+  "jurisdictions": "الولايات القضائية",
+  "orgTypes": "نوع المنظمة",
+  "govTypes": "نوع الحكومة",
+  "projectStatuses": "حالة المشروع",
+  "geoScopes": "النطاق الجغرافي",
+  "documentTypes": "نوع المستند",
+  "ecosystemTypes": "نوع النظام البيئي",
+  "eventStatuses": "حالة الحدث",
+  "bchSubjects": "المجالات المواضيعية للسلامة الأحيائية",
+  "bchSubjectGroups": "المجالات المواضيعية للسلامة الأحيائية",
+  "other": "أخرى"
+}
