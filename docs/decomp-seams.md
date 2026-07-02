@@ -38,7 +38,17 @@ flowchart TB
   end
 ```
 
-The pile is roughly **3,600 changed lines of source/config** plus a ~5,600-line `yarn.lock` regen.
+Here's how the diff breaks down by piece (`master` → `decomp4`, lines changed = insertions +
+deletions):
+
+```mermaid
+xychart-beta
+    title "Lines changed by piece"
+    x-axis ["Data layer", "Widget rewrite", "Build/toolchain", "Test suites", "Dev harness", "CI/release", "Docs", "yarn.lock"]
+    y-axis "Lines changed" 0 --> 6000
+    bar [648, 316, 108, 1522, 263, 175, 1757, 5597]
+```
+
 The big pieces:
 
 | Piece | What it is | Files (excl. tests) | Nature |
