@@ -42,6 +42,7 @@ Here's how the diff breaks down by piece (`master` → `decomp4`, lines changed 
 deletions):
 
 ```mermaid
+%%{init: {"xyChart": {"width": 805}}}%%
 xychart-beta
     title "Lines changed by piece"
     x-axis ["Data layer", "Widget rewrite", "Build/toolchain", "Test suites", "Dev harness", "CI/release", "Docs", "yarn.lock"]
