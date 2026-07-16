@@ -16,60 +16,60 @@ This is the umbrella PRD for `drupal-module-scbd-field-js`, reverse-engineered f
 
 ## Problem Statement
 
-Editors on the Secretariat of the Convention on Biological Diversity (SCBD) Drupal sites tag content against controlled vocabularies the Secretariat publishes on `api.cbd.int`: Global Biodiversity Framework targets, Sustainable Development Goals, national biodiversity targets, countries, CBD subjects, IUCN ecosystem types, and others. A plain Drupal text or taxonomy field cannot do this well. The vocabularies live in an external API, not in the local Drupal taxonomy; their term names are translated into dozens of languages; some of them relate to each other (a GBF target maps to a set of SDGs and subjects); and the term keys saved in the database have changed over time (the old `SDG-GOAL-*` keys versus today's `SUSTAINABLE-DEVELOPMENT-GOAL-*`).
+Content managers on the Secretariat of the Convention on Biological Diversity (SCBD) Drupal sites tag content against controlled vocabularies the Secretariat publishes on `api.cbd.int`: Global Biodiversity Framework targets, Sustainable Development Goals, national biodiversity targets, countries, CBD subjects, IUCN ecosystem types, and others. A plain Drupal text or taxonomy field cannot do this well. The vocabularies live in an external API, not in the local Drupal taxonomy; their term names are translated into dozens of languages; some of them relate to each other (a GBF target maps to a set of SDGs and subjects); and the term keys saved in the database have changed over time (the old `SDG-GOAL-*` keys versus today's `SUSTAINABLE-DEVELOPMENT-GOAL-*`).
 
-Without a purpose-built widget, an editor would have to know and type opaque term identifiers by hand, would not see term names in their working language, would not get the GBF-to-SDG relationships filled in for them, and would silently lose data the moment a vocabulary key was renamed upstream. Site administrators also need to control which vocabularies appear, in what order, and which ones are preselected for new content, without a developer editing code each time.
+Without a purpose-built widget, a content manager would have to know and type opaque term identifiers by hand, would not see term names in their working language, would not get the GBF-to-SDG relationships filled in for them, and would silently lose data the moment a vocabulary key was renamed upstream. Site managers also need to control which vocabularies appear, in what order, and which ones are preselected for new content, without a developer editing code each time.
 
 ## Solution
 
-A small Vue 3 application, bundled as a single IIFE script and published to a GitHub release, that the companion Drupal module (`drupal-module-scbd-thesaurus-tags`) loads as a library. On a content form the module renders a hidden text input holding the saved value plus an empty mount point; this bundle finds that pair by field name, reads the saved keys out of the hidden input, and renders one searchable multiselect per configured vocabulary ("domain"). The editor picks terms by their localized names; the widget writes the selected keys back into the same hidden input as a comma-separated string on every change, so Drupal persists them with the rest of the form. Nothing else in the form has to know the widget exists.
+A small Vue 3 application, bundled as a single IIFE script and published to a GitHub release, that the companion Drupal module (`drupal-module-scbd-thesaurus-tags`) loads as a library. On a content form the module renders a hidden text input holding the saved value plus an empty mount point; this bundle finds that pair by field name, reads the saved keys out of the hidden input, and renders one searchable multiselect per configured vocabulary ("domain"). The content manager picks terms by their localized names; the widget writes the selected keys back into the same hidden input as a comma-separated string on every change, so Drupal persists them with the rest of the form. Nothing else in the form has to know the widget exists.
 
-The widget owns the awkward parts: it fetches and normalizes each vocabulary from `api.cbd.int`, localizes term names to the editor's language with sensible fallbacks, fills in related SDGs and subjects when a GBF target is chosen, transparently upgrades legacy SDG keys on read, and degrades quietly (an empty option list, a logged error, the rest of the form still usable) when a lookup fails. Administrators drive which domains render, their order, and the new-entity defaults through the companion module's admin form, so the same bundle serves a general biodiversity site (BL2) and a biosafety site (BSL) with only configuration changing.
+The widget owns the awkward parts: it fetches and normalizes each vocabulary from `api.cbd.int`, localizes term names to the content manager's language with sensible fallbacks, fills in related SDGs and subjects when a GBF target is chosen, transparently upgrades legacy SDG keys on read, and degrades quietly (an empty option list, a logged error, the rest of the form still usable) when a lookup fails. Site managers drive which domains render, their order, and the new-entity defaults through the companion module's admin form, so the same bundle serves a general biodiversity site (BL2) and a biosafety site (BSL) with only configuration changing.
 
 ## User Stories
 
-### Content editor: core selection
-1. As a content editor, I want each vocabulary to render as its own labeled dropdown, so that I can tell the GBF targets apart from the SDGs apart from the countries.
-2. As a content editor, I want to search within a dropdown by typing, so that I can find a term without scrolling a long list.
-3. As a content editor, I want to pick several terms in a multi-select domain, so that I can tag content with more than one GBF target or subject.
-4. As a content editor, I want single-value domains (organization type, document type, project status, and the like) to accept exactly one choice, so that I cannot record a contradictory pair.
-5. As a content editor, I want each term shown by its name rather than its raw identifier, so that I never have to know the codes the system stores.
-6. As a content editor, I want an already-selected term to drop out of the available options in a multi-select, so that I do not pick the same term twice.
-7. As a content editor, I want my selection saved automatically as I change it, so that I do not have to press a separate "apply" button before saving the form.
-8. As a content editor, I want help text rendered above the widget when the field defines it, so that I understand what I am tagging.
+### Content manager: core selection
+1. As a content manager, I want each vocabulary to render as its own labeled dropdown, so that I can tell the GBF targets apart from the SDGs apart from the countries.
+2. As a content manager, I want to search within a dropdown by typing, so that I can find a term without scrolling a long list.
+3. As a content manager, I want to pick several terms in a multi-select domain, so that I can tag content with more than one GBF target or subject.
+4. As a content manager, I want single-value domains (organization type, document type, project status, and the like) to accept exactly one choice, so that I cannot record a contradictory pair.
+5. As a content manager, I want each term shown by its name rather than its raw identifier, so that I never have to know the codes the system stores.
+6. As a content manager, I want an already-selected term to drop out of the available options in a multi-select, so that I do not pick the same term twice.
+7. As a content manager, I want my selection saved automatically as I change it, so that I do not have to press a separate "apply" button before saving the form.
+8. As a content manager, I want help text rendered above the widget when the field defines it, so that I understand what I am tagging.
 
-### Content editor: loading existing values
-9. As a content editor opening an existing item, I want my previously saved terms to appear already selected, so that I am editing the real value and not starting over.
-10. As a content editor, I want a national target that was saved by its UUID to resolve back to its readable title, so that I recognize what was chosen.
-11. As a content editor, I want a saved term whose vocabulary is slow to load to still appear once the data arrives, so that hydration does not race the fetch and drop my value.
-12. As a content editor, I want a saved biosafety subject to show up under its parent group, so that grouped domains hydrate correctly.
-13. As a content editor on a brand-new item, I want the field's configured defaults (for example GBF Target 17 and my site's country on biosafety sites) to be preselected, so that I start from the expected baseline.
+### Content manager: loading existing values
+9. As a content manager opening an existing item, I want my previously saved terms to appear already selected, so that I am editing the real value and not starting over.
+10. As a content manager, I want a national target that was saved by its UUID to resolve back to its readable title, so that I recognize what was chosen.
+11. As a content manager, I want a saved term whose vocabulary is slow to load to still appear once the data arrives, so that hydration does not race the fetch and drop my value.
+12. As a content manager, I want a saved biosafety subject to show up under its parent group, so that grouped domains hydrate correctly.
+13. As a content manager on a brand-new item, I want the field's configured defaults (for example GBF Target 17 and my site's country on biosafety sites) to be preselected, so that I start from the expected baseline.
 
-### Content editor: GBF auto-linking
-14. As a content editor, I want choosing a GBF target to also add its related SDGs and CBD subjects, so that I do not have to remember and re-enter the mapping by hand.
-15. As a content editor, I want auto-linking to only add terms for the domains actually shown on my form, so that I am not given options that do not exist here.
-16. As a content editor, I want auto-linking to leave my existing picks in place, so that selecting a second GBF target never wipes out the first one's additions.
-17. As a content editor, I want choosing an SDG or a subject to add nothing automatically, so that the relationship works in one direction only and does not surprise me.
-18. As a content editor, I want removing a GBF target to leave the SDGs and subjects it added still selected, so that the widget never silently strips terms I may have meant to keep.
+### Content manager: GBF auto-linking
+14. As a content manager, I want choosing a GBF target to also add its related SDGs and CBD subjects, so that I do not have to remember and re-enter the mapping by hand.
+15. As a content manager, I want auto-linking to only add terms for the domains actually shown on my form, so that I am not given options that do not exist here.
+16. As a content manager, I want auto-linking to leave my existing picks in place, so that selecting a second GBF target never wipes out the first one's additions.
+17. As a content manager, I want choosing an SDG or a subject to add nothing automatically, so that the relationship works in one direction only and does not surprise me.
+18. As a content manager, I want removing a GBF target to leave the SDGs and subjects it added still selected, so that the widget never silently strips terms I may have meant to keep.
 
-### Content editor: localization
-19. As a French, Dutch, German, Spanish, Russian, Chinese, or Arabic speaking editor, I want domain labels and term names in my interface language, so that I can work without reading English.
-20. As an editor, I want a term whose name is missing in my language to fall back to another served language rather than render blank, so that no option is unlabeled.
-21. As an editor whose language has no shipped label file, I want the widget to fall back to English instead of breaking, so that the field still works.
-22. As an Arabic-speaking editor, I want the widget to behave correctly in a right-to-left layout, so that the form reads naturally.
+### Content manager: localization
+19. As a French, Dutch, German, Spanish, Russian, Chinese, or Arabic speaking content manager, I want domain labels and term names in my interface language, so that I can work without reading English.
+20. As a content manager, I want a term whose name is missing in my language to fall back to another served language rather than render blank, so that no option is unlabeled.
+21. As a content manager whose language has no shipped label file, I want the widget to fall back to English instead of breaking, so that the field still works.
+22. As an Arabic-speaking content manager, I want the widget to behave correctly in a right-to-left layout, so that the form reads naturally.
 
-### Content editor: resilience and edge cases
-23. As a content editor, I want the rest of the form to stay usable when one vocabulary fails to load, so that an API hiccup does not block my work.
-24. As a content editor, I want a vocabulary that times out to resolve to an empty list rather than spin forever, so that the field never hangs in a perpetual loading state.
-25. As a content editor, I want an empty saved value to render empty cleanly, so that a new field shows nothing selected rather than an error.
-26. As a content editor, I want a domain with no available options to render nothing at all, so that I am not shown an empty, unusable dropdown.
+### Content manager: resilience and edge cases
+23. As a content manager, I want the rest of the form to stay usable when one vocabulary fails to load, so that an API hiccup does not block my work.
+24. As a content manager, I want a vocabulary that times out to resolve to an empty list rather than spin forever, so that the field never hangs in a perpetual loading state.
+25. As a content manager, I want an empty saved value to render empty cleanly, so that a new field shows nothing selected rather than an error.
+26. As a content manager, I want a domain with no available options to render nothing at all, so that I am not shown an empty, unusable dropdown.
 
-### Site administrator
-27. As a site administrator, I want to set which domains render and in what order, so that each content type shows only the vocabularies it needs.
-28. As a site administrator, I want sensible defaults for general and biosafety sites, so that I do not have to configure every field from scratch.
-29. As a site administrator, I want to preselect GBF Target 17 and the site country on new entities, and to be able to turn each default off, so that biosafety content starts correctly without forcing the choice.
-30. As a site administrator, I want a debug mode that shows the underlying input id beside each dropdown, so that I can diagnose a misconfigured field.
-31. As a site administrator, I want a single field to optionally manage a second stored value (the `value2` column), so that one field can carry two related selections.
+### Site manager
+27. As a site manager, I want to set which domains render and in what order, so that each content type shows only the vocabularies it needs.
+28. As a site manager, I want sensible defaults for general and biosafety sites, so that I do not have to configure every field from scratch.
+29. As a site manager, I want to preselect GBF Target 17 and the site country on new entities, and to be able to turn each default off, so that biosafety content starts correctly without forcing the choice.
+30. As a site manager, I want a debug mode that shows the underlying input id beside each dropdown, so that I can diagnose a misconfigured field.
+31. As a site manager, I want a single field to optionally manage a second stored value (the `value2` column), so that one field can carry two related selections.
 
 ### Drupal integrator / module developer
 32. As a Drupal integrator, I want to mount the widget with only the field machine name required, so that wiring a field takes minimal configuration.

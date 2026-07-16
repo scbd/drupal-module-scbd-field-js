@@ -2,7 +2,7 @@
 
 The browser front-end for the SCBD Thesaurus Tags Drupal field: a Vue 3 widget that renders
 searchable multiselects for the controlled vocabularies the Secretariat of the Convention on
-Biological Diversity (SCBD) publishes on `api.cbd.int`, reading and writing the editor's selection
+Biological Diversity (SCBD) publishes on `api.cbd.int`, reading and writing the content manager's selection
 through a hidden Drupal input. This glossary fixes the words the code, comments, commit messages,
 README, and architecture doc all use for those concepts, so one word means one thing.
 
@@ -12,7 +12,7 @@ README, and architecture doc all use for those concepts, so one word means one t
 
 **Widget**:
 The Vue 3 application this repo builds, rendered inside a Drupal field as one or more searchable
-multiselects. It holds no database and no durable state of its own; it reads and writes the editor's
+multiselects. It holds no database and no durable state of its own; it reads and writes the content manager's
 selection through the Hidden input.
 _Avoid_: plugin, control, the field (the Widget renders inside a field, it is not the field)
 
@@ -92,7 +92,7 @@ _Avoid_: id, code, GUID
 
 **Display name**:
 A Term's localized label, resolved `shortTitle` then `title` then `name`, each for the active locale
-with an English fallback, and never a non-string. This is what the editor sees and searches; the
+with an English fallback, and never a non-string. This is what the content manager sees and searches; the
 Identifier is never shown.
 _Avoid_: title, label (label is the Domain label, not a Term's name)
 
@@ -171,7 +171,7 @@ _Avoid_: misc, unknown type, custom type
 ### Relations
 
 **Auto-link**:
-Adding a GBF Target's related SDGs and CBD Subjects into those Domains when the editor selects the
+Adding a GBF Target's related SDGs and CBD Subjects into those Domains when the content manager selects the
 target. It fires only on select, and only into rendered Linkable domains that are configured
 multi-select.
 _Avoid_: sync, mirror, cascade, relate, link (bare)

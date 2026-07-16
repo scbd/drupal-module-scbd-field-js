@@ -38,18 +38,29 @@ flowchart TB
   end
 ```
 
-The pile is roughly **3,600 changed lines of source/config** plus a ~5,600-line `yarn.lock` regen.
+Here's how the diff breaks down by piece (`master` → `decomp4`, lines changed = insertions +
+deletions):
+
+```mermaid
+%%{init: {"xyChart": {"width": 805}}}%%
+xychart-beta
+    title "Lines changed by piece"
+    x-axis ["Data layer", "Widget rewrite", "Build/toolchain", "Test suites", "Dev harness", "CI/release", "Docs", "yarn.lock"]
+    y-axis "Lines changed" 0 --> 6000
+    bar [648, 316, 108, 1522, 263, 175, 1757, 5597]
+```
+
 The big pieces:
 
-| Piece | What it is | Files (excl. tests) | Nature |
-|-------|-----------|---------------------|--------|
-| In-module data layer | Fetch/normalize/localize vocabularies; GBF→SDG/Subject relations; National Targets via Solr; legacy SDG-key migration | `src/utils/*` (4), `src/composables/*` (3), `en.json` | **adds-something-new** |
-| Widget rewrite | One multiselect per "domain"; single vs multi; GBF auto-link; reads/writes the hidden Drupal input; field-name validation | `components/index.vue`, `index.vue`, `index.js` | **switches-it-on** |
-| Build / toolchain | Vite 6, Vue 3.5, esbuild minify, `sourcemap:'hidden'`, purgecss safelist, deps pinned, v3.0.0 | `vite.config.js`, `package.json`, `index.html` | **move-only** (build) |
-| Test suites | unit + regression — **5 are standalone, 5 import the new widget**, 1 is the harness smoke test | `*.test.js` (11 files, ~1.5k lines) | **adds-something-new** |
-| Dev harness + entry | In-page BL2/BSL test page; `main.js`/`index.html` rewritten to mount it | `src/dev/harness.vue`, `main.js`, `index.html` | **adds-something-new** (not shipped) |
-| CI / release | test→build→artifact; release-asset publish + checksums. **CI's only test step is `yarn test:smoke`** | `.github/workflows/ci.yml`, `.gitignore` | **adds-something-new** (infra) |
-| Docs | README rewrite + PRD + architecture + ADRs + CONTEXT (+ cross-project `bioland/*`, maybe out of scope) | `README.md`, `docs/*` | **adds-something-new** (docs) |
+| Piece | What it is | Files (excl. tests) | Nature | LOC |
+|-------|-----------|---------------------|--------|-----|
+| In-module data layer | Fetch/normalize/localize vocabularies; GBF→SDG/Subject relations; National Targets via Solr; legacy SDG-key migration | `src/utils/*` (4), `src/composables/*` (3), `en.json` | **adds-something-new** | 648 |
+| Widget rewrite | One multiselect per "domain"; single vs multi; GBF auto-link; reads/writes the hidden Drupal input; field-name validation | `components/index.vue`, `index.vue`, `index.js` | **switches-it-on** | 316 |
+| Build / toolchain | Vite 6, Vue 3.5, esbuild minify, `sourcemap:'hidden'`, purgecss safelist, deps pinned, v3.0.0 | `vite.config.js`, `package.json`, `index.html` | **move-only** (build) | 108 |
+| Test suites | unit + regression — **5 are standalone, 5 import the new widget**, 1 is the harness smoke test | `*.test.js` (11 files, ~1.5k lines) | **adds-something-new** | 1,522 |
+| Dev harness + entry | In-page BL2/BSL test page; `main.js`/`index.html` rewritten to mount it | `src/dev/harness.vue`, `main.js`, `index.html` | **adds-something-new** (not shipped) | 263 |
+| CI / release | test→build→artifact; release-asset publish + checksums. **CI's only test step is `yarn test:smoke`** | `.github/workflows/ci.yml`, `.gitignore` | **adds-something-new** (infra) | 175 |
+| Docs | README rewrite + PRD + architecture + ADRs + CONTEXT (+ cross-project `bioland/*`, maybe out of scope) | `README.md`, `docs/*` | **adds-something-new** (docs) | 1,757 |
 
 ---
 

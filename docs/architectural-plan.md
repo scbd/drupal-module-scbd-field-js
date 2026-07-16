@@ -39,14 +39,14 @@ references: [prd.md, CONTEXT.md, adr/]
 ## 1. Context
 
 This repository builds one thing: a Vue 3 widget, shipped as a single IIFE bundle, that renders the
-term pickers for the SCBD Thesaurus Tags Drupal field. A content editor on a Drupal node form sees one
+term pickers for the SCBD Thesaurus Tags Drupal field. A content manager on a Drupal node form sees one
 or more searchable multiselects, each backed by a controlled vocabulary the Secretariat of the
 Convention on Biological Diversity (SCBD) publishes on `api.cbd.int`: Global Biodiversity Framework
 targets, Sustainable Development Goals, national biodiversity targets, countries, CBD subjects, IUCN
 ecosystem types, and others.
 
 The widget owns no state of its own and talks to no database. It reads the field's saved value straight
-from a hidden Drupal `<input>`, lets the editor pick terms, and writes the selected term keys back to
+from a hidden Drupal `<input>`, lets the content manager pick terms, and writes the selected term keys back to
 that same input as a comma-separated string on every change. Drupal persists the input like any other
 form value. Picking a GBF target also auto-fills its related SDGs and subjects from a static table.
 
@@ -119,8 +119,8 @@ mounted app reading and writing one hidden input.
 
 ```mermaid
 flowchart TB
-editor([Content editor])
-admin([Site administrator])
+editor([Content manager])
+admin([Site manager])
 drupal["Companion module + Drupal site<br/>field type, form host, persistence"]
 widget["SCBD Field widget<br/>Vue 3 IIFE thesaurus multiselects"]
 cbdapi[(api.cbd.int<br/>thesaurus REST API + Solr index/select)]
@@ -135,8 +135,8 @@ drupal -->|loads bundle from| ghrel
 drupal -->|loads Vue + CSS from| cdn
 ```
 
-Both human actors reach the widget through Drupal. The editor never touches the bundle directly; the
-administrator configures domain order and the two auto-add toggles through the companion module's config
+Both human actors reach the widget through Drupal. The content manager never touches the bundle directly; the
+site manager configures domain order and the two auto-add toggles through the companion module's config
 form at `/admin/config/scbd-field`. At runtime the widget reaches `api.cbd.int` for vocabulary data; the
 host page delivers the Vue runtime and CSS.
 
@@ -147,7 +147,7 @@ several collaborators. This view shows that runtime composition rather than sepa
 
 ```mermaid
 flowchart TB
-  editor([Content editor])
+  editor([Content manager])
   subgraph page [Drupal node-form page]
     behavior["Drupal behavior<br/>(companion module)"]
     input["Hidden input(s)<br/>field_&lt;name&gt;[0][value|value2]"]
@@ -230,7 +230,7 @@ resolve their saved children out of the already-loaded option list.
 
 ```mermaid
 sequenceDiagram
-  actor Editor
+  actor Editor as Content manager
   participant B as Drupal behavior
   participant C as Field component
   participant API as api.cbd.int
@@ -253,7 +253,7 @@ The write-back during hydration is intentional: it rewrites legacy `SDG-GOAL-*` 
 
 ```mermaid
 sequenceDiagram
-  actor Editor
+  actor Editor as Content manager
   participant C as Field component
   participant R as relations
   participant Input as Hidden input
@@ -367,7 +367,7 @@ the business rules it enforces.
   synthetic localized "Other" organization type (`ORG-TYPE-OTHER`) is appended to the org-types list.
 
 The seam to the companion module is the DOM handshake of [§2](#2-owned-interface-the-seam); the seam to
-`api.cbd.int` is read-only HTTPS. This widget writes nothing back to either except the editor's
+`api.cbd.int` is read-only HTTPS. This widget writes nothing back to either except the content manager's
 selection into the local hidden input.
 
 ## 10. Build, Release & Deployment
@@ -416,7 +416,7 @@ and `vue-multiselect` are bundled; Vue is external.
 | Supply chain | Reproducible, minimal dependencies | All runtime/dev deps are pinned (no `^`/`~`); Vue is external; only `change-case`, `ofetch`, and `vue-multiselect` are bundled; release assets ship a `SHA256SUMS`. |
 | Availability / resilience | One slow or failing endpoint never freezes or breaks the field | Every fetch path has a 20s timeout and resolves to `[]` on error; a missing hidden input degrades to a logged no-op. |
 | Performance | Minimal work per render and per mount | Domains fetch in parallel; the hidden input and per-domain `grouped`/`multiple` flags resolve once, not per render; locale files load lazily so the default (English) path costs zero dynamic imports; CSS is PurgeCSS-trimmed. |
-| Internationalization | Term and label text resolve to the editor's locale with a safe fallback | Labels fall back locale → English → raw key; term names resolve `shortTitle` → `title` → `name`; national targets request alternate-locale titles as a fallback ([ADR 0002](adr/0002-national-targets-alternate-locale-title-fallback.md)). |
+| Internationalization | Term and label text resolve to the content manager's locale with a safe fallback | Labels fall back locale → English → raw key; term names resolve `shortTitle` → `title` → `name`; national targets request alternate-locale titles as a fallback ([ADR 0002](adr/0002-national-targets-alternate-locale-title-fallback.md)). |
 | Maintainability | Defaults and conventions cannot silently drift | Default domain lists and the API map live once in `constants.js` and are shared by wrapper and component; source files are kebab-case; unit, regression, and smoke tests cover the utils and the harness. |
 | Compatibility | Bundle stays small and host-controlled | IIFE with a single global; host supplies a matching Vue 3 runtime rather than bundling its own copy. |
 
@@ -465,7 +465,7 @@ hub checklist (`bioland/bioland.md`, in the hub repo) because they touch the com
       primary locale falls back to English.
 - [ ] The published release contains the minified script, the stylesheet, and the checksum, contains no
       source map, and does not include Vue.
-- [ ] *(cross)* An editor tags a node → the saved hidden input holds comma-joined stable keys → the
+- [ ] *(cross)* A content manager tags a node → the saved hidden input holds comma-joined stable keys → the
       companion module persists them and exposes the raw key string over JSON:API.
 - [ ] *(cross)* The bundle version Drupal loads matches what the companion module expects → the picker
       mounts and writes keys back.
