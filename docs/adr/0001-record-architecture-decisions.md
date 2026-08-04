@@ -2,7 +2,7 @@
 
 | status | date | deciders | context | origin |
 |---|---|---|---|---|
-| accepted | 2026-06-17 | project-lead | system-wide | standalone |
+| proposed | 2026-06-17 | project-lead | system-wide | standalone |
 
 We will record architecturally-significant decisions as Architecture Decision Records in
 `docs/adr/`, following the team's `adr` skill format. Decisions are numbered sequentially and are
