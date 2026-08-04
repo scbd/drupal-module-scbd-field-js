@@ -4,8 +4,7 @@
 
 > **⚠ Target-state PRD (v3.0.0) — this branch is v1.0.0** (one grouped `@scbd/cached-apis`
 > multiselect). The in-module data layer, `singleValueDomains`, `GBF_SAMEAS`,
-> legacy-SDG migration, Solr guards, and locale files below arrive with the v3.0.0 cutover. See
-> [decomp-seams.md](decomp-seams.md) for the migration.
+> legacy-SDG migration, Solr guards, and locale files below arrive with the v3.0.0 cutover. See PR #22 (docs/decomp-seams.md) for the migration.
 
 Umbrella PRD for `drupal-module-scbd-field-js`: the browser front end for the SCBD Thesaurus Tags
 Drupal field. A living document — append here, never fork a parallel copy.
