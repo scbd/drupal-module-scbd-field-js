@@ -5,7 +5,7 @@
 | proposed | 2026-06-17 | project-lead | module (national-targets) | `src/utils/national-targets.js` | standalone |
 
 > _Applies to the **v3.0.0** widget. `src/utils/national-targets.js` arrives with the v3.0.0 cutover
-> (see [decomp-seams.md](../decomp-seams.md)); on this branch (v1.0.0) National Targets is still
+> (see PR #22 (docs/decomp-seams.md)); on this branch (v1.0.0) National Targets is still
 > handled inside the legacy `@scbd/cached-apis` bundle._
 
 The `api.cbd.int` Solr index does not populate `title_<LANG>_t` for every served locale on every
