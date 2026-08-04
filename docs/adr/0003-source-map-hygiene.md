@@ -6,8 +6,7 @@
 
 > _Applies to the **v3.0.0** widget. `vite.config.js` exists on this branch, but the
 > `.github/workflows/ci.yml` strip step and the `package.json` `files` allowlist
-> (`dist/index.min.js` + `dist/style.css`) described below land with the v3.0.0 cutover (see
-> [decomp-seams.md](../decomp-seams.md))._
+> (`dist/index.min.js` + `dist/style.css`) described below land with the v3.0.0 cutover (see PR #22 (docs/decomp-seams.md))._
 
 Publishing `dist/index.min.js.map` (as a release asset and inside the CI artifact) exposes the
 original unminified source — templates, comments, structure — to anyone fetching it from the CDN or
