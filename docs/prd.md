@@ -11,13 +11,15 @@ Drupal field. A living document — append here, never fork a parallel copy.
 
 Content managers on SCBD Drupal sites tag content against controlled vocabularies published on
 `api.cbd.int`: GBF targets, SDGs, national biodiversity targets, countries, CBD subjects, IUCN
-ecosystem types, and others. A plain Drupal text or taxonomy field cannot do this: term names are
+ecosystem types, and others. Plain Drupal taxonomy could model this, but only inefficiently: each
+site would maintain its own copy of every vocabulary, kept in sync with the `api.cbd.int`
+endpoints by polling, with term names machine-translated per site. Term names are
 translated into dozens of languages, a GBF target maps to
 related SDGs and subjects, and stored keys have changed over time (`SDG-GOAL-*` vs today's
-`SUSTAINABLE-DEVELOPMENT-GOAL-*`). Without a purpose-built widget, managers would type opaque
-identifiers by hand, in English only, with no auto-linked relations, and would silently lose data
-on an upstream key rename. Site managers also need to control which vocabularies appear, in what
-order, and which are preselected — without a developer editing code.
+`SUSTAINABLE-DEVELOPMENT-GOAL-*`). Without a purpose-built widget, managers would rely on those
+per-site copies drifting from the source, with no auto-linked relations, and would silently lose
+data on an upstream key rename. Site managers also need to control which vocabularies appear, in
+what order, and which are preselected — without a developer editing code.
 
 ## Solution
 
