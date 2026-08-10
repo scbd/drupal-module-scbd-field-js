@@ -1,4 +1,4 @@
-*2026-06-26 (last reviewed 2026-06-26) · references: [prd.md](prd.md), [CONTEXT.md](CONTEXT.md), [ADRs](adr/)*
+*2026-06-26 (last reviewed 2026-06-26) · references: prd.md (lands in the PRD sibling PR), [CONTEXT.md](CONTEXT.md), [ADRs](adr/)*
 
 > **▶ Living architectural plan** — the design-of-record for this widget as a standalone system.
 > Not an implementation plan: it cuts no tasks, PRs, or branches (see [§15](#15-implementation-hand-off)).
