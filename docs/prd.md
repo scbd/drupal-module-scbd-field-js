@@ -1,7 +1,5 @@
 # SCBD Thesaurus Field Widget: Product Requirements
 
-*2026-06-23 · references: [README](../README.md), [ADRs 0001–0003](adr/)*
-
 > **⚠ Target-state PRD (v3.0.0) — this branch is v1.0.0** (one grouped `@scbd/cached-apis`
 > multiselect). The in-module data layer, `singleValueDomains`, `GBF_SAMEAS`,
 > legacy-SDG migration, Solr guards, and locale files below arrive with the v3.0.0 cutover. See PR #22 (docs/decomp-seams.md) for the migration.
