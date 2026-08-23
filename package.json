@@ -37,7 +37,8 @@
     "./src/": "./src/"
   },
   "dependencies": {
-    "@scbd/cached-apis": "file:/Users/randyhoulahan/projects/@scbd/@bioland/cached-apis",
+    "@scbd/cached-apis": "0.0.2",
+    "change-case": "5.4.4",
     "vue": "^3.3.4",
     "vue-multiselect": "3.0.0-beta.1"
   },
