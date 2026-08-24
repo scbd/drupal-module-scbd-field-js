@@ -26,11 +26,11 @@
   "exports": {
     ".": [
       {
+        "import": "./dist/index.min.js",
+        "require": "./dist/index.min.js",
         "style": "./dist/style.css",
         "src": "./src",
         "dist": "./dist",
-        "import": "./dist/index.min.js",
-        "require": "./dist/index.min.js",
         "default": "./dist/index.min.js"
       }
     ],
@@ -47,7 +47,7 @@
     "@fullhuman/postcss-purgecss": "8.0.0",
     "@vitejs/plugin-vue": "6.0.7",
     "@vue/compiler-dom": "3.5.25",
-    "postcss": "8.5.15",
+    "postcss": "8.5.26",
     "sass": "1.89.0",
     "vite": "6.4.3"
   }
