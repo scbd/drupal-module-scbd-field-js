@@ -4,8 +4,9 @@
 /**
  * Canonical default multi-value domains rendered by the widget when a host does not pass an
  * explicit `domains` prop. This is the single source of truth for the shipped default: the
- * wrapper (`src/index.vue`) and the inner component (`src/components/index.vue`) both reference
- * it, so their defaults can never drift apart.
+ * wrapper (`src/index.vue`) and the inner component (`src/components/index.vue`) will both
+ * reference it from DEV-1171 on, so their defaults can never drift apart. Neither imports it yet
+ * on this branch — the drift protection arrives with the flip, not here.
  *
  * Membership and order are load-bearing — the order here is the order the fields render. Keep it
  * byte-for-byte stable; changing it changes shipped behavior.
