@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "ജിബിഎഫ് ടാർഗെറ്റുകൾ",
+  "nationalTargets7": "ദേശീയ ലക്ഷ്യങ്ങൾ",
+  "subjects": "തീമാറ്റിക് ഏരിയകൾ",
+  "sdgs": "എസ്ഡിജികൾ",
+  "countries": "രാജ്യങ്ങൾ",
+  "regions": "പ്രദേശങ്ങൾ",
+  "jurisdictions": "അധികാരപരിധികൾ",
+  "orgTypes": "ഓർഗനൈസേഷൻ തരം",
+  "govTypes": "സർക്കാർ തരം",
+  "projectStatuses": "പ്രോജക്റ്റ് സ്റ്റാറ്റസ്",
+  "geoScopes": "ഭൂമിശാസ്ത്രപരമായ വ്യാപ്തി",
+  "documentTypes": "പ്രമാണ തരം",
+  "ecosystemTypes": "ഇക്കോസിസ്റ്റം തരം",
+  "eventStatuses": "ഇവന്റ് സ്റ്റാറ്റസ്",
+  "bchSubjects": "ബയോസേഫ്റ്റി തീമാറ്റിക് ഏരിയകൾ",
+  "bchSubjectGroups": "ബയോസേഫ്റ്റി തീമാറ്റിക് ഏരിയകൾ",
+  "other": "മറ്റ്"
+}

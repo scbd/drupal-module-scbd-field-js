@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF 타겟",
+  "nationalTargets7": "국가 목표",
+  "subjects": "주제 영역",
+  "sdgs": "지속가능발전목표",
+  "countries": "국가들",
+  "regions": "지역",
+  "jurisdictions": "관할 구역",
+  "orgTypes": "조직 유형",
+  "govTypes": "정부 유형",
+  "projectStatuses": "프로젝트 상태",
+  "geoScopes": "지리적 범위",
+  "documentTypes": "문서 유형",
+  "ecosystemTypes": "에코시스템 유형",
+  "eventStatuses": "이벤트 상태",
+  "bchSubjects": "생물안전 주제 영역",
+  "bchSubjectGroups": "생물안전 주제 영역",
+  "other": "기타"
+}
