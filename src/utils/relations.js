@@ -18,4 +18,8 @@ export const LINKABLE_DOMAINS = ['sdgs', 'subjects'];
  * @param {string} identifier
  * @returns {string[]} related identifiers (SDGs/Subjects, plus AICHI/GUIDs filtered out at fill time)
  */
-export const relatedKeys = (identifier) => GBF_SAMEAS[identifier] ?? [];
+// Object.hasOwn, not a bare lookup: GBF_SAMEAS is an object literal, so `__proto__`,
+// `constructor`, `toString` and `valueOf` all resolve truthy off the prototype and would
+// return a function to a caller that expects string[].
+export const relatedKeys = (identifier) =>
+  (Object.hasOwn(GBF_SAMEAS, identifier) ? GBF_SAMEAS[identifier] : undefined) ?? [];

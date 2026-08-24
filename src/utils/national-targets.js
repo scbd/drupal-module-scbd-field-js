@@ -15,12 +15,22 @@ const INDEX_URL = 'https://api.cbd.int/api/v2013/index/select';
 // SEC-2): indexQuery fails closed for any caller, and the re-assertion is idempotent — sanitized
 // input yields byte-identical output, so the boundary caller's behavior is unchanged.
 const COUNTRY_RE = /^[a-z]{2}$/i;
-const LOCALE_RE = /^[a-z]{2,3}(-[a-z0-9]+)?$/i;
+const LOCALE_RE = /^[a-z]{2,3}(-[a-z]{2,8})?$/i;
+/** Page-size guards: an unbounded `rows` lets one caller ask the index for everything. */
+const DEFAULT_ROWS = 25;
+const MAX_ROWS = 1000;
 
 /** Drop any country token that is not a clean ISO-3166-1 alpha-2 code. */
-const safeCountries = (countries = []) => countries.filter((c) => COUNTRY_RE.test(c));
+const safeCountries = (countries = []) =>
+  [].concat(countries ?? []).filter((c) => typeof c === 'string' && COUNTRY_RE.test(c));
 /** Drop any locale token that carries Solr metacharacters or is otherwise malformed. */
-const safeLocales = (locales = []) => locales.filter((l) => LOCALE_RE.test(l));
+const safeLocales = (locales = []) =>
+  [].concat(locales ?? []).filter((l) => typeof l === 'string' && LOCALE_RE.test(l));
+/** Clamp `start` to a non-negative integer; anything else becomes 0. */
+const safeIndex = (n) => (Number.isInteger(n) && n >= 0 ? n : 0);
+/** Clamp `rows` to 1..MAX_ROWS; anything else becomes the default page size. */
+const safeRows = (n) => (Number.isInteger(n) && n > 0 ? Math.min(n, MAX_ROWS) : DEFAULT_ROWS);
+
 /** Fall back to 'en' when the primary locale is malformed (still needed for field names). */
 const safeLocale = (locale) => (LOCALE_RE.test(locale) ? locale : 'en');
 
@@ -50,20 +60,23 @@ const extraTitleFields = (locales = [], locale) =>
  * @param {string[]} [locales] alternate locales for fallback name fields; malformed values dropped.
  * @returns {string} JSON request body for `index/select`.
  */
-export const indexQuery = (countries = [], start = 0, rows = 1000, locale = 'en', locales = ['en']) => {
+export const indexQuery = (countries = [], start = 0, rows = 25, locale = 'en', locales = ['en']) => {
   const ctry = safeCountries(countries);
+  const from = safeIndex(start);
+  const size = safeRows(rows);
   const loc = safeLocale(locale);
   const locs = safeLocales(locales);
+  const fieldLoc = mapLocaleFromDrupal(loc).toUpperCase();
   const governmentQuery = ctry.length ? `AND government_s : (${ctry.join(' ')})` : '';
   return JSON.stringify({
-    df: `text_${loc.toUpperCase()}_txt`,
+    df: `text_${fieldLoc}_txt`,
     fq: ['_state_s:public', 'realm_ss:ort'],
     q: `(schema_s : (nationalTarget7)${governmentQuery})`,
-    sort: `title_${loc.toUpperCase()}_s asc`,
-    fl: `identifier:uniqueIdentifier_s, name:title_${mapLocaleFromDrupal(loc).toUpperCase()}_t${extraTitleFields(locs, loc)}`,
+    sort: `title_${fieldLoc}_s asc`,
+    fl: `identifier:uniqueIdentifier_s, name:title_${fieldLoc}_t${extraTitleFields(locs, loc)}`,
     wt: 'json',
-    start,
-    rows,
+    start: from,
+    rows: size,
   });
 };
 
