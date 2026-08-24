@@ -19,22 +19,32 @@ const LOCALE_RE = /^[a-z]{2,3}(-[a-z]{2,8})?$/i;
 /** Page-size guards: an unbounded `rows` lets one caller ask the index for everything. */
 const DEFAULT_ROWS = 25;
 const MAX_ROWS = 1000;
+const MAX_START = 100000;
+/** Cap the projection list: one caller passing 100k locales built a 1.2 MB `fl`. */
+const MAX_LOCALES = 20;
 /** Matches the bound use-taxonomies already applies to its own fetches. */
 const REQUEST_TIMEOUT_MS = 20000;
 
 /** Drop any country token that is not a clean ISO-3166-1 alpha-2 code. */
 const safeCountries = (countries = []) =>
   [].concat(countries ?? []).filter((c) => typeof c === 'string' && COUNTRY_RE.test(c));
-/** Drop any locale token that carries Solr metacharacters or is otherwise malformed. */
-const safeLocales = (locales = []) =>
-  [].concat(locales ?? []).filter((l) => typeof l === 'string' && LOCALE_RE.test(l));
+/** Drop any locale token that carries Solr metacharacters or is otherwise malformed. Deduped and
+ *  capped: one caller passing 100k locales inflated `fl` to 1.2 MB. */
+const safeLocales = (locales = []) => [
+  ...new Set([].concat(locales ?? []).filter((l) => typeof l === 'string' && LOCALE_RE.test(l))),
+].slice(0, MAX_LOCALES);
 /** Clamp `start` to a non-negative integer; anything else becomes 0. */
 const safeIndex = (n) => (Number.isInteger(n) && n >= 0 ? n : 0);
 /** Clamp `rows` to 1..MAX_ROWS; anything else becomes the default page size. */
 const safeRows = (n) => (Number.isInteger(n) && n > 0 ? Math.min(n, MAX_ROWS) : DEFAULT_ROWS);
+/** Cap deep paging: an unbounded `start` is a cheap way to make Solr do expensive work. */
+const safeIndexCapped = (n) => Math.min(safeIndex(n), MAX_START);
 
-/** Fall back to 'en' when the primary locale is malformed (still needed for field names). */
-const safeLocale = (locale) => (LOCALE_RE.test(locale) ? locale : 'en');
+/** Fall back to 'en' for a malformed primary locale. typeof is load-bearing: an object with a
+ *  custom toUpperCase() passed the regex via toString() and injected extra fields into `fl`
+ *  and `sort`, so the value must be a primitive string before it is trusted. */
+const safeLocale = (locale) =>
+  (typeof locale === 'string' && LOCALE_RE.test(locale) ? locale : 'en');
 
 /** Map Drupal locale codes to the index's `title_<LANG>_t` field language. */
 const mapLocaleFromDrupal = (locale) =>
@@ -64,7 +74,7 @@ const extraTitleFields = (locales = [], locale) =>
  */
 export const indexQuery = (countries = [], start = 0, rows = 25, locale = 'en', locales = ['en']) => {
   const ctry = safeCountries(countries);
-  const from = safeIndex(start);
+  const from = safeIndexCapped(start);
   const size = safeRows(rows);
   const loc = safeLocale(locale);
   const locs = safeLocales(locales);
@@ -97,7 +107,11 @@ const normalizeNationalTarget = (currentLocale, locales, doc) => {
  * @param {{ countries?: string[], start?: number, rows?: number, locale: string, locales: string[] }} [ctx]
  * @returns {Promise<Array<{ identifier: string, name: string }>>}
  */
-export async function getNationalTargets7({ countries = [], start = 0, rows = 25, locale, locales } = {}) {
+export async function getNationalTargets7(ctx) {
+  // Normalize the whole argument first: destructuring a null or primitive ctx threw a
+  // TypeError from above the try, so the documented resolve-to-[] contract did not hold.
+  const { countries = [], start = 0, rows = 25, locale, locales } =
+    (ctx && typeof ctx === 'object' ? ctx : {});
   // Sanitize once at the boundary, then thread the safe values through query + normalize (S1).
   const loc = safeLocale(locale);
   const locs = safeLocales(locales ?? [loc]);

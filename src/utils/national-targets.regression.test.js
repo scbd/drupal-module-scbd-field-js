@@ -238,6 +238,34 @@ describe('indexQuery — hardening from the DEV-1167 pre-PR security review', ()
     expect(ofetchMock.mock.calls[0][1].timeout).toBe(20000);
   });
 
+  it('rejects a non-string locale that fakes the regex via toString but injects via toUpperCase', () => {
+    // HIGH, round 2: safeLocale kept the original object, so a custom toUpperCase() appended
+    // arbitrary field names to fl and sort. fq was never reachable, so this could only widen
+    // the projection over already-public documents, but it is field injection all the same.
+    const evil = { toString: () => 'en', toUpperCase: () => 'EN_t,secret_s,tail' };
+    const body = JSON.parse(indexQuery([], 0, 25, evil, ['en']));
+
+    expect(body.fl).toBe('identifier:uniqueIdentifier_s, name:title_EN_t');
+    expect(body.sort).toBe('title_EN_s asc');
+    expect(body.fl).not.toContain('secret_s');
+  });
+
+  it('caps deep paging and dedupes/caps the projection list', () => {
+    expect(JSON.parse(indexQuery([], Number.MAX_SAFE_INTEGER, 1, 'en', ['en'])).start).toBe(100000);
+
+    const many = JSON.parse(indexQuery([], 0, 25, 'en', Array(100000).fill('fr')));
+    expect(many.fl.length).toBeLessThan(200);
+    expect(many.fl.match(/title_FR_t/g)).toHaveLength(1);
+  });
+
+  it('resolves to [] for a null or primitive context instead of throwing', async () => {
+    respondWith([]);
+
+    await expect(getNationalTargets7(null)).resolves.toEqual([]);
+    await expect(getNationalTargets7('nonsense')).resolves.toEqual([]);
+    await expect(getNationalTargets7({ locale: Symbol('x') })).resolves.toEqual([]);
+  });
+
   it('never interpolates into fq, so the public/realm scoping cannot be tampered with', () => {
     const body = JSON.parse(indexQuery(['be'], 0, 25, 'en', ['en']));
 
