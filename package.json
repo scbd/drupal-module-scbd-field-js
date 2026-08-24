@@ -40,7 +40,7 @@
   "dependencies": {
     "@scbd/cached-apis": "0.0.2",
     "change-case": "5.4.4",
-    "vue": "^3.3.4",
+    "vue": "^3.5.15",
     "vue-multiselect": "3.0.0-beta.1"
   },
   "devDependencies": {
