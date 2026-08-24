@@ -137,3 +137,25 @@ describe('useTaxonomies dead-filter removal (CR-11)', () => {
     expect(parent.children[0].identifier).toBe('BCH-CHILD');
   });
 });
+
+describe('null-argument hardening from the DEV-1168 round-2 review', () => {
+  it('does not throw at setup when locales is null or not an array', () => {
+    expect(() => useTaxonomies('en', null)).not.toThrow();
+    expect(() => useTaxonomies('en', 'fr')).not.toThrow();
+    expect(() => useTaxonomies('en')).not.toThrow();
+  });
+
+  it('lookUp resolves instead of rejecting when keys is null or not an array', async () => {
+    const { lookUp } = useTaxonomies('en', []);
+
+    await expect(lookUp('sdgs', null)).resolves.toBeDefined();
+    await expect(lookUp('sdgs', 'not-an-array')).resolves.toBeDefined();
+  });
+
+  it('getData refuses a non-string domain without dispatching a request', async () => {
+    const { getData } = useTaxonomies('en', []);
+
+    await expect(getData({ toString: () => 'subjects' })).resolves.toEqual([]);
+    await expect(getData(null)).resolves.toEqual([]);
+  });
+});

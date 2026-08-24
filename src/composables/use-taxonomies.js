@@ -49,7 +49,12 @@ const resolveLocale = (locale) =>
  */
 export function useTaxonomies(locale, locales = []) {
   const lang = resolveLocale(locale);
-  const orgTypeOtherPromise = useOrgTypeOther([locale, ...locales]); // localized "Other" appended to orgTypes (loads on demand)
+  // Array.isArray, not a bare spread: `[locale, ...locales]` threw synchronously at setup for a
+  // null or non-iterable `locales`, taking down the whole component before any fetch.
+  // The trailing catch keeps a failed load from surfacing as an unhandled rejection when
+  // getData('orgTypes') is never called.
+  const extraLocales = Array.isArray(locales) ? locales : [];
+  const orgTypeOtherPromise = useOrgTypeOther([locale, ...extraLocales]).catch(() => null); // localized "Other" appended to orgTypes (loads on demand)
 
   /** Trim a raw thesaurus term to the keys the widget reads. */
   const base = (item) => omitNil({ identifier: item.identifier, name: localizedName(item, lang) });
@@ -90,13 +95,13 @@ export function useTaxonomies(locale, locales = []) {
       // Object.hasOwn, not a bare lookup: APIS is an object literal, so 'constructor',
       // '__proto__' and friends resolve truthy off the prototype and would be coerced
       // into a URL. Same-origin relative path, so not SSRF, but still a bogus request.
-      const url = Object.hasOwn(APIS, domain) ? APIS[domain] : undefined;
+      const url = typeof domain === 'string' && Object.hasOwn(APIS, domain) ? APIS[domain] : undefined;
       if (!url) return []; // unknown-domain guard — never ofetch(undefined)
 
       const raw = await fetchDomain(url);
       if (domain === 'orgTypes') return transforms.orgTypes(raw, await orgTypeOtherPromise); // needs the localized "Other"
-      return (Object.hasOwn(transforms, domain) ? transforms[domain] : undefined
-        || defaultTransform)(raw);
+      return ((typeof domain === 'string' && Object.hasOwn(transforms, domain)
+        ? transforms[domain] : undefined) || defaultTransform)(raw);
     } catch (e) {
       console.error(`useTaxonomies.getData(${domain}):`, e);
       return []; // always an array on error
@@ -115,7 +120,8 @@ export function useTaxonomies(locale, locales = []) {
   async function lookUp(source, keys = [], single = false) {
     const records = await getData(source);
 
-    const wanted = keys.map(migrateSdgKey); // upgrade legacy SDG-GOAL-* keys
+    // Normalize first: a null or non-array `keys` rejected on .map instead of resolving.
+    const wanted = (Array.isArray(keys) ? keys : []).map(migrateSdgKey); // upgrade legacy SDG-GOAL-* keys
     const matched = records.filter((t) => wanted.includes(t.identifier));
 
     if (single && matched.length === 1) return matched[0];
