@@ -67,6 +67,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      # Defence in depth: the release job holds contents: write, so refuse to run
+      # dependency lifecycle scripts from the tagged tree.
+      YARN_ENABLE_SCRIPTS: 'false'
     steps:
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -78,6 +82,23 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+
+      - name: Verify release tag matches package version
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+          RELEASE_VERSION="${TAG_NAME#v}"
+          test "$RELEASE_VERSION" = "$PACKAGE_VERSION"
+
+      - name: Verify release commit is on default branch
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          git fetch --no-tags --depth=0 origin "$DEFAULT_BRANCH"
+          TAG_COMMIT="$(git rev-list -n 1 -- "refs/tags/$TAG_NAME")"
+          git merge-base --is-ancestor "$TAG_COMMIT" "origin/$DEFAULT_BRANCH"
 
       - name: Enable Corepack
         run: |
@@ -93,33 +114,19 @@ jobs:
         with:
           path: ${{ steps.yarn-cache-dir.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
+          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('package.json') }}-
 
       - name: Install dependencies
         run: yarn install --immutable
-
-      - name: Verify release tag matches package version
-        env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
-        run: |
-          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
-          RELEASE_VERSION="${TAG_NAME#v}"
-          test "$RELEASE_VERSION" = "$PACKAGE_VERSION"
-
-      - name: Verify release commit is on default branch
-        env:
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-          TAG_NAME: ${{ github.event.release.tag_name }}
-        run: |
-          TAG_COMMIT="$(git rev-list -n 1 "$TAG_NAME")"
-          git merge-base --is-ancestor "$TAG_COMMIT" "origin/$DEFAULT_BRANCH"
 
       - name: Build
         run: yarn build
 
       - name: Verify dist contract
         run: |
-          test -f dist/index.min.js
+          # vite 4 lib mode currently emits index.min.js.iife.js; DEV-1170 changes
+          # fileName so it emits index.min.js. Accept either until that lands.
+          test -f dist/index.min.js || test -f dist/index.min.js.iife.js
           test -f dist/style.css
 
       - name: Generate checksums
@@ -132,7 +139,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          gh release upload "$TAG_NAME" \
+          gh release upload --clobber "$TAG_NAME" \
             dist/index.min.js \
             dist/style.css \
             dist/SHA256SUMS
