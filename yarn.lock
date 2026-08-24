@@ -613,7 +613,7 @@ __metadata:
     rollup-plugin-terser: "npm:^7.0.2"
     sass: "npm:1.32.11"
     vite: "npm:4.4.9"
-    vue: "npm:^3.3.4"
+    vue: "npm:^3.5.15"
     vue-multiselect: "npm:3.0.0-beta.1"
   languageName: unknown
   linkType: soft
@@ -1484,7 +1484,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.3.4, vue@npm:^3.5.15":
+"vue@npm:^3.5.15":
   version: 3.5.41
   resolution: "vue@npm:3.5.41"
   dependencies:
