@@ -229,6 +229,15 @@ describe('indexQuery — hardening from the DEV-1167 pre-PR security review', ()
     expect(JSON.parse(indexQuery([], 0, 25, 'zh-hans', ['zh-hans'])).sort).toBe('title_ZH_s asc');
   });
 
+  it('bounds the request with a timeout so a stalled connection cannot hang forever', async () => {
+    respondWith([]);
+
+    await getNationalTargets7({ countries: ['be'], locale: 'en', locales: ['en'] });
+
+    expect(ofetchMock).toHaveBeenCalledTimes(1);
+    expect(ofetchMock.mock.calls[0][1].timeout).toBe(20000);
+  });
+
   it('never interpolates into fq, so the public/realm scoping cannot be tampered with', () => {
     const body = JSON.parse(indexQuery(['be'], 0, 25, 'en', ['en']));
 
