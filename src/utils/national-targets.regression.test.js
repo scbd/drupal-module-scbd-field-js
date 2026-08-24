@@ -1,6 +1,6 @@
 // Regression baseline (CR-2) for src/utils/national-targets.js. Asserts the ACTUAL behavior on
-// `latest` via the public getNationalTargets7 (indexQuery is module-private on this branch, so the
-// query is observed through the captured ofetch POST body). Plain JS + Vitest only — no network.
+// `latest` via the public getNationalTargets7, observing the query through the captured ofetch
+// POST body, plus direct indexQuery cases for the guards. Plain JS + Vitest only — no network.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -8,7 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 const ofetchMock = vi.fn();
 vi.mock('ofetch', () => ({ ofetch: (...args) => ofetchMock(...args) }));
 
-const { getNationalTargets7 } = await import('@/utils/national-targets.js');
+const { getNationalTargets7, indexQuery } = await import('@/utils/national-targets.js');
 
 const INDEX_URL = 'https://api.cbd.int/api/v2013/index/select';
 
@@ -91,15 +91,21 @@ describe('getNationalTargets7 — request construction', () => {
 });
 
 describe('getNationalTargets7 — Drupal locale mapping', () => {
-  it('maps zh-hans -> zh in the name field while df/sort keep the raw locale token', async () => {
+  it('maps zh-hans -> zh in every field, including df and sort', async () => {
     respondWith([]);
 
     await getNationalTargets7({ locale: 'zh-hans', locales: ['zh-hans'] });
     const body = sentBody();
 
+    // This previously asserted df/sort kept the RAW token (text_ZH-HANS_txt,
+    // title_ZH-HANS_s), which locked in a bug: those dynamic fields do not exist,
+    // so Solr answered 200 and silently sorted on an always-empty field. The two
+    // locales mapLocaleFromDrupal exists for -- zh-hans and fil -- were the only
+    // ones affected, and they got arbitrary ordering. The mapping now applies to
+    // fl, df and sort alike.
     expect(body.fl).toBe('identifier:uniqueIdentifier_s, name:title_ZH_t');
-    expect(body.df).toBe('text_ZH-HANS_txt'); // df/sort upcase the raw token, not the mapped one
-    expect(body.sort).toBe('title_ZH-HANS_s asc');
+    expect(body.df).toBe('text_ZH_txt');
+    expect(body.sort).toBe('title_ZH_s asc');
   });
 
   it('maps fil -> tl in an alternate-locale fallback field', async () => {
@@ -187,5 +193,45 @@ describe('getNationalTargets7 — error path', () => {
     ofetchMock.mockRejectedValue(new Error('boom'));
 
     await expect(getNationalTargets7({ locale: 'en', locales: ['en'] })).resolves.toEqual([]);
+  });
+});
+
+describe('indexQuery — hardening from the DEV-1167 pre-PR security review', () => {
+  it('drops a country whose toString() changes between the whitelist test and the join', () => {
+    // RE.test(c) coerces once and join(' ') coerces again, so a non-deterministic
+    // toString() used to pass the whitelist and land raw in `q`.
+    let calls = 0;
+    const gadget = { toString: () => (calls++ ? 'ab) OR (*:*' : 'ab') };
+    const body = JSON.parse(indexQuery([gadget], 0, 25, 'en', ['en']));
+
+    expect(body.q).toBe('(schema_s : (nationalTarget7))');
+    expect(body.q).not.toContain('OR');
+  });
+
+  it('accepts a non-array countries/locales argument instead of throwing', () => {
+    // These sanitizers run above the try block in getNationalTargets7, so a
+    // TypeError here escaped the documented resolve-to-[] contract.
+    expect(() => indexQuery('be', 0, 25, 'en', 'en')).not.toThrow();
+    expect(() => indexQuery(null, 0, 25, 'en', null)).not.toThrow();
+    expect(JSON.parse(indexQuery('be', 0, 25, 'en', ['en'])).q).toContain('government_s : (be)');
+  });
+
+  it('clamps start and rows', () => {
+    const body = JSON.parse(indexQuery(['be'], '0 OR 1', 999999999, 'en', ['en']));
+
+    expect(body.start).toBe(0);
+    expect(body.rows).toBe(1000);
+    expect(JSON.parse(indexQuery(['be'], -5, 0, 'en', ['en'])).rows).toBe(25);
+  });
+
+  it('rejects a locale suffix that is not a plain alpha subtag', () => {
+    expect(JSON.parse(indexQuery([], 0, 25, 'en-0000000', ['en'])).sort).toBe('title_EN_s asc');
+    expect(JSON.parse(indexQuery([], 0, 25, 'zh-hans', ['zh-hans'])).sort).toBe('title_ZH_s asc');
+  });
+
+  it('never interpolates into fq, so the public/realm scoping cannot be tampered with', () => {
+    const body = JSON.parse(indexQuery(['be'], 0, 25, 'en', ['en']));
+
+    expect(body.fq).toEqual(['_state_s:public', 'realm_ss:ort']);
   });
 });
