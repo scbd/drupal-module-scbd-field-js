@@ -57,7 +57,9 @@ export function useTranslations(locales = ['en']) {
 
   const load = async (lang) => {
     if (lang === 'en') return; // always present
-    if (!loaders[lang]) return warnOnce(lang, 'no translations');
+    // Object.hasOwn: a bare lookup treats 'constructor'/'__proto__' as a real locale and
+    // then caches Object() output as the message table for that key.
+    if (!Object.hasOwn(loaders, lang)) return warnOnce(lang, 'no translations');
     try {
       messages[lang] = await (cache[lang] ??= loaders[lang]());
     } catch (err) {

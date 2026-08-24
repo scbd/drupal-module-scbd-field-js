@@ -174,3 +174,23 @@ describe('byName / byIdentifier comparators', () => {
     expect([...list].sort(byIdentifier).map((x) => x.identifier)).toEqual([undefined, 'a', 'b']);
   });
 });
+
+describe('prototype-key hardening from the DEV-1168 pre-PR security review', () => {
+  it('localizedName never returns a non-string for a prototype locale key', () => {
+    // prop['constructor'] resolves to a function off the prototype, which is truthy and
+    // used to short-circuit past prop.en, escaping the always-a-string contract (B8).
+    const item = { title: { en: 'Marine' }, name: 'Marine' };
+
+    expect(typeof localizedName(item, 'constructor')).toBe('string');
+    expect(typeof localizedName(item, '__proto__')).toBe('string');
+    expect(typeof localizedName(item, 'valueOf')).toBe('string');
+    expect(localizedName(item, 'constructor')).toBe('Marine');
+  });
+
+  it('still resolves a real locale and falls back to en', () => {
+    const item = { title: { en: 'Marine', fr: 'Marin' }, name: 'Marine' };
+
+    expect(localizedName(item, 'fr')).toBe('Marin');
+    expect(localizedName(item, 'de')).toBe('Marine');
+  });
+});

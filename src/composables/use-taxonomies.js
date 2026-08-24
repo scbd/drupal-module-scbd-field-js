@@ -87,12 +87,16 @@ export function useTaxonomies(locale, locales = []) {
       if (domain === 'bchSubjectGroups') // derived subset: bchSubjects that have children
         return (await getData('bchSubjects')).filter((s) => s.children?.length);
 
-      const url = APIS[domain];
+      // Object.hasOwn, not a bare lookup: APIS is an object literal, so 'constructor',
+      // '__proto__' and friends resolve truthy off the prototype and would be coerced
+      // into a URL. Same-origin relative path, so not SSRF, but still a bogus request.
+      const url = Object.hasOwn(APIS, domain) ? APIS[domain] : undefined;
       if (!url) return []; // unknown-domain guard — never ofetch(undefined)
 
       const raw = await fetchDomain(url);
       if (domain === 'orgTypes') return transforms.orgTypes(raw, await orgTypeOtherPromise); // needs the localized "Other"
-      return (transforms[domain] || defaultTransform)(raw);
+      return (Object.hasOwn(transforms, domain) ? transforms[domain] : undefined
+        || defaultTransform)(raw);
     } catch (e) {
       console.error(`useTaxonomies.getData(${domain}):`, e);
       return []; // always an array on error

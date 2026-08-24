@@ -12,7 +12,13 @@ export const byIdentifier = (a, b) => (a.identifier || '').localeCompare(b.ident
  */
 function lstr(prop, locale) {
   if (!prop || typeof prop === 'string' || !isLstring(prop)) return undefined;
-  return prop[locale] || prop.en;
+  // Object.hasOwn on the locale key: a bare prop[locale] with locale === 'constructor'
+  // returns a function, which is truthy, so it short-circuits past prop.en and escapes
+  // the never-return-a-non-string contract (B8). byName() then calls .localeCompare on
+  // it and throws, and getData()'s catch silently empties the whole domain.
+  const hit = Object.hasOwn(prop, locale) ? prop[locale] : undefined;
+  const value = hit || prop.en;
+  return typeof value === 'string' ? value : undefined;
 }
 
 /**
