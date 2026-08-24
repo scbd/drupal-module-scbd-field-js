@@ -19,6 +19,8 @@ const LOCALE_RE = /^[a-z]{2,3}(-[a-z]{2,8})?$/i;
 /** Page-size guards: an unbounded `rows` lets one caller ask the index for everything. */
 const DEFAULT_ROWS = 25;
 const MAX_ROWS = 1000;
+/** Matches the bound use-taxonomies already applies to its own fetches. */
+const REQUEST_TIMEOUT_MS = 20000;
 
 /** Drop any country token that is not a clean ISO-3166-1 alpha-2 code. */
 const safeCountries = (countries = []) =>
@@ -105,6 +107,10 @@ export async function getNationalTargets7({ countries = [], start = 0, rows = 25
       method: 'post',
       body: indexQuery(ctry, start, rows, loc, locs),
       headers: { 'Content-Type': 'application/json' },
+      // Bounded like use-taxonomies: without this ofetch creates no abort timer, so a
+      // stalled api.cbd.int connection leaves the promise pending forever and the catch
+      // below never runs.
+      timeout: REQUEST_TIMEOUT_MS,
     });
     return response.docs.map((doc) => normalizeNationalTarget(mapLocaleFromDrupal(loc), locs, doc));
   } catch (error) {
