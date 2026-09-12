@@ -27,4 +27,26 @@ describe('i18n locale keys', () => {
     const dutch = JSON.parse(readFileSync(new URL('nl.json', localesDirectory), 'utf8'));
     assert.equal(dutch.documentTypes, 'Documenttype');
   });
+
+  it('completes the truncated Amharic ecosystem type label', () => {
+    const amharic = JSON.parse(readFileSync(new URL('am.json', localesDirectory), 'utf8'));
+    assert.equal(amharic.ecosystemTypes, 'የሥነ ምህዳር ዓይነት');
+  });
+
+  it('completes the truncated Georgian biosafety labels', () => {
+    const georgian = JSON.parse(readFileSync(new URL('ka.json', localesDirectory), 'utf8'));
+    assert.equal(georgian.bchSubjects, 'ბიოუსაფრთხოების თემატური სფეროები');
+    assert.equal(georgian.bchSubjectGroups, 'ბიოუსაფრთხოების თემატური სფეროები');
+  });
+
+  it('completes the truncated Marathi ecosystem type label', () => {
+    const marathi = JSON.parse(readFileSync(new URL('mr.json', localesDirectory), 'utf8'));
+    assert.equal(marathi.ecosystemTypes, 'इकोसिस्टम प्रकार');
+  });
+
+  it('completes the truncated Swahili biosafety labels', () => {
+    const swahili = JSON.parse(readFileSync(new URL('sw.json', localesDirectory), 'utf8'));
+    assert.equal(swahili.bchSubjects, 'Maeneo ya Kimada ya Usalama wa Biolojia');
+    assert.equal(swahili.bchSubjectGroups, 'Maeneo ya Kimada ya Usalama wa Biolojia');
+  });
 });
