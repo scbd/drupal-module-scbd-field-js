@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Objectius GBF",
+  "nationalTargets7": "Objectius nacionals",
+  "subjects": "Àrees temàtiques",
+  "sdgs": "ODS",
+  "countries": "Països",
+  "regions": "Regions",
+  "jurisdictions": "Jurisdiccions",
+  "orgTypes": "Tipus d'organització",
+  "govTypes": "Tipus de govern",
+  "projectStatuses": "Estat del projecte",
+  "geoScopes": "Àmbit geogràfic",
+  "documentTypes": "Tipus de document",
+  "ecosystemTypes": "Tipus d'ecosistema",
+  "eventStatuses": "Estat de l'esdeveniment",
+  "bchSubjects": "Àrees temàtiques de bioseguretat",
+  "bchSubjectGroups": "Àrees temàtiques de bioseguretat",
+  "other": "Altres"
+}

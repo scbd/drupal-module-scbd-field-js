@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "أهداف GBF",
+  "nationalTargets7": "الأهداف الوطنية",
+  "subjects": "المجالات المواضيعية",
+  "sdgs": "أهداف التنمية المستدامة",
+  "countries": "بلدان",
+  "regions": "المناطق",
+  "jurisdictions": "السلطات القضائية",
+  "orgTypes": "نوع المؤسسة",
+  "govTypes": "نوع الحكومة",
+  "projectStatuses": "حالة المشروع",
+  "geoScopes": "النطاق الجغرافي",
+  "documentTypes": "نوع المستند",
+  "ecosystemTypes": "نوع النظام البيئي",
+  "eventStatuses": "حالة الحدث",
+  "bchSubjects": "المجالات المواضيعية للسلامة البيولوجية",
+  "bchSubjectGroups": "المجالات المواضيعية للسلامة البيولوجية",
+  "other": "آخر"
+}

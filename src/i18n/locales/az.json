@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF Hədəfləri",
+  "nationalTargets7": "Milli Hədəflər",
+  "subjects": "Tematik sahələr",
+  "sdgs": "DİM",
+  "countries": "Ölkələr",
+  "regions": "Bölgələr",
+  "jurisdictions": "Yurisdiksiyalar",
+  "orgTypes": "Təşkilat növü",
+  "govTypes": "Hökumət növü",
+  "projectStatuses": "Layihənin vəziyyəti",
+  "geoScopes": "Coğrafi əhatə",
+  "documentTypes": "Sənəd növü",
+  "ecosystemTypes": "Ekosistem növü",
+  "eventStatuses": "Tədbirin vəziyyəti",
+  "bchSubjects": "Bioloji təhlükəsizlik tematik sahələri",
+  "bchSubjectGroups": "Bioloji təhlükəsizlik tematik sahələri",
+  "other": "Digər"
+}

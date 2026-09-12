@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF célok",
+  "nationalTargets7": "Nemzeti célok",
+  "subjects": "Tematikus területek",
+  "sdgs": "Fejlesztési célok",
+  "countries": "Országok",
+  "regions": "Régiók",
+  "jurisdictions": "Joghatóságok",
+  "orgTypes": "Szervezet típusa",
+  "govTypes": "Kormány típusa",
+  "projectStatuses": "Projekt állapota",
+  "geoScopes": "Földrajzi kör",
+  "documentTypes": "Dokumentum típusa",
+  "ecosystemTypes": "Ökoszisztéma típusa",
+  "eventStatuses": "Esemény állapota",
+  "bchSubjects": "Biológiai biztonsági tematikus területek",
+  "bchSubjectGroups": "Biológiai biztonsági tematikus területek",
+  "other": "Egyéb"
+}

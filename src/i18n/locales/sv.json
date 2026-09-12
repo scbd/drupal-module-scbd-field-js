@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF-mål",
+  "nationalTargets7": "Nationella mål",
+  "subjects": "Tematiska områden",
+  "sdgs": "Målen för hållbar utveckling",
+  "countries": "Länder",
+  "regions": "Regioner",
+  "jurisdictions": "Jurisdiktioner",
+  "orgTypes": "Organisationstyp",
+  "govTypes": "Regeringstyp",
+  "projectStatuses": "Projektstatus",
+  "geoScopes": "Geografisk räckvidd",
+  "documentTypes": "Dokumenttyp",
+  "ecosystemTypes": "Ekosystemtyp",
+  "eventStatuses": "Händelsestatus",
+  "bchSubjects": "Tematiska områden för biosäkerhet",
+  "bchSubjectGroups": "Tematiska områden för biosäkerhet",
+  "other": "Övrigt"
+}

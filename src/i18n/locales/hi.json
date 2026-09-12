@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF लक्ष्य",
+  "nationalTargets7": "राष्ट्रीय लक्ष्य",
+  "subjects": "विषयगत क्षेत्र",
+  "sdgs": "एसडीजी",
+  "countries": "देश",
+  "regions": "क्षेत्र",
+  "jurisdictions": "अधिकार क्षेत्र",
+  "orgTypes": "संगठन का प्रकार",
+  "govTypes": "सरकार का प्रकार",
+  "projectStatuses": "प्रोजेक्ट की स्थिति",
+  "geoScopes": "जियोग्राफिक स्कोप",
+  "documentTypes": "दस्तावेज़ का प्रकार",
+  "ecosystemTypes": "इकोसिस्टम टाइप",
+  "eventStatuses": "इवेंट स्टेटस",
+  "bchSubjects": "जैव सुरक्षा विषयगत क्षेत्र",
+  "bchSubjectGroups": "जैव सुरक्षा विषयगत क्षेत्र",
+  "other": "अन्य"
+}

@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "ජීබීඑෆ් ඉලක්ක",
+  "nationalTargets7": "ජාතික ඉලක්ක",
+  "subjects": "තේමාත්මක ප්රදේශ",
+  "sdgs": "SDGs",
+  "countries": "රටවල්",
+  "regions": "කලාප",
+  "jurisdictions": "අධිකරණ බලතල",
+  "orgTypes": "සංවිධාන වර්ගය",
+  "govTypes": "රජයේ වර්ගය",
+  "projectStatuses": "ව්යාපෘති තත්ත්වය",
+  "geoScopes": "භූ ගෝලීය විෂය",
+  "documentTypes": "ලේඛන වර්ගය",
+  "ecosystemTypes": "පරිසර පද්ධති වර්ගය",
+  "eventStatuses": "සිදුවීම් තත්ත්වය",
+  "bchSubjects": "ජෛව ආරක්ෂණ තේමාත්මක ප්රදේශ",
+  "bchSubjectGroups": "ජෛව ආරක්ෂණ තේමාත්මක ප්රදේශ",
+  "other": "වෙනත්"
+}

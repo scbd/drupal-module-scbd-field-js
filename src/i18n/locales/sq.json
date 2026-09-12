@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Objektivat e GBF",
+  "nationalTargets7": "Objektivat Kombëtare",
+  "subjects": "Fushat Tematike",
+  "sdgs": "SDG",
+  "countries": "Shtetet",
+  "regions": "Rajonet",
+  "jurisdictions": "Juridiksionet",
+  "orgTypes": "Lloji i organizatës",
+  "govTypes": "Lloji i Qeverisë",
+  "projectStatuses": "Statusi i projektit",
+  "geoScopes": "Fusha gjeografike",
+  "documentTypes": "Lloji i dokumentit",
+  "ecosystemTypes": "Lloji i ekosistemit",
+  "eventStatuses": "Statusi i ngjarjes",
+  "bchSubjects": "Fushat Tematike të Biosigurisë",
+  "bchSubjectGroups": "Fushat Tematike të Biosigurisë",
+  "other": "Të tjera"
+}

@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF-Ziele",
+  "nationalTargets7": "Nationale Ziele",
+  "subjects": "Thematische Bereiche",
+  "sdgs": "SDGs",
+  "countries": "Länder",
+  "regions": "Regionen",
+  "jurisdictions": "Gerichtsbarkeiten",
+  "orgTypes": "Art der Organisation",
+  "govTypes": "Art der Regierung",
+  "projectStatuses": "Status des Projekts",
+  "geoScopes": "Geografischer Geltungsbereich",
+  "documentTypes": "Art des Dokuments",
+  "ecosystemTypes": "Typ des Ökosystems",
+  "eventStatuses": "Status der Veranstaltung",
+  "bchSubjects": "Themenbereiche Biosicherheit",
+  "bchSubjectGroups": "Themenbereiche Biosicherheit",
+  "other": "Sonstige"
+}

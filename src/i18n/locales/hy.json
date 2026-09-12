@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF թիրախները",
+  "nationalTargets7": "Ազգային թիրախներ",
+  "subjects": "Թեմատիկ ոլորտներ",
+  "sdgs": "ԿԶՆ",
+  "countries": "Երկրներ",
+  "regions": "Տարածաշրջաններ",
+  "jurisdictions": "Իրավասություններ",
+  "orgTypes": "Կազմակերպության տեսակը",
+  "govTypes": "Կառավարության տեսակը",
+  "projectStatuses": "Ծրագրի կարգավիճակը",
+  "geoScopes": "Աշխարհագրական շրջանակը",
+  "documentTypes": "Փաստաթղթի տեսակը",
+  "ecosystemTypes": "Էկոհամակարգի տեսակը",
+  "eventStatuses": "Միջոցառման կարգավիճակ",
+  "bchSubjects": "Կենսաանվտանգության թեմատիկ ոլորտներ",
+  "bchSubjectGroups": "Կենսաանվտանգության թեմատիկ ոլորտներ",
+  "other": "Այլ"
+}

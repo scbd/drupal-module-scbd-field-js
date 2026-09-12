@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF-ийн зорилтууд",
+  "nationalTargets7": "Үндэсний зорилтууд",
+  "subjects": "Сэдэвчилсэн газрууд",
+  "sdgs": "SDGs",
+  "countries": "Улс орнууд",
+  "regions": "Бүс нутгууд",
+  "jurisdictions": "Хууль эрх мэдэл",
+  "orgTypes": "Байгууллагын төрөл",
+  "govTypes": "Засгийн газрын төрөл",
+  "projectStatuses": "Төслийн байдал",
+  "geoScopes": "Газарзүйн хамрах хүрээ",
+  "documentTypes": "Баримт бичгийн төрөл",
+  "ecosystemTypes": "Экосистемийн төрөл",
+  "eventStatuses": "Үйл явдлын байдал",
+  "bchSubjects": "Биоаюулгүй байдлын сэдэвчилсэн газрууд",
+  "bchSubjectGroups": "Биоаюулгүй байдлын сэдэвчилсэн газрууд",
+  "other": "Бусад"
+}

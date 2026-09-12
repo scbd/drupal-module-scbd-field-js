@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Mga Target ng GBF",
+  "nationalTargets7": "Mga Pambansang Target",
+  "subjects": "Mga Lugar na Tematiko",
+  "sdgs": "SDG",
+  "countries": "Mga Bansa",
+  "regions": "Mga rehiyon",
+  "jurisdictions": "Mga hurisdiksyon",
+  "orgTypes": "Uri ng Organisasyon",
+  "govTypes": "Uri ng Pamahalaan",
+  "projectStatuses": "Katayuan ng Proyekto",
+  "geoScopes": "Saklaw ng Heograpiya",
+  "documentTypes": "Uri ng Dokumento",
+  "ecosystemTypes": "Uri ng Ecosystem",
+  "eventStatuses": "Katayuan ng Kaganapan",
+  "bchSubjects": "Mga Lugar na Tematikong Biosafety",
+  "bchSubjectGroups": "Mga Lugar na Tematikong Biosafety",
+  "other": "Iba"
+}

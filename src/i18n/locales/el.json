@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Στόχοι GBF",
+  "nationalTargets7": "Εθνικοί στόχοι",
+  "subjects": "Θεματικές περιοχές",
+  "sdgs": "ΣΒΑ",
+  "countries": "Χώρες",
+  "regions": "Περιφέρειες",
+  "jurisdictions": "Δικαιοδοσίες",
+  "orgTypes": "Τύπος Οργανισμού",
+  "govTypes": "Κυβερνητικός τύπος",
+  "projectStatuses": "Κατάσταση Έργου",
+  "geoScopes": "Γεωγραφικό πεδίο",
+  "documentTypes": "Τύπος εγγράφου",
+  "ecosystemTypes": "Τύπος οικοσυστήματος",
+  "eventStatuses": "Κατάσταση συμβάντος",
+  "bchSubjects": "Θεματικοί τομείς βιοασφάλειας",
+  "bchSubjectGroups": "Θεματικοί τομείς βιοασφάλειας",
+  "other": "Άλλο"
+}
