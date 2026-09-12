@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "יעדי GBF",
+  "nationalTargets7": "מטרות לאומיות",
+  "subjects": "תחומים נושאיים",
+  "sdgs": "SDGs",
+  "countries": "מדינות",
+  "regions": "אזורים",
+  "jurisdictions": "תחומי שיפוט",
+  "orgTypes": "סוג הארגון",
+  "govTypes": "סוג ממשלה",
+  "projectStatuses": "סטטוס פרוייקט",
+  "geoScopes": "היקף גיאוגרפי",
+  "documentTypes": "סוג מסמך",
+  "ecosystemTypes": "סוג מערכת אקולוגית",
+  "eventStatuses": "סטטוס האירוע",
+  "bchSubjects": "תחומים נושאיים לבטיחות ביולוגית",
+  "bchSubjectGroups": "תחומים נושאיים לבטיחות ביולוגית",
+  "other": "אחר"
+}

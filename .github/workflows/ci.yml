@@ -49,6 +49,12 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Test composables and utilities
+        run: yarn test
+
+      - name: Test locales
+        run: yarn test:locales
+
       - name: Build
         run: yarn build
 

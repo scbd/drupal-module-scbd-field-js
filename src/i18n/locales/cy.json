@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Targedau GBF",
+  "nationalTargets7": "Targedau Cenedlaethol",
+  "subjects": "Meysydd Thematig",
+  "sdgs": "SDGs",
+  "countries": "Gwledydd",
+  "regions": "Rhanbarthau",
+  "jurisdictions": "Awdurdodaethau",
+  "orgTypes": "Math o Sefydliad",
+  "govTypes": "Math o Lywodraeth",
+  "projectStatuses": "Statws y Prosiect",
+  "geoScopes": "Cwmpas Daearyddol",
+  "documentTypes": "Math o Ddogfen",
+  "ecosystemTypes": "Math o Ecosystem",
+  "eventStatuses": "Statws Digwyddiad",
+  "bchSubjects": "Ardaloedd Thematig Bioddiogelwch",
+  "bchSubjectGroups": "Ardaloedd Thematig Bioddiogelwch",
+  "other": "Arall"
+}

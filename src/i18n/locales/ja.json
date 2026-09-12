@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF ターゲット",
+  "nationalTargets7": "国家目標",
+  "subjects": "テーマエリア",
+  "sdgs": "SDGs",
+  "countries": "国",
+  "regions": "リージョン",
+  "jurisdictions": "管轄区域",
+  "orgTypes": "組織タイプ",
+  "govTypes": "政府タイプ",
+  "projectStatuses": "プロジェクトステータス",
+  "geoScopes": "地理的範囲",
+  "documentTypes": "文書タイプ",
+  "ecosystemTypes": "エコシステムタイプ",
+  "eventStatuses": "イベントステータス",
+  "bchSubjects": "バイオセーフティのテーマ分野",
+  "bchSubjectGroups": "バイオセーフティのテーマ分野",
+  "other": "その他"
+}
