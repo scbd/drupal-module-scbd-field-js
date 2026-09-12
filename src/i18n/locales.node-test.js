@@ -95,4 +95,21 @@ describe('i18n locale keys', () => {
     const latvian = JSON.parse(readFileSync(new URL('lv.json', localesDirectory), 'utf8'));
     assert.equal(latvian.geoScopes, 'Ģeogrāfiskā darbības joma');
   });
+
+  it('translates biosafety rather than geology in both Pashto labels', () => {
+    const pashto = JSON.parse(readFileSync(new URL('ps.json', localesDirectory), 'utf8'));
+    assert.equal(pashto.bchSubjects, 'د بیولوژیکي خوندیتوب موضوعي ساحې');
+    assert.equal(pashto.bchSubjectGroups, 'د بیولوژیکي خوندیتوب موضوعي ساحې');
+  });
+
+  it('spells biosafety correctly in both Afrikaans labels', () => {
+    const afrikaans = JSON.parse(readFileSync(new URL('af.json', localesDirectory), 'utf8'));
+    assert.equal(afrikaans.bchSubjects, 'Bioveiligheidstematiese gebiede');
+    assert.equal(afrikaans.bchSubjectGroups, 'Bioveiligheidstematiese gebiede');
+  });
+
+  it('translates thematic rather than body areas in Hausa', () => {
+    const hausa = JSON.parse(readFileSync(new URL('ha.json', localesDirectory), 'utf8'));
+    assert.equal(hausa.subjects, 'Yankunan Jigogi');
+  });
 });
