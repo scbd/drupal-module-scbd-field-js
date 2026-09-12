@@ -75,6 +75,11 @@ describe('i18n locale keys', () => {
     assert.equal(marathi.bchSubjectGroups, 'बायोसेफ्टी थीमॅटिक क्षेत्र');
   });
 
+  it('uses the Marathi plural for national targets', () => {
+    const marathi = JSON.parse(readFileSync(new URL('mr.json', localesDirectory), 'utf8'));
+    assert.equal(marathi.nationalTargets7, 'राष्ट्रीय लक्ष्ये');
+  });
+
   it('completes the truncated Swahili biosafety labels', () => {
     const swahili = JSON.parse(readFileSync(new URL('sw.json', localesDirectory), 'utf8'));
     assert.equal(swahili.bchSubjects, 'Maeneo ya Kimada ya Usalama wa Biolojia');
