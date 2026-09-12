@@ -33,6 +33,21 @@ describe('i18n locale keys', () => {
     assert.equal(amharic.ecosystemTypes, 'የሥነ ምህዳር ዓይነት');
   });
 
+  it('completes the Amharic geographic scope label', () => {
+    const amharic = JSON.parse(readFileSync(new URL('am.json', localesDirectory), 'utf8'));
+    assert.equal(amharic.geoScopes, 'የጂኦግራፊያዊ ወሰን');
+  });
+
+  it('completes the Georgian geographic scope label', () => {
+    const georgian = JSON.parse(readFileSync(new URL('ka.json', localesDirectory), 'utf8'));
+    assert.equal(georgian.geoScopes, 'გეოგრაფიული ფარგლები');
+  });
+
+  it('completes the Georgian event status label', () => {
+    const georgian = JSON.parse(readFileSync(new URL('ka.json', localesDirectory), 'utf8'));
+    assert.equal(georgian.eventStatuses, 'მოვლენის სტატუსი');
+  });
+
   it('completes the truncated Georgian biosafety labels', () => {
     const georgian = JSON.parse(readFileSync(new URL('ka.json', localesDirectory), 'utf8'));
     assert.equal(georgian.bchSubjects, 'ბიოუსაფრთხოების თემატური სფეროები');
