@@ -9,10 +9,10 @@
   "orgTypes": "ორგანიზაციის ტიპი",
   "govTypes": "მთავრობის ტიპი",
   "projectStatuses": "პროექტის სტატუსი",
-  "geoScopes": "გეოგრაფიული ფარ",
+  "geoScopes": "გეოგრაფიული ფარგლები",
   "documentTypes": "დოკუმენტის სახეობა",
   "ecosystemTypes": "ეკოსისტემის სახეობა",
-  "eventStatuses": "მოვლენის სტატუს",
+  "eventStatuses": "მოვლენის სტატუსი",
   "bchSubjects": "ბიოუსაფრთხოების თემატური სფეროები",
   "bchSubjectGroups": "ბიოუსაფრთხოების თემატური სფეროები",
   "other": "სხვა"
