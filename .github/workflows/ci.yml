@@ -49,6 +49,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Test visual harness
+        run: node --test tests/*.node-test.js
+
       - name: Build
         run: yarn build
 
