@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
+    "test:locales": "node --test src/i18n/locales.node-test.js",
     "preview": "vite preview --open",
     "release-dev-s3": "dist-builder releaseDev -f",
     "release": "yarn publish --access=public --tag latest",

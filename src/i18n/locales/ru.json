@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Цели GBF",
+  "nationalTargets7": "Национальные цели",
+  "subjects": "Тематические области",
+  "sdgs": "ЦУР",
+  "countries": "СТРАНЫ",
+  "regions": "Регионы",
+  "jurisdictions": "юрисдикции",
+  "orgTypes": "Тип организации",
+  "govTypes": "Тип правительства",
+  "projectStatuses": "Статус проекта",
+  "geoScopes": "Географический охват",
+  "documentTypes": "Тип документа",
+  "ecosystemTypes": "Тип экосистемы",
+  "eventStatuses": "Статус события",
+  "bchSubjects": "Тематические области биобезопасности",
+  "bchSubjectGroups": "Тематические области биобезопасности",
+  "other": "Другое"
+}

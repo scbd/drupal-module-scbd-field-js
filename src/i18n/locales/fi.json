@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF-tavoitteet",
+  "nationalTargets7": "Kansalliset tavoitteet",
+  "subjects": "Aihealueet",
+  "sdgs": "Kestävän kehityksen tavoitteet",
+  "countries": "Maat",
+  "regions": "Alueet",
+  "jurisdictions": "Lainkäyttöalueet",
+  "orgTypes": "Organisaatiotyyppi",
+  "govTypes": "Hallituksen tyyppi",
+  "projectStatuses": "Projektin tila",
+  "geoScopes": "Maantieteellinen soveltamisala",
+  "documentTypes": "Asiakirjan tyyppi",
+  "ecosystemTypes": "Ekosysteemin tyyppi",
+  "eventStatuses": "Tapahtuman tila",
+  "bchSubjects": "Bioturvallisuuden teema-alueet",
+  "bchSubjectGroups": "Bioturvallisuuden teema-alueet",
+  "other": "Muu"
+}

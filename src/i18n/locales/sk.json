@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "Ciele GBF",
+  "nationalTargets7": "Národné ciele",
+  "subjects": "Tematické oblasti",
+  "sdgs": "SDG",
+  "countries": "Krajiny",
+  "regions": "Regióny",
+  "jurisdictions": "jurisdikcie",
+  "orgTypes": "Typ organizácie",
+  "govTypes": "Typ vlády",
+  "projectStatuses": "Stav projektu",
+  "geoScopes": "Geografický rozsah",
+  "documentTypes": "Typ dokumentu",
+  "ecosystemTypes": "Typ ekosystému",
+  "eventStatuses": "Stav udalosti",
+  "bchSubjects": "Tematické oblasti biologickej bezpečnosti",
+  "bchSubjectGroups": "Tematické oblasti biologickej bezpečnosti",
+  "other": "Iné"
+}
