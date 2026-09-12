@@ -1,10 +1,8 @@
-// Regression baseline (CR-2) for src/utils/national-targets.js. Asserts the ACTUAL behavior on
-// `latest` via the public getNationalTargets7, observing the query through the captured ofetch
-// POST body, plus direct indexQuery cases for the guards. Plain JS + Vitest only — no network.
+// Regression baseline (CR-2) for src/utils/national-targets.js. Captures ofetch POST bodies, plus direct indexQuery cases. Plain JS + Vitest — no network.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Capture the ofetch call so we can inspect the request body the SUT builds.
+// Capture the ofetch call so we can inspect the request body.
 const ofetchMock = vi.fn();
 vi.mock('ofetch', () => ({ ofetch: (...args) => ofetchMock(...args) }));
 
@@ -74,9 +72,7 @@ describe('getNationalTargets7 — request construction', () => {
 
     await getNationalTargets7({ locale: 'en', locales: ['en', 'fr', 'nl'] });
 
-    expect(sentBody().fl).toBe(
-      'identifier:uniqueIdentifier_s, name:title_EN_t, title_FR_t, title_NL_t',
-    );
+    expect(sentBody().fl).toBe('identifier:uniqueIdentifier_s, name:title_EN_t, title_FR_t, title_NL_t');
   });
 
   it('threads start / rows through to the Solr body', async () => {
@@ -97,12 +93,7 @@ describe('getNationalTargets7 — Drupal locale mapping', () => {
     await getNationalTargets7({ locale: 'zh-hans', locales: ['zh-hans'] });
     const body = sentBody();
 
-    // This previously asserted df/sort kept the RAW token (text_ZH-HANS_txt,
-    // title_ZH-HANS_s), which locked in a bug: those dynamic fields do not exist,
-    // so Solr answered 200 and silently sorted on an always-empty field. The two
-    // locales mapLocaleFromDrupal exists for -- zh-hans and fil -- were the only
-    // ones affected, and they got arbitrary ordering. The mapping now applies to
-    // fl, df and sort alike.
+    // Previously asserted raw tokens (text_ZH-HANS_txt / title_ZH-HANS_s), locking in a bug: those dynamic fields do not exist, so Solr returned 200 and sorted on an empty field silently. Mapping now applies to fl, df and sort alike.
     expect(body.fl).toBe('identifier:uniqueIdentifier_s, name:title_ZH_t');
     expect(body.df).toBe('text_ZH_txt');
     expect(body.sort).toBe('title_ZH_s asc');
@@ -198,8 +189,7 @@ describe('getNationalTargets7 — error path', () => {
 
 describe('indexQuery — hardening from the DEV-1167 pre-PR security review', () => {
   it('drops a country whose toString() changes between the whitelist test and the join', () => {
-    // RE.test(c) coerces once and join(' ') coerces again, so a non-deterministic
-    // toString() used to pass the whitelist and land raw in `q`.
+    // RE.test(c) coerces once and join(' ') coerces again, so a non-deterministic toString() used to pass the whitelist and land raw in `q`.
     let calls = 0;
     const gadget = { toString: () => (calls++ ? 'ab) OR (*:*' : 'ab') };
     const body = JSON.parse(indexQuery([gadget], 0, 25, 'en', ['en']));
@@ -209,8 +199,7 @@ describe('indexQuery — hardening from the DEV-1167 pre-PR security review', ()
   });
 
   it('accepts a non-array countries/locales argument instead of throwing', () => {
-    // These sanitizers run above the try block in getNationalTargets7, so a
-    // TypeError here escaped the documented resolve-to-[] contract.
+    // Sanitizers run above the try block, so a TypeError here escaped the resolve-to-[] contract.
     expect(() => indexQuery('be', 0, 25, 'en', 'en')).not.toThrow();
     expect(() => indexQuery(null, 0, 25, 'en', null)).not.toThrow();
     expect(JSON.parse(indexQuery('be', 0, 25, 'en', ['en'])).q).toContain('government_s : (be)');
@@ -239,9 +228,7 @@ describe('indexQuery — hardening from the DEV-1167 pre-PR security review', ()
   });
 
   it('rejects a non-string locale that fakes the regex via toString but injects via toUpperCase', () => {
-    // HIGH, round 2: safeLocale kept the original object, so a custom toUpperCase() appended
-    // arbitrary field names to fl and sort. fq was never reachable, so this could only widen
-    // the projection over already-public documents, but it is field injection all the same.
+    // HIGH, round 2: safeLocale kept the original object, so toUpperCase() appended arbitrary field names to fl and sort. fq was static, so this only widened the projection, but it is field injection.
     const evil = { toString: () => 'en', toUpperCase: () => 'EN_t,secret_s,tail' };
     const body = JSON.parse(indexQuery([], 0, 25, evil, ['en']));
 
@@ -268,7 +255,6 @@ describe('indexQuery — hardening from the DEV-1167 pre-PR security review', ()
 
   it('never interpolates into fq, so the public/realm scoping cannot be tampered with', () => {
     const body = JSON.parse(indexQuery(['be'], 0, 25, 'en', ['en']));
-
     expect(body.fq).toEqual(['_state_s:public', 'realm_ss:ort']);
   });
 });

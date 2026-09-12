@@ -14,14 +14,7 @@ describe('LINKABLE_DOMAINS', () => {
 
 describe('relatedKeys', () => {
   it('resolves GBF-TARGET-01 to its full related list from GBF_SAMEAS', () => {
-    expect(relatedKeys('GBF-TARGET-01')).toEqual([
-      'AICHI-TARGET-05',
-      'CBD-SUBJECT-MAR',
-      'CBD-SUBJECT-GSPC',
-      'CBD-SUBJECT-PA',
-      'SUSTAINABLE-DEVELOPMENT-GOAL-14',
-      'SUSTAINABLE-DEVELOPMENT-GOAL-15',
-    ]);
+    expect(relatedKeys('GBF-TARGET-01')).toEqual(['AICHI-TARGET-05', 'CBD-SUBJECT-MAR', 'CBD-SUBJECT-GSPC', 'CBD-SUBJECT-PA', 'SUSTAINABLE-DEVELOPMENT-GOAL-14', 'SUSTAINABLE-DEVELOPMENT-GOAL-15']);
   });
 
   it('returns the exact array reference defined in GBF_SAMEAS for a known target', () => {
@@ -35,9 +28,9 @@ describe('relatedKeys', () => {
   });
 
   it.each([
-    ['SUSTAINABLE-DEVELOPMENT-GOAL-14'], // an SDG: no inverse back-fill
-    ['CBD-SUBJECT-MAR'], // a Subject: no inverse back-fill
-    ['AICHI-TARGET-05'], // an Aichi target id that appears only inside related lists
+    ['SUSTAINABLE-DEVELOPMENT-GOAL-14'], // SDGs have no inverse back-fill.
+    ['CBD-SUBJECT-MAR'], // Subjects have no inverse back-fill.
+    ['AICHI-TARGET-05'], // Aichi ids appear only inside related lists.
   ])('is one-way: %s resolves to [] (no inverse)', (id) => {
     expect(relatedKeys(id)).toEqual([]);
   });
