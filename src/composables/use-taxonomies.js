@@ -54,7 +54,7 @@ export function useTaxonomies(locale, locales = []) {
   // The trailing catch keeps a failed load from surfacing as an unhandled rejection when
   // getData('orgTypes') is never called.
   const extraLocales = Array.isArray(locales) ? locales : [];
-  const orgTypeOtherPromise = useOrgTypeOther([locale, ...extraLocales]).catch(() => null); // localized "Other" appended to orgTypes (loads on demand)
+  const orgTypeOtherPromise = useOrgTypeOther([lang, ...extraLocales]).catch(() => null); // localized "Other" appended to orgTypes (loads on demand)
 
   /** Trim a raw thesaurus term to the keys the widget reads. */
   const base = (item) => omitNil({ identifier: item.identifier, name: localizedName(item, lang) });
@@ -124,9 +124,8 @@ export function useTaxonomies(locale, locales = []) {
     const wanted = (Array.isArray(keys) ? keys : []).map(migrateSdgKey); // upgrade legacy SDG-GOAL-* keys
     const matched = records.filter((t) => wanted.includes(t.identifier));
 
-    if (single && matched.length === 1) return matched[0];
-    if (matched.length) return matched;
-    return single ? undefined : [];
+    if (single) return matched[0];
+    return matched;
   }
 
   return { getData, lookUp };

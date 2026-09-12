@@ -11,7 +11,8 @@
 //
 // Fully offline/deterministic: `ofetch` and `useOrgTypeOther` are mocked; no network.
 
-import { describe, it, expect, vi } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
+import { useOrgTypeOther } from '@/composables/use-org-type-other.js';
 
 import {
   APIS,
@@ -135,6 +136,53 @@ describe('useTaxonomies dead-filter removal (CR-11)', () => {
     const parent = out.find((t) => t.identifier === 'BCH-PARENT');
     expect(parent.children).toHaveLength(1);
     expect(parent.children[0].identifier).toBe('BCH-CHILD');
+  });
+});
+
+describe('useTaxonomies localized behavior', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it('uses browser French fallback for both taxonomy terms and Other', async () => {
+    vi.spyOn(navigator, 'language', 'get').mockReturnValue('fr-CA');
+    // Model the collaborator's requested-locale contract without loading locale assets.
+    useOrgTypeOther.mockImplementationOnce(async (locales) => ({
+      identifier: 'ORG-TYPE-OTHER',
+      title: { en: 'Other', ...(locales.includes('fr') ? { fr: 'Autre' } : {}) },
+    }));
+    respondWith({
+      [APIS.orgTypes]: [{ identifier: 'ORG-NORMAL', name: { en: 'Organization', fr: 'Organisation' } }],
+    });
+
+    await expect(useTaxonomies().getData('orgTypes')).resolves.toEqual([
+      { identifier: 'ORG-NORMAL', name: 'Organisation' },
+      { identifier: 'ORG-TYPE-OTHER', name: 'Autre' },
+    ]);
+  });
+});
+
+describe('useTaxonomies single lookup', () => {
+  const first = { identifier: 'CTY-A', name: 'Alpha' };
+  const second = { identifier: 'CTY-B', name: 'Beta' };
+
+  it('returns the first record when multiple saved single IDs match', async () => {
+    respondWith({ [APIS.countries]: [second, first] });
+
+    await expect(useTaxonomies('en').lookUp('countries', ['CTY-B', 'CTY-A'], true))
+      .resolves.toEqual(first);
+  });
+
+  it('returns undefined when no saved single ID matches', async () => {
+    respondWith({ [APIS.countries]: [second, first] });
+
+    await expect(useTaxonomies('en').lookUp('countries', ['UNKNOWN'], true))
+      .resolves.toBeUndefined();
+  });
+
+  it('still returns every matching record for a multi lookup', async () => {
+    respondWith({ [APIS.countries]: [second, first] });
+
+    await expect(useTaxonomies('en').lookUp('countries', ['CTY-B', 'CTY-A']))
+      .resolves.toEqual([first, second]);
   });
 });
 
