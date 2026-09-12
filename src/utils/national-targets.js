@@ -1,19 +1,10 @@
-// src/utils/national-targets.js
-//
-// "National Targets 7" come from the api.cbd.int Solr index (index/select) rather than the
-// thesaurus domains handled by useTaxonomies, so their fetch + query-building lives here.
-// Each doc is normalized to the { identifier, name } shape the field widget consumes.
+// "National Targets 7" come from the api.cbd.int Solr index; fetch + query-building lives here. Docs normalize to { identifier, name }.
 
 import { ofetch } from 'ofetch';
 
 const INDEX_URL = 'https://api.cbd.int/api/v2013/index/select';
 
-// Solr-injection guards (S1): only clean ISO/locale codes are interpolated into the query.
-// `government_s` takes ISO-3166-1 alpha-2 codes; locales build `title_<LANG>_t/_s` field names.
-// These whitelists reject Solr metacharacters (space, `(`, `)`, `:`, `*`, quotes). They are applied
-// at the boundary (getNationalTargets7) AND re-asserted inside indexQuery (defense-in-depth, CR-8 /
-// SEC-2): indexQuery fails closed for any caller, and the re-assertion is idempotent — sanitized
-// input yields byte-identical output, so the boundary caller's behavior is unchanged.
+// Solr-injection guards: only clean ISO/locale codes are interpolated. Applied at the boundary and re-asserted inside indexQuery (defense-in-depth).
 const COUNTRY_RE = /^[a-z]{2}$/i;
 const LOCALE_RE = /^[a-z]{2,3}(-[a-z]{2,8})?$/i;
 /** Page-size guards: an unbounded `rows` lets one caller ask the index for everything. */
@@ -28,8 +19,7 @@ const REQUEST_TIMEOUT_MS = 20000;
 /** Drop any country token that is not a clean ISO-3166-1 alpha-2 code. */
 const safeCountries = (countries = []) =>
   [].concat(countries ?? []).filter((c) => typeof c === 'string' && COUNTRY_RE.test(c));
-/** Drop any locale token that carries Solr metacharacters or is otherwise malformed. Deduped and
- *  capped: one caller passing 100k locales inflated `fl` to 1.2 MB. */
+/** Drop any locale token that carries Solr metacharacters or is otherwise malformed. Deduped and capped to MAX_LOCALES. */
 const safeLocales = (locales = []) => [
   ...new Set([].concat(locales ?? []).filter((l) => typeof l === 'string' && LOCALE_RE.test(l))),
 ].slice(0, MAX_LOCALES);
@@ -37,12 +27,10 @@ const safeLocales = (locales = []) => [
 const safeIndex = (n) => (Number.isInteger(n) && n >= 0 ? n : 0);
 /** Clamp `rows` to 1..MAX_ROWS; anything else becomes the default page size. */
 const safeRows = (n) => (Number.isInteger(n) && n > 0 ? Math.min(n, MAX_ROWS) : DEFAULT_ROWS);
-/** Cap deep paging: an unbounded `start` is a cheap way to make Solr do expensive work. */
+/** Cap deep paging. */
 const safeIndexCapped = (n) => Math.min(safeIndex(n), MAX_START);
 
-/** Fall back to 'en' for a malformed primary locale. typeof is load-bearing: an object with a
- *  custom toUpperCase() passed the regex via toString() and injected extra fields into `fl`
- *  and `sort`, so the value must be a primitive string before it is trusted. */
+/** Fall back to 'en' for a malformed primary locale. typeof blocks objects with a custom toUpperCase() that injected extra fields into fl/sort. */
 const safeLocale = (locale) =>
   (typeof locale === 'string' && LOCALE_RE.test(locale) ? locale : 'en');
 
@@ -56,22 +44,7 @@ const extraTitleFields = (locales = [], locale) =>
     ? ''
     : locales.filter((l) => l !== locale).map((l) => `, title_${mapLocaleFromDrupal(l).toUpperCase()}_t`).join('');
 
-/**
- * Build the Solr `index/select` request body. Sort on the `_s` string twin, never the `_t` text field.
- *
- * Whitelists (COUNTRY_RE / LOCALE_RE) are re-asserted here via the boundary helpers so the function
- * fails closed regardless of caller (defense-in-depth, CR-8 / SEC-2). This is idempotent with the
- * boundary sanitizer in getNationalTargets7 — already-sanitized input produces byte-identical output —
- * while an invalid DIRECT call drops bad country/locale values (locale falls back to 'en') instead of
- * injecting Solr metacharacters into the df/sort/fl field names.
- *
- * @param {string[]} [countries] ISO-3166-1 alpha-2 country codes; non-conforming values are dropped.
- * @param {number} [start]
- * @param {number} [rows]
- * @param {string} [locale] primary locale; falls back to 'en' if malformed.
- * @param {string[]} [locales] alternate locales for fallback name fields; malformed values dropped.
- * @returns {string} JSON request body for `index/select`.
- */
+/** Build the Solr index/select request body. Sort on the `_s` string twin, never the `_t` text field. */
 export const indexQuery = (countries = [], start = 0, rows = 25, locale = 'en', locales = ['en']) => {
   const ctry = safeCountries(countries);
   const from = safeIndexCapped(start);
@@ -108,11 +81,10 @@ const normalizeNationalTarget = (currentLocale, locales, doc) => {
  * @returns {Promise<Array<{ identifier: string, name: string }>>}
  */
 export async function getNationalTargets7(ctx) {
-  // Normalize the whole argument first: destructuring a null or primitive ctx threw a
-  // TypeError from above the try, so the documented resolve-to-[] contract did not hold.
+  // Normalize the whole argument first: destructuring a null/primitive ctx threw a TypeError above the try, breaking the resolve-to-[] contract.
   const { countries = [], start = 0, rows = 25, locale, locales } =
     (ctx && typeof ctx === 'object' ? ctx : {});
-  // Sanitize once at the boundary, then thread the safe values through query + normalize (S1).
+  // Sanitize once at the boundary, then thread safe values through query + normalize.
   const loc = safeLocale(locale);
   const locs = safeLocales(locales ?? [loc]);
   const ctry = safeCountries(countries);
@@ -121,14 +93,12 @@ export async function getNationalTargets7(ctx) {
       method: 'post',
       body: indexQuery(ctry, start, rows, loc, locs),
       headers: { 'Content-Type': 'application/json' },
-      // Bounded like use-taxonomies: without this ofetch creates no abort timer, so a
-      // stalled api.cbd.int connection leaves the promise pending forever and the catch
-      // below never runs.
+      // Bounded like use-taxonomies: without this ofetch creates no abort timer, so a stalled connection leaves the promise pending forever and the catch below never runs.
       timeout: REQUEST_TIMEOUT_MS,
     });
     return response.docs.map((doc) => normalizeNationalTarget(mapLocaleFromDrupal(loc), locs, doc));
   } catch (error) {
-    // Resolve to [] (like getData) so one failure can't reject the shared Promise.all batch (C3).
+    // Resolve to [] (like getData) so one failure cannot reject the shared Promise.all batch.
     console.error('Error fetching national targets:', error);
     return [];
   }
