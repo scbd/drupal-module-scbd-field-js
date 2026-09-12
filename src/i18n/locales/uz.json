@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF maqsadlari",
+  "nationalTargets7": "Milliy maqsadlar",
+  "subjects": "Tematik sohalar",
+  "sdgs": "SDGs",
+  "countries": "Mamlakatlar",
+  "regions": "Hududlar",
+  "jurisdictions": "Yurisdiktsiyalar",
+  "orgTypes": "Tashkilot turi",
+  "govTypes": "Hukumat turi",
+  "projectStatuses": "Loyiha holati",
+  "geoScopes": "Geografik doirasi",
+  "documentTypes": "Hujjat turi",
+  "ecosystemTypes": "Ekotizim turi",
+  "eventStatuses": "Voqea holati",
+  "bchSubjects": "Biologik xavfsizlik mavzuli sohalari",
+  "bchSubjectGroups": "Biologik xavfsizlik mavzuli sohalari",
+  "other": "Boshqa"
+}

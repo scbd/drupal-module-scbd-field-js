@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "GBF მიზნები",
+  "nationalTargets7": "ეროვნული მიზნები",
+  "subjects": "თემატური სფეროები",
+  "sdgs": "განვითარების მიზნით",
+  "countries": "ქვეყნები",
+  "regions": "რეგიონები",
+  "jurisdictions": "იურისდიქციები",
+  "orgTypes": "ორგანიზაციის ტიპი",
+  "govTypes": "მთავრობის ტიპი",
+  "projectStatuses": "პროექტის სტატუსი",
+  "geoScopes": "გეოგრაფიული ფარ",
+  "documentTypes": "დოკუმენტის სახეობა",
+  "ecosystemTypes": "ეკოსისტემის სახეობა",
+  "eventStatuses": "მოვლენის სტატუს",
+  "bchSubjects": "ბიოუსაფრთხოების თემატური სფერ",
+  "bchSubjectGroups": "ბიოუსაფრთხოების თემატური სფერ",
+  "other": "სხვა"
+}

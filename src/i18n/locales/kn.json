@@ -1,0 +1,19 @@
+{
+  "gbfTargets": "ಜಿಬಿಎಫ್ ಗುರಿಗಳು",
+  "nationalTargets7": "ರಾಷ್ಟ್ರೀಯ ಗುರಿಗಳು",
+  "subjects": "ವಿಷಯಾಧಾರಿತ ಪ್ರದೇಶಗಳು",
+  "sdgs": "ಎಸ್ಡಿಜಿಗಳು",
+  "countries": "ದೇಶಗಳು",
+  "regions": "ಪ್ರದೇಶಗಳು",
+  "jurisdictions": "ನ್ಯಾಯವ್ಯಾಪ್ತಿಗಳು",
+  "orgTypes": "ಸಂಸ್ಥೆಯ ಪ್ರಕಾರ",
+  "govTypes": "ಸರ್ಕಾರದ ಪ್ರಕಾರ",
+  "projectStatuses": "ಯೋಜನೆಯ ಸ್ಥಿತಿ",
+  "geoScopes": "ಭೌಗೋಳಿಕ ವ್ಯಾಪ್ತಿ",
+  "documentTypes": "ಡಾಕ್ಯುಮೆಂಟ್ ಪ್ರಕಾರ",
+  "ecosystemTypes": "ಪರಿಸರ ವ್ಯವಸ್ಥೆ ಪ್ರಕಾರ",
+  "eventStatuses": "ಈವೆಂಟ್ ಸ್ಥಿತಿ",
+  "bchSubjects": "ಜೈವಿಕ ಸುರಕ್ಷತೆ ವಿಷಯಾಧಾರಿತ ಪ್ರದೇಶಗಳು",
+  "bchSubjectGroups": "ಜೈವಿಕ ಸುರಕ್ಷತೆ ವಿಷಯಾಧಾರಿತ ಪ್ರದೇಶಗಳು",
+  "other": "ಇತರೆ"
+}
