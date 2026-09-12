@@ -80,4 +80,14 @@ describe('i18n locale keys', () => {
     assert.equal(swahili.bchSubjects, 'Maeneo ya Kimada ya Usalama wa Biolojia');
     assert.equal(swahili.bchSubjectGroups, 'Maeneo ya Kimada ya Usalama wa Biolojia');
   });
+
+  it('completes the Punjabi geographic scope label', () => {
+    const punjabi = JSON.parse(readFileSync(new URL('pa.json', localesDirectory), 'utf8'));
+    assert.equal(punjabi.geoScopes, 'ਭੂਗੋਲਿਕ ਸਕੋਪ');
+  });
+
+  it('completes the Latvian geographic scope label', () => {
+    const latvian = JSON.parse(readFileSync(new URL('lv.json', localesDirectory), 'utf8'));
+    assert.equal(latvian.geoScopes, 'Ģeogrāfiskā darbības joma');
+  });
 });
