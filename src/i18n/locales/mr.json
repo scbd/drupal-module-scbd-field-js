@@ -9,11 +9,11 @@
   "orgTypes": "संस्थेचा प्रकार",
   "govTypes": "सरकारी प्रकार",
   "projectStatuses": "प्रकल्प स्थिती",
-  "geoScopes": "भौगोलिक स्",
-  "documentTypes": "कागदपत्राचा",
+  "geoScopes": "भौगोलिक व्याप्ती",
+  "documentTypes": "कागदपत्राचा प्रकार",
   "ecosystemTypes": "इकोसिस्टम प्रकार",
   "eventStatuses": "कार्यक्रम स्थिती",
-  "bchSubjects": "बायोसेफ्टी थीमॅटिक",
-  "bchSubjectGroups": "बायोसेफ्टी थीमॅटिक",
+  "bchSubjects": "बायोसेफ्टी थीमॅटिक क्षेत्र",
+  "bchSubjectGroups": "बायोसेफ्टी थीमॅटिक क्षेत्र",
   "other": "इतर"
 }

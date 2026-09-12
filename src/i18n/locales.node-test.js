@@ -59,6 +59,22 @@ describe('i18n locale keys', () => {
     assert.equal(marathi.ecosystemTypes, 'इकोसिस्टम प्रकार');
   });
 
+  it('completes the Marathi geographic scope label', () => {
+    const marathi = JSON.parse(readFileSync(new URL('mr.json', localesDirectory), 'utf8'));
+    assert.equal(marathi.geoScopes, 'भौगोलिक व्याप्ती');
+  });
+
+  it('completes the Marathi document type label', () => {
+    const marathi = JSON.parse(readFileSync(new URL('mr.json', localesDirectory), 'utf8'));
+    assert.equal(marathi.documentTypes, 'कागदपत्राचा प्रकार');
+  });
+
+  it('completes both Marathi biosafety thematic area labels', () => {
+    const marathi = JSON.parse(readFileSync(new URL('mr.json', localesDirectory), 'utf8'));
+    assert.equal(marathi.bchSubjects, 'बायोसेफ्टी थीमॅटिक क्षेत्र');
+    assert.equal(marathi.bchSubjectGroups, 'बायोसेफ्टी थीमॅटिक क्षेत्र');
+  });
+
   it('completes the truncated Swahili biosafety labels', () => {
     const swahili = JSON.parse(readFileSync(new URL('sw.json', localesDirectory), 'utf8'));
     assert.equal(swahili.bchSubjects, 'Maeneo ya Kimada ya Usalama wa Biolojia');
