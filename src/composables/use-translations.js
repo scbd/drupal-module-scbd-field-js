@@ -39,7 +39,7 @@ const warnOnce = (lang, why, err) => {
 
 /** Normalize a tag / array of tags to a deduped list of language prefixes ('en-US' -> 'en'). */
 const toLangs = (locales) =>
-  [...new Set([locales].flat().filter(Boolean).map((l) => String(l).split('-')[0]))];
+  [...new Set([locales].flat().filter(Boolean).map((l) => String(l).split('-')[0].toLowerCase()))];
 
 /**
  * UI-label translations scoped to the requested locales (English is always included as the
@@ -72,7 +72,7 @@ export function useTranslations(locales = ['en']) {
 
   /** Localized label for `key`, falling back to the requested locale's language, then English, then the raw key. */
   const t = (key, locale) => {
-    const lang = String(locale || langs[0] || 'en').split('-')[0];
+    const lang = String(locale || langs[0] || 'en').split('-')[0].toLowerCase();
     return messages[lang]?.[key] ?? messages.en?.[key] ?? key;
   };
 
